@@ -11,6 +11,19 @@ const AdminProductsPage = () => {
   const dispatch = useDispatch();
    const {products} = useSelector(state=>state.products);
 
+   const [formData, setFormData] = useState({
+      name:'',
+      description:'',
+      stock:'',
+      productSku:'',
+      price:'',
+      color:'',
+      images:[]
+   });
+
+
+   
+
    useEffect(()=>{
        dispatch(fetchProducts());
    },[dispatch]);

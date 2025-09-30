@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
   name: {
@@ -25,13 +25,19 @@ const ProductSchema = new mongoose.Schema({
   },
   color: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Color',
+    ref: "Color",
     default: null,
   },
   images: [
     {
-      type: String, 
-      required: true,
+      public_id: {
+        type: String,
+        default: null,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
     },
   ],
   createdAt: {
@@ -40,5 +46,5 @@ const ProductSchema = new mongoose.Schema({
   },
 });
 
-
-export default mongoose.models.Product || mongoose.model('Product', ProductSchema);
+export default mongoose.models.Product ||
+  mongoose.model("Product", ProductSchema);
