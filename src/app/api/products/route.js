@@ -26,7 +26,7 @@ export async function POST(req) {
   try {
     const formData = await req.formData();
 
-    const imageFile = formData.get("images");
+    const imageFiles = formData.getAll("images");
     const name = formData.get("name");
     const description = formData.get("description");
     const productSku = formData.get("productSku");
@@ -34,24 +34,33 @@ export async function POST(req) {
     const price = formData.get("price");
     const color = formData.get("color");
 
-    if (!imageFile) {
+    if (!imageFiles || imageFiles.length === 0) {
       return NextResponse.json(
-        { error: "Product image is required" },
+        { error: "At least one product image is required" },
         { status: 400 }
       );
     }
 
-    const arrayBuffer = await imageFile.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const uploadedImages = [];
 
-    const uploadResult = await new Promise((resolve, reject) => {
-      cloudinary.v2.uploader
-        .upload_stream({ folder: "products" }, (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        })
-        .end(buffer);
-    });
+    for (const imageFile of imageFiles) {
+      const arrayBuffer = await imageFile.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      const uploadResult = await new Promise((resolve, reject) => {
+        cloudinary.v2.uploader
+          .upload_stream({ folder: "products" }, (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          })
+          .end(buffer);
+      });
+
+      uploadedImages.push({
+        public_id: uploadResult.public_id,
+        url: uploadResult.secure_url,
+      });
+    }
 
     const newProduct = await createProduct({
       name,
@@ -60,15 +69,12 @@ export async function POST(req) {
       stock,
       price,
       color,
-      images: [
-        {
-          public_id: uploadResult.public_id,
-          url: uploadResult.secure_url,
-        },
-      ],
+      images: uploadedImages,
     });
+
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
+    console.error("Error creating product:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

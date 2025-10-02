@@ -219,7 +219,7 @@ const AdminProductsPage = () => {
                     Images
                   </label>
                   <input
-                    class="w-full border border-gray-300 px-3 py-2.5 rounded-md text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+                    className="w-full border border-gray-300 px-3 py-2.5 rounded-md text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
                     id="file_input"
                     type="file"
                     multiple
