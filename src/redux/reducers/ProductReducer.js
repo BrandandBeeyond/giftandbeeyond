@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS } from "../constants/ProductConstant";
+import { CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS } from "../constants/ProductConstant";
 
 const initialState = {
   products: [],
@@ -9,6 +9,7 @@ const initialState = {
 const ProductReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS_REQUEST:
+    case CREATE_PRODUCT_REQUEST:
       return {
         ...state,
         loading: true,
@@ -20,7 +21,15 @@ const ProductReducer = (state = initialState, action) => {
         loading: false,
         products: action.payload,
       };
+
+    case CREATE_PRODUCT_SUCCESS:
+      return{
+        ...state,
+        loading:false,
+        products:action.payload
+      }
     case FETCH_PRODUCTS_FAILURE:
+    case CREATE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,
