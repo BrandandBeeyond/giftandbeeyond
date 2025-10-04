@@ -1,5 +1,25 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { fetchColors } from "@/redux/actions/ColorAction";
 import { createProduct, fetchProducts } from "@/redux/actions/ProductAction";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,8 +29,17 @@ import { useDispatch, useSelector } from "react-redux";
 const AdminProductsPage = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
+  const { colors } = useSelector((state) => state.colors);
+
   const [previewImages, setPreviewImages] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [enableColorSelections, setEnableColorSelections] = useState(false);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -22,22 +51,6 @@ const AdminProductsPage = () => {
     images: [],
   });
 
-  const handleModalOpen = () => setIsModalOpen(true);
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setFormData({
-      name: "",
-      description: "",
-      stock: "",
-      productSku: "",
-      price: "",
-      color: "",
-      images: [],
-    });
-    setPreviewImages([]);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -48,7 +61,14 @@ const AdminProductsPage = () => {
     multipartFormData.append("stock", formData.stock);
     multipartFormData.append("productSku", formData.productSku);
     multipartFormData.append("price", formData.price);
-    multipartFormData.append("color", formData.color);
+
+    if(selectedColors.length > 0){
+      multipartFormData.append("color", JSON.stringify(selectedColors));
+    }
+    else{
+      multipartFormData.append("color", null);
+      
+    }
 
     formData.images.forEach((file) => {
       multipartFormData.append("images", file);
@@ -56,7 +76,6 @@ const AdminProductsPage = () => {
 
     dispatch(createProduct(multipartFormData)).then(() => {
       dispatch(fetchProducts());
-      handleModalClose();
     });
   };
 
@@ -64,9 +83,27 @@ const AdminProductsPage = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchColors());
+  }, [dispatch]);
+
   const handleEdit = (id) => {
     alert(`Edit product with ID: ${id}`);
   };
+const resetForm = () => {
+  setFormData({
+    name: "",
+    description: "",
+    stock: "",
+    productSku: "",
+    price: "",
+    color: "",
+    images: [],
+  });
+  setPreviewImages([]);
+  setSelectedColors([]);
+  setEnableColorSelections(false);
+};
 
   const handleDelete = (id) => {
     alert(`Delete product with ID: ${id}`);
@@ -108,80 +145,67 @@ const AdminProductsPage = () => {
         </div>
       ),
       ignoreRowClick: true,
-      allowOverflow: true,
       button: true,
     },
   ];
   return (
     <>
-      <div>
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-semibold">Products</h1>
-          <button
-            className="flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white cursor-pointer text-sm px-3 py-1.5 rounded-sm"
-            onClick={handleModalOpen}
-          >
-            <PlusCircle size={18} />
-            Add Product
-          </button>
-        </div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold">Products</h1>
+        <Dialog open={isDialogOpen} onOpenChange={(isOpen)=>{
+            setIsDialogOpen(isOpen);
 
-        <div className="bg-white p-4 shadow-md rounded">
-          <DataTable
-            columns={columns}
-            data={products}
-            pagination
-            highlightOnHover
-            responsive
-          />
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 opacity-100"></div>
-
-          <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-2xl animate-fade-in">
-            <div className="border-b-gray-300">
-              <h2 className="text-xl font-semibold mb-4">Add Product</h2>
-              <button
-                className="absolute top-3 right-3 text-2xl cursor-pointer text-gray-500 hover:text-gray-800"
-                onClick={handleModalClose}
-              >
-                ✖
-              </button>
-            </div>
-
-            <div className="modal-body p-5 max-h-[80vh] overflow-y-auto">
-              <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            if(!isOpen){
+              resetForm();
+            }
+        }}>
+          <DialogTrigger asChild>
+            <Button className="flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white px-3 py-1">
+              <PlusCircle size={18} />
+              Add Product
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Add Product</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-6 pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Product Name</Label>
                   <Input
-                    label="Product Name"
+                    id="name"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
                   />
+                </div>
+                <div>
+                  <Label htmlFor="productSku">Product SKU</Label>
                   <Input
-                    label="Product SKU"
+                    id="productSku"
                     value={formData.productSku}
                     onChange={(e) =>
                       setFormData({ ...formData, productSku: e.target.value })
                     }
                   />
+                </div>
+                <div>
+                  <Label htmlFor="stock">Stock</Label>
                   <Input
-                    label="Stock"
+                    id="stock"
                     type="number"
                     value={formData.stock}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        stock: Number(e.target.value),
-                      })
+                      setFormData({ ...formData, stock: e.target.value })
                     }
                   />
+                </div>
+                <div>
+                  <Label htmlFor="price">Price (₹)</Label>
                   <Input
-                    label="Price (₹)"
+                    id="price"
                     type="number"
                     value={formData.price}
                     onChange={(e) =>
@@ -189,89 +213,130 @@ const AdminProductsPage = () => {
                     }
                   />
                 </div>
+              </div>
 
-                <Input
-                  label="Color"
-                  value={formData.color}
+              <div>
+                <div className="flex items-center gap-x-6 mb-3">
+                  <Label htmlFor="color">Color</Label>
+
+                  <div className="flex items-center gap-2">
+                   
+                    <Switch
+                      id="color-toggle"
+                      checked={enableColorSelections}
+                      onCheckedChange={(checked) => {
+                        setEnableColorSelections(checked);
+                        if (!checked) {
+                          setSelectedColors([]);
+                          setFormData({ ...formData, color: "" });
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {enableColorSelections && (
+                  <>
+                    <Select
+                      value={formData.color}
+                      onValueChange={(val) => {
+                        if (!selectedColors.includes(val)) {
+                          const updated = [...selectedColors, val];
+                          setSelectedColors(updated);
+                          setFormData({
+                            ...formData,
+                            color: updated.join(","),
+                          });
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a color" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {colors.map((c) => (
+                          <SelectItem key={c._id} value={c._id}>
+                            {c.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+
+                    <div className="flex flex-wrap gap-2 mt-3">
+                        {selectedColors.map((colorId)=>{
+                            const colorObj = colors.find((c)=>c._id === colorId);
+                            return(
+                               <div key={colorId} className="flex items-center gap-x-5">
+                                    <div className="h-10 w-10 rounded-4xl" style={{backgroundColor:colorObj.hexCode}}>
+                                    </div>
+                               </div>
+                            )
+                        })}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
                   onChange={(e) =>
-                    setFormData({ ...formData, color: e.target.value })
+                    setFormData({ ...formData, description: e.target.value })
                   }
                 />
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Description
-                  </label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        description: e.target.value,
-                      })
-                    }
-                    className="w-full border border-gray-300 px-3 py-2 rounded-md"
-                    rows={3}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Images
-                  </label>
-                  <input
-                    className="w-full border border-gray-300 px-3 py-2.5 rounded-md text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
-                    id="file_input"
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={(e) => {
-                      const files = Array.from(e.target.files);
-                      setFormData({ ...formData, images: files });
+              <div>
+                <Label htmlFor="images">Images</Label>
+                <Input
+                  id="images"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className="w-full"
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files || []);
+                    setFormData({ ...formData, images: files });
+                    const previews = files.map((f) => URL.createObjectURL(f));
+                    setPreviewImages(previews);
+                  }}
+                />
+              </div>
 
-                      const previews = files.map((file) =>
-                        URL.createObjectURL(file)
-                      );
-                      setPreviewImages(previews);
-                    }}
-                  />
+              {mounted && previewImages.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {previewImages.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt={`Preview ${i}`}
+                      className="w-full h-24 object-cover rounded border"
+                    />
+                  ))}
                 </div>
-                {previewImages.length > 0 && (
-                  <div className="grid grid-cols-3 gap-2 mt-2">
-                    {previewImages.map((src, index) => (
-                      <img
-                        key={index}
-                        src={src}
-                        alt={`Preview ${index}`}
-                        className="w-full h-24 object-cover rounded border"
-                      />
-                    ))}
-                  </div>
-                )}
-                <button
-                  type="submit"
-                  className="bg-slate-900 text-white px-4 py-2 rounded hover:bg-slate-700"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+              )}
+              <div className="flex justify-end pt-4">
+                <Button type="submit">Submit</Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="bg-white p-4 shadow-md rounded">
+        <DataTable
+          columns={columns}
+          data={products}
+          pagination
+          highlightOnHover
+          responsive
+        />
+      </div>
     </>
   );
 };
-
-const Input = ({ label, type = "text", value, onChange }) => (
-  <div>
-    <label className="block text-sm font-medium mb-1">{label}</label>
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      className="w-full border border-gray-300 px-3 py-2 rounded-md"
-    />
-  </div>
-);
 
 export default AdminProductsPage;

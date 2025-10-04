@@ -1,9 +1,10 @@
 import { connectToDB } from "@/lib/db";
 import Color from "@/models/color.model";
 
-export const getAllColors = async (req, res) => {
+export const getAllColors = async () => {
   await connectToDB();
-  return await Color.find({});
+  const colors = await Color.find({});
+  return colors;
 };
 
 export const createColor = async (data) => {

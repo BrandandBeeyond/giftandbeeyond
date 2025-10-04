@@ -23,11 +23,8 @@ const ProductSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
-  color: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Color",
-    default: null,
-  },
+  color: [{ type: mongoose.Schema.Types.ObjectId, ref: "Color" }],
+
   images: [
     {
       public_id: {

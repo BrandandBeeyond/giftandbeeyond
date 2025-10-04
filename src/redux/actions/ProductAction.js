@@ -21,6 +21,8 @@ export const fetchProducts = () => async (dispatch) => {
   }
 };
 
+
+
 export const createProduct = (formData) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_PRODUCT_REQUEST });

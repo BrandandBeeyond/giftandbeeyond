@@ -3,6 +3,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "./ClientProvider";
+import { useEffect } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +16,11 @@ const geistMono = Geist_Mono({
 });
 
 
+
 export default function RootLayout({ children }) {
+    useEffect(() => {
+    console.log(" Hydration complete");
+  }, []);
   return (
     <html lang="en">
       <body
