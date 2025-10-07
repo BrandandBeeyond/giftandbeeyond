@@ -7,7 +7,6 @@ const Home=()=> {
            <h1 className="text-7xl text-slate-950 font-bold ">Gift Website Homepage</h1>
 
 
-           
      </main>
   );
 }

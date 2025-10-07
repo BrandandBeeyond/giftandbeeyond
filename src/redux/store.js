@@ -1,11 +1,16 @@
 // src/redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import ProductReducer from "./reducers/ProductReducer";
-import { ColorReducer } from "./reducers/colorReducer";
+import { ColorReducer } from "./reducers/ColorReducer";
+import { KitReducer } from "./reducers/KitReducer";
+import { CategoryReducer, subCategoryReducer } from "./reducers/CategoryReducer";
 
 export const store = configureStore({
   reducer: {
     products: ProductReducer,
-    colors:ColorReducer
+    colors: ColorReducer,
+    kits: KitReducer,
+    categories:CategoryReducer,
+    subcategories:subCategoryReducer
   },
 });

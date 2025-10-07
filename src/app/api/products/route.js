@@ -6,7 +6,6 @@ import {
   CLOUDINARY_API_SECRET,
   CLOUDINARY_NAME,
 } from "@/config/config";
-import { resolve } from "styled-jsx/css";
 
 cloudinary.config({
   cloud_name: CLOUDINARY_NAME,
@@ -117,3 +116,5 @@ export async function POST(req) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+

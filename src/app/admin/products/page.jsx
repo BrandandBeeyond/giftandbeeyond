@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchColors } from "@/redux/actions/ColorAction";
@@ -28,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const AdminProductsPage = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
+  const { products, loading } = useSelector((state) => state.products);
   const { colors } = useSelector((state) => state.colors);
 
   const [previewImages, setPreviewImages] = useState([]);
@@ -62,12 +63,10 @@ const AdminProductsPage = () => {
     multipartFormData.append("productSku", formData.productSku);
     multipartFormData.append("price", formData.price);
 
-    if(selectedColors.length > 0){
+    if (selectedColors.length > 0) {
       multipartFormData.append("color", JSON.stringify(selectedColors));
-    }
-    else{
+    } else {
       multipartFormData.append("color", null);
-      
     }
 
     formData.images.forEach((file) => {
@@ -90,20 +89,20 @@ const AdminProductsPage = () => {
   const handleEdit = (id) => {
     alert(`Edit product with ID: ${id}`);
   };
-const resetForm = () => {
-  setFormData({
-    name: "",
-    description: "",
-    stock: "",
-    productSku: "",
-    price: "",
-    color: "",
-    images: [],
-  });
-  setPreviewImages([]);
-  setSelectedColors([]);
-  setEnableColorSelections(false);
-};
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      stock: "",
+      productSku: "",
+      price: "",
+      color: "",
+      images: [],
+    });
+    setPreviewImages([]);
+    setSelectedColors([]);
+    setEnableColorSelections(false);
+  };
 
   const handleDelete = (id) => {
     alert(`Delete product with ID: ${id}`);
@@ -152,13 +151,16 @@ const resetForm = () => {
     <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Products</h1>
-        <Dialog open={isDialogOpen} onOpenChange={(isOpen)=>{
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={(isOpen) => {
             setIsDialogOpen(isOpen);
 
-            if(!isOpen){
+            if (!isOpen) {
               resetForm();
             }
-        }}>
+          }}
+        >
           <DialogTrigger asChild>
             <Button className="flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white px-3 py-1">
               <PlusCircle size={18} />
@@ -220,7 +222,6 @@ const resetForm = () => {
                   <Label htmlFor="color">Color</Label>
 
                   <div className="flex items-center gap-2">
-                   
                     <Switch
                       id="color-toggle"
                       checked={enableColorSelections}
@@ -237,42 +238,57 @@ const resetForm = () => {
 
                 {enableColorSelections && (
                   <>
-                    <Select
-                      value={formData.color}
-                      onValueChange={(val) => {
-                        if (!selectedColors.includes(val)) {
-                          const updated = [...selectedColors, val];
-                          setSelectedColors(updated);
-                          setFormData({
-                            ...formData,
-                            color: updated.join(","),
-                          });
-                        }
-                      }}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a color" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {colors.map((c) => (
-                          <SelectItem key={c._id} value={c._id}>
-                            {c.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="border rounded-md px-3 py-2 w-full">
+                      <span className="text-sm text-muted-foreground">
+                        Select colors
+                      </span>
+                      <div className="mt-3 grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                        {colors.map((c) => {
+                          const isSelected = selectedColors.includes(c._id);
+                          return (
+                            <button
+                              key={c._id}
+                              type="button"
+                              onClick={() => {
+                                const updated = isSelected
+                                  ? selectedColors.filter((id) => id !== c._id)
+                                  : [...selectedColors, c._id];
 
+                                setSelectedColors(updated);
+                                setFormData({
+                                  ...formData,
+                                  color: JSON.stringify(updated),
+                                });
+                              }}
+                              className={`flex items-center justify-between px-3 py-1 border rounded text-sm ${
+                                isSelected
+                                  ? "bg-slate-800 text-white"
+                                  : "bg-white"
+                              }`}
+                            >
+                              <span>{c.name}</span>
+                              <span
+                                className="inline-block w-4 h-4 rounded-full border ml-2"
+                                style={{ backgroundColor: c.hexCode }}
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
 
                     <div className="flex flex-wrap gap-2 mt-3">
-                        {selectedColors.map((colorId)=>{
-                            const colorObj = colors.find((c)=>c._id === colorId);
-                            return(
-                               <div key={colorId} className="flex items-center gap-x-5">
-                                    <div className="h-10 w-10 rounded-4xl" style={{backgroundColor:colorObj.hexCode}}>
-                                    </div>
-                               </div>
-                            )
-                        })}
+                      {selectedColors.map((colorId) => {
+                        const colorObj = colors.find((c) => c._id === colorId);
+                        return (
+                          <div
+                            key={colorId}
+                            className="h-8 w-8 rounded-full border"
+                            style={{ backgroundColor: colorObj?.hexCode }}
+                            title={colorObj?.name}
+                          />
+                        );
+                      })}
                     </div>
                   </>
                 )}
@@ -327,13 +343,21 @@ const resetForm = () => {
       </div>
 
       <div className="bg-white p-4 shadow-md rounded">
-        <DataTable
-          columns={columns}
-          data={products}
-          pagination
-          highlightOnHover
-          responsive
-        />
+        {loading ? (
+          <div className="flex justify-center">
+            <Spinner className="text-slate-950 h-10 w-10" />
+          </div>
+        ) : (
+          <>
+            <DataTable
+              columns={columns}
+              data={products}
+              pagination
+              highlightOnHover
+              responsive
+            />
+          </>
+        )}
       </div>
     </>
   );
