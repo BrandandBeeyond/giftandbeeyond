@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { fetchAllKits } from "@/redux/actions/KitAction";
+import { createKit, fetchAllKits } from "@/redux/actions/KitAction";
 import { fetchProducts } from "@/redux/actions/ProductAction";
 import { Pencil, PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -34,7 +34,7 @@ const AdminKitsPage = () => {
     includes: "",
     displayImage: "",
   });
-  
+
   const resetForm = () => {
     setFormData({
       name: "",
@@ -50,6 +50,31 @@ const AdminKitsPage = () => {
     dispatch(fetchAllKits());
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const handleAddKitSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("price", formData.price);
+
+      formDataToSend.append("includes", JSON.stringify(selectedProducts));
+      const fileInput = document.getElementById("picture");
+      if (fileInput && fileInput.files[0]) {
+        formDataToSend.append("displayImage", fileInput.files[0]);
+      }
+
+      await dispatch(createKit(formDataToSend));
+
+      resetForm();
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Failed to add kit:", error);
+    }
+  };
 
   const columns = [
     {
@@ -118,63 +143,76 @@ const AdminKitsPage = () => {
             <DialogHeader>
               <DialogTitle>Add Kit</DialogTitle>
             </DialogHeader>
-            <form className="space-y-6 pt-4">
+            <form className="space-y-6 pt-4" onSubmit={handleAddKitSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="name">Kit Name</Label>
-                  <Input id="name" />
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="price">Price (₹)</Label>
-                  <Input id="price" type="number" />
+                  <Input
+                    id="price"
+                    type="number"
+                    value={formData.price}
+                    onChange={(e) =>
+                      setFormData({ ...formData, price: e.target.value })
+                    }
+                  />
                 </div>
               </div>
 
               <div>
                 <Label htmlFor="description">Description</Label>
-                <Textarea id="description" />
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                />
               </div>
 
-              <Label htmlFor="displayImage" className="mb-6">
-                Includes
-              </Label>
-              <div className="border rounded-md px-3 py-2 w-full">
-                <span className="text-sm text-muted-foreground">
-                  Select products
-                </span>
-
-                <div className="mt-3 grid grid-cols-3 gap-2 max-h-40 overflow-y-auto">
-                  {products.map((p) => {
-                    const isSelected = selectedProducts.includes(p._id);
-                    return (
-                      <button
-                        key={p._id}
-                        type="button"
-                        onClick={() => {
-                          const updated = isSelected
-                            ? selectedProducts.filter((id) => id !== p._id)
-                            : [...selectedProducts, p._id];
-
+              <div>
+                <Label className="mb-2">Includes</Label>
+                <div className="border rounded-md px-3 py-2 w-full">
+                  <span className="text-sm text-muted-foreground">
+                    Select products
+                  </span>
+                  <div className="mt-3 grid grid-cols-3 gap-2 max-h-40 overflow-y-auto">
+                    {products.map((p) => {
+                      const isSelected = selectedProducts.includes(p._id);
+                      return (
+                        <button
+                          key={p._id}
+                          type="button"
+                          onClick={() => {
+                            const updated = isSelected
+                              ? selectedProducts.filter((id) => id !== p._id)
+                              : [...selectedProducts, p._id];
                             setSelectedProducts(updated);
-                            setFormData({
-                              ...formData,
-                              includes:JSON.stringify(updated)
-                            });
-                        }}
-                        className={`flex items-center cursor-pointer justify-between px-3 py-1 border rounded text-sm ${
-                          isSelected ? "bg-slate-800 text-white" : "bg-white"
-                        }`}
-                      >
-                        <span>{p.name}</span>
-                      </button>
-                    );
-                  })}
+                          }}
+                          className={`flex items-center cursor-pointer justify-between px-3 py-1 border rounded text-sm ${
+                            isSelected ? "bg-slate-800 text-white" : "bg-white"
+                          }`}
+                        >
+                          <span>{p.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="displayImage" className="mb-3">
+                <Label htmlFor="picture" className="mb-3">
                   Display Image
                 </Label>
                 <Input type="file" id="picture" />

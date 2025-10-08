@@ -3,7 +3,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "./ClientProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,20 +15,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export default function RootLayout({ children }) {
-    useEffect(() => {
-    console.log(" Hydration complete");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
   }, []);
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-          <ClientProvider>
-              {children}
-          </ClientProvider>
+      <body className="antialiased">
+        <ClientProvider>
+          <main className={mounted ? `${geistSans.variable} ${geistMono.variable}` : ""}>
+            {children}
+          </main>
+        </ClientProvider>
       </body>
     </html>
   );

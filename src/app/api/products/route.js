@@ -42,8 +42,6 @@ const uploadToCloundinary = (buffer) => {
 
 export async function POST(req) {
   try {
-    console.log("🔄 Starting product upload...");
-
     const formData = await req.formData();
 
     const imageFiles = formData.getAll("images");
@@ -65,16 +63,6 @@ export async function POST(req) {
       console.warn("Failed to parse color JSON:", err);
       parsedColor = [];
     }
-
-    console.log("📦 Received fields:", {
-      name,
-      description,
-      productSku,
-      stock,
-      price,
-      color,
-      imageCount: imageFiles.length,
-    });
 
     if (!imageFiles || imageFiles.length === 0) {
       return NextResponse.json(
@@ -108,13 +96,9 @@ export async function POST(req) {
       images: uploadedImages,
     });
 
-    console.log("✅ Product created:", newProduct);
-
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error("Error creating product:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
-

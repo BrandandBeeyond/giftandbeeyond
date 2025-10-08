@@ -19,7 +19,7 @@ export async function POST(req) {
     const formData = await req.formData();
 
     const categoryname = formData.get("categoryname");
-    const subcategories = formData.get("subcatgories");
+    const subcategories = formData.get("subcategories");
 
     let parsedSubcategories = [];
 

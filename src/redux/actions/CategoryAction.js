@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  CREATE_CATEGORY_FAILURE,
+  CREATE_CATEGORY_REQUEST,
+  CREATE_CATEGORY_SUCCESS,
   CREATE_SUBCATEGORY_FAILURE,
   CREATE_SUBCATEGORY_REQUEST,
   CREATE_SUBCATEGORY_SUCCESS,
@@ -51,5 +54,22 @@ export const addSubCategory = (formData) => async (dispatch) => {
   } catch (error) {
     console.error("Error creating subcategory:", error);
     dispatch({ type: CREATE_SUBCATEGORY_FAILURE, payload: error.message });
+  }
+};
+
+export const addCategory = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: CREATE_CATEGORY_REQUEST });
+
+    const { data } = await axios.post("/api/categories", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: data });
+  } catch (error) {
+    console.error("Error creating category:", error);
+    dispatch({ type: CREATE_CATEGORY_FAILURE, payload: error.message });
   }
 };

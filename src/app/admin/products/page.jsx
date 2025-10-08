@@ -242,7 +242,7 @@ const AdminProductsPage = () => {
                       <span className="text-sm text-muted-foreground">
                         Select colors
                       </span>
-                      <div className="mt-3 grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                      <div className="mt-3 grid grid-cols-4 gap-2 max-h-40 overflow-y-auto">
                         {colors.map((c) => {
                           const isSelected = selectedColors.includes(c._id);
                           return (
@@ -260,7 +260,7 @@ const AdminProductsPage = () => {
                                   color: JSON.stringify(updated),
                                 });
                               }}
-                              className={`flex items-center justify-between px-3 py-1 border rounded text-sm ${
+                              className={`flex items-center justify-between px-3 py-1 border rounded-xl text-sm ${
                                 isSelected
                                   ? "bg-slate-800 text-white"
                                   : "bg-white"
