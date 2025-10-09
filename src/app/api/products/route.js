@@ -50,6 +50,7 @@ export async function POST(req) {
     const productSku = formData.get("productSku");
     const stock = formData.get("stock");
     const price = formData.get("price");
+    const category = formData.get("category");
     const color = formData.get("color");
 
     let parsedColor = [];
@@ -92,6 +93,7 @@ export async function POST(req) {
       productSku,
       stock,
       price,
+      category,
       color: parsedColor,
       images: uploadedImages,
     });

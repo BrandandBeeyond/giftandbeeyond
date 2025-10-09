@@ -1,4 +1,11 @@
-import { CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS } from "../constants/ProductConstant";
+import {
+  CREATE_PRODUCT_FAILURE,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  FETCH_PRODUCTS_FAILURE,
+  FETCH_PRODUCTS_REQUEST,
+  FETCH_PRODUCTS_SUCCESS,
+} from "../constants/ProductConstant";
 
 const initialState = {
   products: [],
@@ -19,15 +26,17 @@ const ProductReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        products: action.payload,
+        products: Array.isArray(action.payload) ? action.payload : [],
       };
 
     case CREATE_PRODUCT_SUCCESS:
-      return{
+      return {
         ...state,
-        loading:false,
-        products:action.payload
-      }
+        loading: false,
+        products: Array.isArray(action.payload)
+          ? action.payload
+          : [...state.products, action.payload],
+      };
     case FETCH_PRODUCTS_FAILURE:
     case CREATE_PRODUCT_FAILURE:
       return {
@@ -39,6 +48,5 @@ const ProductReducer = (state = initialState, action) => {
       return state;
   }
 };
-
 
 export default ProductReducer;

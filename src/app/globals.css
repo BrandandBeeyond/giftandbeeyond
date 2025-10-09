@@ -58,6 +58,7 @@
 } */
 
 :root {
+   --input-background: #f3f3f5;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -135,30 +136,31 @@
   }
 }
 
-
 /* custom style */
 
-.navbar::after{
-    position: absolute;
-    content: "";
-    background:url('../../public/images/cardboard.jpg');
-    background-size: cover;
-    height: 300px;
-    width: 100%;
-    z-index: -1;
-    top: 0;
-    left: 0;
+.bg-input-background {
+  background-color: var(--input-background);
+}
+.bn_theme {
+  background: url("../../public/images/bgtheme.jpg");
+  background-size: cover;
+  height: 800px;
+  width: 100%;
 }
 
-.sec_banner{
+.giftribbon {
+  top: -140px;
+  left: 0px;
+}
+.sec_banner {
   background: var(--accent);
   height: 500px;
 }
 
-.foglithen-font{
-  font-family:"customfont";
+.foglithen-font {
+  font-family: "customfont";
 }
-.svggift{
+.svggift {
   width: 100%;
   max-width: 120px;
   margin: auto;
@@ -166,13 +168,13 @@
   position: absolute;
   inset: -113px 0% auto;
 }
-.giftbox_open_ani{
+.giftbox_open_ani {
   opacity: 0;
   width: 480px;
   position: absolute;
   inset: -70% 0% auto;
 }
 
-.giftbox:hover .giftbox_open_ani{
-   opacity: 1;
+.giftbox:hover .giftbox_open_ani {
+  opacity: 1;
 }

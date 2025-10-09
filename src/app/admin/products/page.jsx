@@ -20,6 +20,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { fetchCategories } from "@/redux/actions/CategoryAction";
 import { fetchColors } from "@/redux/actions/ColorAction";
 import { createProduct, fetchProducts } from "@/redux/actions/ProductAction";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
@@ -31,12 +32,23 @@ const AdminProductsPage = () => {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
   const { colors } = useSelector((state) => state.colors);
+  const { categories } = useSelector((state) => state.categories);
 
   const [previewImages, setPreviewImages] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [enableColorSelections, setEnableColorSelections] = useState(false);
   const [selectedColors, setSelectedColors] = useState([]);
   const [mounted, setMounted] = useState(false);
+
+  const [productError, setProductError] = useState({
+    name: "",
+    description: "",
+    stock: "",
+    productSku: "",
+    price: "",
+    category: "",
+    images: [],
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -48,12 +60,65 @@ const AdminProductsPage = () => {
     stock: "",
     productSku: "",
     price: "",
+    category: "",
     color: "",
     images: [],
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setProductError({
+      name: "",
+      description: "",
+      productSku: "",
+      stock: "",
+      category: "",
+      price: "",
+      images: [],
+    });
+
+    let isValid = true;
+
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Product Name is required";
+      isValid = false;
+    }
+    if (!formData.productSku.trim()) {
+      newErrors.productSku = "Product SKU is required";
+      isValid = false;
+    }
+    if (!formData.stock || parseInt(formData.stock) < 1) {
+      newErrors.stock = "Stock must be at least 1.";
+      isValid = false;
+    }
+
+    if (!formData.price || parseFloat(formData.price) <= 0) {
+      newErrors.price = "Price must be greater than 0.";
+      isValid = false;
+    }
+
+    if (!formData.category) {
+      newErrors.category = "Please select a category.";
+      isValid = false;
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required.";
+      isValid = false;
+    }
+
+    if (formData.images.length === 0) {
+      newErrors.images = "At least one image is required.";
+      isValid = false;
+    }
+
+    if(!isValid){
+       setProductError(newErrors);
+       return;
+    }
 
     const multipartFormData = new FormData();
 
@@ -62,6 +127,7 @@ const AdminProductsPage = () => {
     multipartFormData.append("stock", formData.stock);
     multipartFormData.append("productSku", formData.productSku);
     multipartFormData.append("price", formData.price);
+    multipartFormData.append("category", formData.category);
 
     if (selectedColors.length > 0) {
       multipartFormData.append("color", JSON.stringify(selectedColors));
@@ -75,6 +141,9 @@ const AdminProductsPage = () => {
 
     dispatch(createProduct(multipartFormData)).then(() => {
       dispatch(fetchProducts());
+      setIsDialogOpen(false);
+      resetForm();
+      
     });
   };
 
@@ -84,6 +153,7 @@ const AdminProductsPage = () => {
 
   useEffect(() => {
     dispatch(fetchColors());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   const handleEdit = (id) => {
@@ -97,6 +167,7 @@ const AdminProductsPage = () => {
       productSku: "",
       price: "",
       color: "",
+      category: "",
       images: [],
     });
     setPreviewImages([]);
@@ -152,6 +223,7 @@ const AdminProductsPage = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Products</h1>
         <Dialog
+        
           open={isDialogOpen}
           onOpenChange={(isOpen) => {
             setIsDialogOpen(isOpen);
@@ -167,7 +239,7 @@ const AdminProductsPage = () => {
               Add Product
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-h-[650px] max-w-2xl overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add Product</DialogTitle>
             </DialogHeader>
@@ -177,16 +249,19 @@ const AdminProductsPage = () => {
                   <Label htmlFor="name">Product Name</Label>
                   <Input
                     id="name"
+                    placeholder="Enter product name"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
                   />
+                  {productError.name && <p className="text-sm text-red-600 mt-1">{productError.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="productSku">Product SKU</Label>
                   <Input
                     id="productSku"
+                     placeholder="Enter product SKU"
                     value={formData.productSku}
                     onChange={(e) =>
                       setFormData({ ...formData, productSku: e.target.value })
@@ -197,23 +272,48 @@ const AdminProductsPage = () => {
                   <Label htmlFor="stock">Stock</Label>
                   <Input
                     id="stock"
+                     placeholder="Enter stock available"
                     type="number"
                     value={formData.stock}
                     onChange={(e) =>
                       setFormData({ ...formData, stock: e.target.value })
                     }
                   />
+                    {productError.stock && <p className="text-sm text-red-600 mt-1">{productError.stock}</p>}
                 </div>
                 <div>
                   <Label htmlFor="price">Price (₹)</Label>
                   <Input
                     id="price"
                     type="number"
+                     placeholder="Enter price"
                     value={formData.price}
                     onChange={(e) =>
                       setFormData({ ...formData, price: e.target.value })
                     }
                   />
+                   {productError.price && <p className="text-sm text-red-600 mt-1">{productError.price}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="category">Category</Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, category: value })
+                    }
+                    value={formData.category}
+                  >
+                    <SelectTrigger id="category">
+                      <SelectValue placeholder="Select Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat._id}>
+                          {cat.categoryname}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                   {productError.category && <p className="text-sm text-red-600 mt-1">{productError.category}</p>}
                 </div>
               </div>
 
@@ -303,6 +403,7 @@ const AdminProductsPage = () => {
                     setFormData({ ...formData, description: e.target.value })
                   }
                 />
+                 {productError.description && <p className="text-sm text-red-600 mt-1">{productError.description}</p>}
               </div>
 
               <div>
@@ -320,6 +421,7 @@ const AdminProductsPage = () => {
                     setPreviewImages(previews);
                   }}
                 />
+                 {productError.images && <p className="text-sm text-red-600 mt-1">{productError.images}</p>}
               </div>
 
               {mounted && previewImages.length > 0 && (
@@ -335,7 +437,15 @@ const AdminProductsPage = () => {
                 </div>
               )}
               <div className="flex justify-end pt-4">
-                <Button type="submit">Submit</Button>
+                <Button type="submit">
+                  {loading ? (
+                    <>
+                      <Spinner className="text-white h-6 w-6" /> Submitting
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
               </div>
             </form>
           </DialogContent>

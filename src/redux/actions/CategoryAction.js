@@ -32,7 +32,7 @@ export const fetchSubCategories = () => async (dispatch) => {
     dispatch({ type: FETCH_SUBCATEGORIES_REQUEST });
 
     const { data } = await axios.get("/api/subcategories");
-
+    console.log("Fetched subcategories data:", data);
     dispatch({ type: FETCH_SUBCATEGORIES_SUCCESS, payload: data });
   } catch (error) {
     console.error("Error fetching subcategories:", error);

@@ -26,6 +26,7 @@ const AdminKitsPage = () => {
   const { products } = useSelector((state) => state.products);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [loadingKitSubmit, setLoadingKitSubmit] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -53,7 +54,7 @@ const AdminKitsPage = () => {
 
   const handleAddKitSubmit = async (e) => {
     e.preventDefault();
-
+    setLoadingKitSubmit(true);
     try {
       const formDataToSend = new FormData();
 
@@ -73,6 +74,8 @@ const AdminKitsPage = () => {
       setIsDialogOpen(false);
     } catch (error) {
       console.error("Failed to add kit:", error);
+    }finally{
+      setLoadingKitSubmit(false);
     }
   };
 
@@ -149,6 +152,7 @@ const AdminKitsPage = () => {
                   <Label htmlFor="name">Kit Name</Label>
                   <Input
                     id="name"
+                     placeholder="Enter Kit name"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
@@ -160,6 +164,7 @@ const AdminKitsPage = () => {
                   <Label htmlFor="price">Price (₹)</Label>
                   <Input
                     id="price"
+                     placeholder="Enter overall pricing"
                     type="number"
                     value={formData.price}
                     onChange={(e) =>
@@ -173,6 +178,7 @@ const AdminKitsPage = () => {
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
+                   placeholder="Enter short description"
                   value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
@@ -187,26 +193,29 @@ const AdminKitsPage = () => {
                     Select products
                   </span>
                   <div className="mt-3 grid grid-cols-3 gap-2 max-h-40 overflow-y-auto">
-                    {products.map((p) => {
-                      const isSelected = selectedProducts.includes(p._id);
-                      return (
-                        <button
-                          key={p._id}
-                          type="button"
-                          onClick={() => {
-                            const updated = isSelected
-                              ? selectedProducts.filter((id) => id !== p._id)
-                              : [...selectedProducts, p._id];
-                            setSelectedProducts(updated);
-                          }}
-                          className={`flex items-center cursor-pointer justify-between px-3 py-1 border rounded text-sm ${
-                            isSelected ? "bg-slate-800 text-white" : "bg-white"
-                          }`}
-                        >
-                          <span>{p.name}</span>
-                        </button>
-                      );
-                    })}
+                    {Array.isArray(products) &&
+                      products.map((p) => {
+                        const isSelected = selectedProducts.includes(p._id);
+                        return (
+                          <button
+                            key={p._id}
+                            type="button"
+                            onClick={() => {
+                              const updated = isSelected
+                                ? selectedProducts.filter((id) => id !== p._id)
+                                : [...selectedProducts, p._id];
+                              setSelectedProducts(updated);
+                            }}
+                            className={`flex items-center cursor-pointer justify-between px-3 py-1 border shadow-xs rounded-xl text-sm ${
+                              isSelected
+                                ? "bg-slate-400 text-white"
+                                : "bg-white"
+                            }`}
+                          >
+                            <span>{p.name}</span>
+                          </button>
+                        );
+                      })}
                   </div>
                 </div>
               </div>
@@ -219,7 +228,15 @@ const AdminKitsPage = () => {
               </div>
 
               <div className="flex justify-end pt-4">
-                <Button type="submit">Submit</Button>
+                <Button type="submit">
+                  {loadingKitSubmit ? (
+                    <>
+                      <Spinner className="text-white h-6 w-6" /> Submitting
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
               </div>
             </form>
           </DialogContent>

@@ -27,13 +27,13 @@ export const KitReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        kits: action.payload,
+        kits: Array.isArray(action.payload) ? action.payload : [...state.kits,action.payload],
       };
     case FETCH_KITS_SUCCESS:
       return {
         ...state,
         loading: false,
-        kits: action.payload,
+        kits: Array.isArray(action.payload) ? action.payload : [],
       };
 
     case FETCH_KITS_FAILURE:

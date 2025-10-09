@@ -19,7 +19,12 @@ const Home = () => {
         </div>
       </div>
 
-      <section className="my-32">
+      <section className="py-32 bn_theme seaosonal relative">
+        <img
+          src="images/ribbon.png"
+          className="giftribbon absolute w-full"
+          alt=""
+        />
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-6xl foglithen-font text-shadow-black">
             Festive Special
@@ -55,7 +60,11 @@ const Home = () => {
                 />
               </svg>
 
-              <img src="/images/gifting_opens.webp" className="giftbox_open_ani" alt="" />
+              <img
+                src="/images/gifting_opens.webp"
+                className="giftbox_open_ani"
+                alt=""
+              />
             </div>
             <div className="rounded-3xl giftbox bg-yellow-200 h-70 w-full relative transition-transform duration-300 hover:-translate-y-[50px]">
               <svg
@@ -85,7 +94,11 @@ const Home = () => {
                   stroke-linecap="round"
                 />
               </svg>
-                <img src="/images/gifting_opens.webp" className="giftbox_open_ani" alt="" />
+              <img
+                src="/images/gifting_opens.webp"
+                className="giftbox_open_ani"
+                alt=""
+              />
             </div>
             <div className="rounded-3xl giftbox bg-blue-300 h-70 w-full relative transition-transform duration-300 hover:-translate-y-[50px]">
               <svg
@@ -115,7 +128,11 @@ const Home = () => {
                   stroke-linecap="round"
                 />
               </svg>
-                <img src="/images/gifting_opens.webp" className="giftbox_open_ani" alt="" />
+              <img
+                src="/images/gifting_opens.webp"
+                className="giftbox_open_ani"
+                alt=""
+              />
             </div>
             <div className="rounded-3xl giftbox bg-orange-300 h-70 w-full relative transition-transform duration-300 hover:-translate-y-[50px]">
               <svg
@@ -145,8 +162,32 @@ const Home = () => {
                   stroke-linecap="round"
                 />
               </svg>
-                <img src="/images/gifting_opens.webp" className="giftbox_open_ani" alt="" />
+              <img
+                src="/images/gifting_opens.webp"
+                className="giftbox_open_ani"
+                alt=""
+              />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="my-32">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-6xl foglithen-font text-shadow-black">
+            Our Products
+          </h2>
+
+          <div className="grid grid-cols-3 gap-x-15 mt-30">
+               <div>
+                    <img src="images/productcard.png" className="" alt="" />
+               </div>
+               <div>
+                    <img src="images/productcard.png" className="" alt="" />
+               </div>
+               <div>
+                    <img src="images/productcard.png" className="" alt="" />
+               </div>
           </div>
         </div>
       </section>

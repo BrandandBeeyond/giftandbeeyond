@@ -24,16 +24,31 @@ import { Pencil, Trash2, PlusCircle, PlusCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const AdminCategoryPage = () => {
   const dispatch = useDispatch();
 
-  const { subcategories=[] } = useSelector((state) => state.subcategories);
+  const { subcategories = [], loading } = useSelector(
+    (state) => state.subcategories
+  );
   const { categories } = useSelector((state) => state.categories);
 
+  // error handling
+  const [subcategoryError, setSubcategoryError] = useState("");
+  const [categoryError, setCategoryError] = useState({
+    categoryname: "",
+    subcategories: "",
+  });
+
+  // modal toggle
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
+
+  // loading states
   const [loadingSub, setLoadingSub] = useState(false);
   const [loadingCategoryAdd, setLoadingCategoryAdd] = useState(false);
+
+  // form datas
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [mounted, setMounted] = useState(false);
@@ -54,6 +69,14 @@ const AdminCategoryPage = () => {
 
   const handleAddSubCategories = async (e) => {
     e.preventDefault();
+
+    setSubCategoryName("");
+
+    if (!subCategoryName.trim()) {
+      setSubcategoryError("Subcategory name is required.");
+      return;
+    }
+
     setLoadingSub(true);
 
     try {
@@ -62,8 +85,11 @@ const AdminCategoryPage = () => {
       };
       await dispatch(addSubCategory(formData));
 
+      toast.success("Subcategory added successfully.");
+
       setSubCategoryName("");
       setIsSubDialogOpen(false);
+      setSubcategoryError("");
       dispatch(fetchSubCategories());
     } catch (error) {
       console.error("Failed to add subcategory:", error);
@@ -74,6 +100,31 @@ const AdminCategoryPage = () => {
 
   const handleAddCategorySubmit = async (e) => {
     e.preventDefault();
+
+    setCategoryError({
+      categoryname: "",
+      subcategories: "",
+    });
+
+    let isValid = true;
+
+    if (!formData.categoryname.trim()) {
+      setCategoryError((prev) => ({
+        ...prev,
+        categoryname: "Category name is required",
+      }));
+      isValid = false;
+    }
+
+    if (selectedSubCategories.length === 0) {
+      setCategoryError((prev) => ({
+        ...prev,
+        subcategories: "Please select at least one subcategory.",
+      }));
+      isValid = false;
+    }
+
+    if (!isValid) return;
 
     setLoadingCategoryAdd(true);
     try {
@@ -139,7 +190,6 @@ const AdminCategoryPage = () => {
         </div>
       ),
       ignoreRowClick: true,
-    
     },
   ];
   return (
@@ -174,8 +224,15 @@ const AdminCategoryPage = () => {
                       <Input
                         id="subCategoryName"
                         value={subCategoryName}
+                         placeholder="Enter subcategory name"
                         onChange={(e) => setSubCategoryName(e.target.value)}
                       />
+
+                      {subcategoryError && (
+                        <p className="text-sm text-red-600 mt-2">
+                          {subcategoryError}
+                        </p>
+                      )}
                     </div>
 
                     <div className="flex justify-end pt-2">
@@ -201,6 +258,7 @@ const AdminCategoryPage = () => {
                     <Label htmlFor="name">Category Name</Label>
                     <Input
                       id="categoryname"
+                       placeholder="Enter category name"
                       value={formData.categoryname}
                       onChange={(e) =>
                         setFormData({
@@ -209,6 +267,8 @@ const AdminCategoryPage = () => {
                         })
                       }
                     />
+
+                    {categoryError.categoryname && <p className="text-sm text-red-600 mt-2">{categoryError.categoryname}</p>}
                   </div>
 
                   <div className="flex items-center gap-x-5 py-3">
@@ -220,41 +280,47 @@ const AdminCategoryPage = () => {
                       Select Subcategories
                     </span>
 
-                    <div className="mt-3 grid grid-cols-6 gap-2 max-h-40 overflow-y-auto">
-                      {mounted &&
-                        subcategories.map((c) => {
-                          const isSelected = selectedSubCategories.includes(
-                            c._id
-                          );
-                          return (
-                            <button
-                              key={c._id}
-                              type="button"
-                              onClick={() => {
-                                const updated = isSelected
-                                  ? selectedSubCategories.filter(
-                                      (id) => id !== c._id
-                                    )
-                                  : [...selectedSubCategories, c._id];
+                    {loading ? (
+                      <Spinner className="h-10 w-10 flex justify-center text-2xl text-gray-900" />
+                    ) : (
+                      <div className="mt-3 grid grid-cols-6 gap-2 max-h-40 overflow-y-auto">
+                        {Array.isArray(subcategories) &&
+                          subcategories.map((c) => {
+                            const isSelected = selectedSubCategories.includes(
+                              c._id
+                            );
+                            return (
+                              <button
+                                key={c._id}
+                                type="button"
+                                onClick={() => {
+                                  const updated = isSelected
+                                    ? selectedSubCategories.filter(
+                                        (id) => id !== c._id
+                                      )
+                                    : [...selectedSubCategories, c._id];
 
-                                setSelectedSubCategories(updated);
-                                setFormData({
-                                  ...formData,
-                                  includes: JSON.stringify(updated),
-                                });
-                              }}
-                              className={`flex items-center cursor-pointer justify-between px-3 py-1 border rounded-xl text-sm ${
-                                isSelected
-                                  ? "bg-slate-800 text-white"
-                                  : "bg-white"
-                              }`}
-                            >
-                              <span>{c.subcategoryname}</span>
-                            </button>
-                          );
-                        })}
-                    </div>
+                                  setSelectedSubCategories(updated);
+                                  setFormData({
+                                    ...formData,
+                                    includes: JSON.stringify(updated),
+                                  });
+                                }}
+                                className={`flex items-center cursor-pointer justify-between px-3 py-1 shadow-xs border rounded-xl text-sm ${
+                                  isSelected
+                                    ? "bg-slate-400 text-white"
+                                    : "bg-white"
+                                }`}
+                              >
+                                <span>{c.subcategoryname}</span>
+                              </button>
+                            );
+                          })}
+                      </div>
+                    )}
                   </div>
+
+                  {categoryError.subcategories && <p className="text-sm text-red-600 mt-2">{categoryError.subcategories}</p>}
                 </div>
 
                 <div className="flex justify-end pt-4">

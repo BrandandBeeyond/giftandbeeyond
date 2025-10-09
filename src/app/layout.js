@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "./ClientProvider";
 import { useEffect, useState } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <ClientProvider>
           <main className={mounted ? `${geistSans.variable} ${geistMono.variable}` : ""}>
             {children}
+            <Toaster/>
           </main>
         </ClientProvider>
       </body>

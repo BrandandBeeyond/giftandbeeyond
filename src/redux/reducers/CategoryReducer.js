@@ -34,14 +34,16 @@ export const CategoryReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        categories: action.payload,
+        categories: Array.isArray(action.payload) ? action.payload : [],
       };
 
     case CREATE_CATEGORY_SUCCESS:
       return {
         ...state,
         loading: false,
-        categories: action.payload,
+        categories: Array.isArray(action.payload)
+          ? action.payload
+          : [...state.categories, action.payload],
       };
 
     case FETCH_CATEGORIES_FAILURE:
@@ -70,7 +72,7 @@ export const subCategoryReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        subcategories: action.payload,
+        subcategories: Array.isArray(action.payload) ? action.payload : [],
       };
 
     case CREATE_SUBCATEGORY_SUCCESS:
