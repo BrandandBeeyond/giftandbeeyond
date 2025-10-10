@@ -16,11 +16,7 @@ import {
   Settings,
 } from "lucide-react";
 import {
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -38,7 +34,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 export default function AdminLayout({ children }) {
   const navigationItems = [
     { icon: Home, label: "Dashboard", href: "/admin" },
-    { icon: WorkflowIcon, label: "Categories", href: "/admin/categories" },
+    { icon: WorkflowIcon, label: "Categories", href: "/admin/category" },
     { icon: Box, label: "Products", href: "/admin/products" },
     { icon: Gift, label: "Kits", href: "/admin/kits" },
     { icon: ShoppingCart, label: "Orders", href: "/admin/orders" },
@@ -53,43 +49,22 @@ export default function AdminLayout({ children }) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <Sidebar>
-          <SidebarHeader>
-            <div className="flex items-center gap-2 px-4 py-2">
-              <div>
-                <h1 className="text-lg font-semibold">SalonPro</h1>
-                <p className="text-sm text-muted-foreground">
-                  Booking Management
-                </p>
-              </div>
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => {
-                const isActive = pathname === item.href;
-
-                return (
-                  <SidebarMenuItem key={item.id}>
-                    <SidebarMenuButton>
-                      <Link
-                        href={item.href}
-                        className={`flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-200 ${
-                          isActive
-                            ? "bg-primary text-white"
-                            : "text-gray-700 hover:bg-gray-100"
-                        }`}
-                      >
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarContent>
-        </Sidebar>
+        <aside className="w-64 h-full bg-white shadow-md p-5">
+          <nav className="space-y-4">
+            {navigationItems.map((item) => {
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className="flex items-center gap-3 text-gray-700 hover:text-black"
+                >
+                  {<item.icon className="h-5 w-5" />}
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
 
         <main className="flex-1 overflow-auto">
           {/* Header with user info */}
