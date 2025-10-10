@@ -178,3 +178,13 @@
 .giftbox:hover .giftbox_open_ani {
   opacity: 1;
 }
+
+.animate-spin{
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
