@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   Box,
@@ -15,10 +15,7 @@ import {
   LogOut,
   Settings,
 } from "lucide-react";
-import {
-
-  SidebarProvider,
-} from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import {
   DropdownMenu,
@@ -30,6 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 export default function AdminLayout({ children }) {
   const navigationItems = [
@@ -40,7 +38,20 @@ export default function AdminLayout({ children }) {
     { icon: ShoppingCart, label: "Orders", href: "/admin/orders" },
     { icon: Users, label: "Users", href: "/admin/users" },
   ];
+
+  const router = useRouter();
   const pathname = usePathname();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("adminUser");
+
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    } else {
+      router.push("/admin/auth/login");
+    }
+  }, [router]);
 
   if (pathname === "/admin/auth/login") {
     return <>{children}</>;
@@ -51,10 +62,10 @@ export default function AdminLayout({ children }) {
       <div className="min-h-screen flex w-full">
         <aside className="w-64 h-full bg-white shadow-md p-5">
           <nav className="space-y-4">
-            {navigationItems.map((item) => {
+            {navigationItems.map((item,index) => {
               return (
                 <Link
-                  key={item.id}
+                  key={item.href || index}
                   href={item.href}
                   className="flex items-center gap-3 text-gray-700 hover:text-black"
                 >
@@ -93,13 +104,13 @@ export default function AdminLayout({ children }) {
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {/* {currentUser?.name} */}
+                          {currentUser?.name}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">
-                          {/* {currentUser?.email} */}
+                          {currentUser?.email}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">
-                          {/* {currentUser?.role} */}
+                          {currentUser?.role}
                         </p>
                       </div>
                     </DropdownMenuLabel>
