@@ -57,12 +57,27 @@ export default function AdminLayout({ children }) {
     return <>{children}</>;
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("adminUser");
+    setCurrentUser(null);
+    router.push("/admin/auth/login");
+  };
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <aside className="w-64 h-full bg-white shadow-md p-5">
-          <nav className="space-y-4">
-            {navigationItems.map((item,index) => {
+        <aside className="w-64 h-full bg-white shadow-md">
+             <div className="flex items-center gap-2 px-4 py-2 border-b-secondary">
+              <GiftIcon className="h-6 w-6 text-primary" />
+              <div>
+                <h1 className="text-lg font-semibold">Gift & Beeyond</h1>
+                <p className="text-sm text-muted-foreground">
+                  Admin Management
+                </p>
+              </div>
+            </div>
+          <nav className="space-y-4 p-5">
+            {navigationItems.map((item, index) => {
               return (
                 <Link
                   key={item.href || index}
@@ -84,7 +99,7 @@ export default function AdminLayout({ children }) {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold capitalize"></h2>
-                  <p className="text-sm text-muted-foreground">Welcome back,</p>
+                  <p className="text-sm text-muted-foreground">Welcome back, {currentUser? currentUser?.name:""}</p>
                 </div>
 
                 <DropdownMenu>
@@ -95,7 +110,9 @@ export default function AdminLayout({ children }) {
                     >
                       <Avatar>
                         <AvatarFallback>
-                          {/* {currentUser ? getInitials(currentUser.name) : "U"} */}
+                          {currentUser?.name
+                            ? currentUser.name.charAt(0).toUpperCase()
+                            : "U"}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
@@ -120,7 +137,7 @@ export default function AdminLayout({ children }) {
                       <span>Settings</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>Log out</span>
                     </DropdownMenuItem>

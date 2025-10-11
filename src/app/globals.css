@@ -5,9 +5,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: "customfont";
+  font-family:"customfont";
   src: url("/fonts/customfont.ttf") format("truetype");
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "dancingscript";
+  src: url("/fonts/dancingscript.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "quando";
+  src: url("/fonts/quando.ttf") format("truetype");
+  font-weight: bold;
   font-style: normal;
 }
 
@@ -159,6 +172,12 @@
 
 .foglithen-font {
   font-family: "customfont";
+}
+.font-dancing{
+  font-family: "dancingscript";
+}
+.font-quando{
+  font-family: "quando";
 }
 .svggift {
   width: 100%;
