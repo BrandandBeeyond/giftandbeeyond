@@ -1,10 +1,10 @@
 "use client";
-
-import Navbar from "@/components/ui/Navbar";
-import { useState } from "react";
+import Giftcanvas from "@/app/admin/components/Giftcanvas";
+import Link from "next/link";
+import {  useState } from "react";
 
 const LoginPage = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
+  
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -12,184 +12,90 @@ const LoginPage = () => {
     password: "",
   });
 
+
   return (
-    <>
-      <Navbar />
+    <div className="bg-[#2b261e] overflow-hidden relative h-screen flex flex-col items-center justify-center">
+       <Giftcanvas/>
 
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#f6f5f7] font-[Montserrat]">
-        <h2 className="text-center text-2xl mb-4 font-bold">
-          Weekly Coding Challenge #1: Sign in/up Form
-        </h2>
+      <div className="relative z-10 max-w-lg w-full p-8 rounded-xl border border-neutral-800 bg-gradient-to-b from-[#433b2d]/80 to-[#272218]/80 backdrop-blur-md shadow-xl">
+        <h1 className="text-2xl font-bold text-white mb-2">
+          Welcome to Gift & Beeyond
+        </h1>
+        <p className="text-gray-400 mb-6">Login to Gift and beeyond</p>
 
-        <div
-          className={`container relative bg-white rounded-lg shadow-[0_14px_28px_rgba(0,0,0,0.25),0_10px_10px_rgba(0,0,0,0.22)] w-[768px] max-w-full min-h-[480px] overflow-hidden transition-all duration-700 ${
-            isSignUp ? "right-panel-active" : ""
-          }`}
-        >
-          {/* --- Sign Up Form --- */}
-          <div
-            className={`form-container absolute top-0 left-1/2 w-1/2 h-full transition-all duration-700 ${
-              isSignUp
-                ? "opacity-100 z-10 translate-x-[-100%]"
-                : "opacity-0 translate-x-0"
-            }`}
-          >
-            <form className="bg-white flex flex-col items-center justify-center p-12 h-full text-center">
-              <h1 className="font-bold text-xl">Create Account</h1>
-              <div className="social-container my-5">
-                <a
-                  href="#"
-                  className="social border border-gray-300 rounded-full inline-flex justify-center items-center m-1 h-10 w-10"
-                >
-                  {/* <FaFacebookF /> */}
-                </a>
-                <a
-                  href="#"
-                  className="social border border-gray-300 rounded-full inline-flex justify-center items-center m-1 h-10 w-10"
-                >
-                  {/* <FaGooglePlusG /> */}
-                </a>
-                <a
-                  href="#"
-                  className="social border border-gray-300 rounded-full inline-flex justify-center items-center m-1 h-10 w-10"
-                >
-                  {/* <FaLinkedinIn /> */}
-                </a>
-              </div>
-              <span className="text-xs">
-                or use your email for registration
-              </span>
-              <input
-                type="text"
-                placeholder="Name"
-                className="bg-gray-100 border-none p-3 my-2 w-full"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className="bg-gray-100 border-none p-3 my-2 w-full"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="bg-gray-100 border-none p-3 my-2 w-full"
-              />
-              <button className="rounded-full border border-[#FF4B2B] bg-[#FF4B2B] text-white font-bold py-3 px-11 text-xs uppercase mt-4 hover:scale-95 transition-transform">
-                Sign Up
-              </button>
-            </form>
+        <form className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-3 py-2 rounded-md bg-[#2a251c] text-white border border-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Password</label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              className="w-full px-3 py-2 rounded-md bg-[#2a251c] text-white border border-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
+            />
           </div>
 
-          {/* --- Sign In Form --- */}
-          <div
-            className={`form-container absolute top-0 h-full transition-all duration-700 ${
-              isSignUp ? "translate-x-[130%]" : "left-0 w-1/2 z-10"
-            }`}
+          <button
+            type="submit"
+            className="w-full mt-4 cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-semibold py-2 rounded-md hover:from-yellow-400 hover:to-yellow-500 transition"
           >
-            <form className="bg-white flex flex-col items-center justify-center p-12 h-full text-center">
-              <h1 className="font-bold text-xl">Sign in</h1>
-              <div className="social-container my-5">
-                <a
-                  href="#"
-                  className="social border border-gray-300 rounded-full inline-flex justify-center items-center m-1 h-10 w-10"
-                >
-                  {/* <FaFacebookF /> */}
-                </a>
-                <a
-                  href="#"
-                  className="social border border-gray-300 rounded-full inline-flex justify-center items-center m-1 h-10 w-10"
-                >
-                  {/* <FaGooglePlusG /> */}
-                </a>
-                <a
-                  href="#"
-                  className="social border border-gray-300 rounded-full inline-flex justify-center items-center m-1 h-10 w-10"
-                >
-                  {/* <FaLinkedinIn /> */}
-                </a>
-              </div>
-              <span className="text-xs">or use your account</span>
-              <input
-                type="email"
-                placeholder="Email"
-                className="bg-gray-100 border-none p-3 my-2 w-full"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="bg-gray-100 border-none p-3 my-2 w-full"
-              />
-              <a href="#" className="text-sm text-gray-600 my-2">
-                Forgot your password?
-              </a>
-              <button className="rounded-full border border-[#FF4B2B] bg-[#FF4B2B] text-white font-bold py-3 px-11 text-xs uppercase mt-4 hover:scale-95 transition-transform">
-                Sign In
-              </button>
-            </form>
-          </div>
-
-          {/* --- Overlay --- */}
-          <div
-            className={`overlay-container absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-transform duration-700 z-[100] ${
-              isSignUp ? "-translate-x-full" : ""
-            }`}
+            Sign In
+          </button>
+          <button
+            type="submit"
+            className="w-full mt-4 cursor-pointer bg-white text-black font-semibold py-2 rounded-md transition"
           >
-            <div
-              className={`overlay bg-gradient-to-r from-[#FF4B2B] to-[#FF416C] bg-no-repeat bg-cover bg-center text-white absolute left-[-100%] h-full w-[200%] transition-transform duration-700 ${
-                isSignUp ? "translate-x-1/2" : ""
-              }`}
-            >
-              <div className="overlay-panel absolute flex flex-col items-center justify-center p-10 text-center top-0 h-full w-1/2 transition-transform duration-700 transform -translate-x-[7%] left-0">
-                <h1 className="text-2xl font-bold mb-2">Welcome Back!</h1>
-                <p className="text-sm mb-5">
-                  To keep connected with us please login with your personal info
-                </p>
-                <button
-                  onClick={() => setIsSignUp(false)}
-                  className="rounded-full border border-white bg-transparent text-white font-bold py-3 px-11 text-xs uppercase hover:scale-95 transition-transform"
-                >
-                  Sign In
-                </button>
-              </div>
-
-              <div className="overlay-panel absolute flex flex-col items-center justify-center p-10 text-center top-0 h-full w-1/2 right-0">
-                <h1 className="text-2xl font-bold mb-2">Hello, Friend!</h1>
-                <p className="text-sm mb-5">
-                  Enter your personal details and start journey with us
-                </p>
-                <button
-                  onClick={() => setIsSignUp(true)}
-                  className="rounded-full border border-white bg-transparent text-white font-bold py-3 px-11 text-xs uppercase hover:scale-95 transition-transform"
-                >
-                  Sign Up
-                </button>
-              </div>
+            <div className="flex flex-row gap-x-4 justify-center items-center">
+              <svg
+                width="20px"
+                height="20px"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+              >
+                <path
+                  fill="#4285F4"
+                  d="M14.9 8.161c0-.476-.039-.954-.121-1.422h-6.64v2.695h3.802a3.24 3.24 0 01-1.407 2.127v1.75h2.269c1.332-1.22 2.097-3.02 2.097-5.15z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M8.14 15c1.898 0 3.499-.62 4.665-1.69l-2.268-1.749c-.631.427-1.446.669-2.395.669-1.836 0-3.393-1.232-3.952-2.888H1.85v1.803A7.044 7.044 0 008.14 15z"
+                />
+                <path
+                  fill="#FBBC04"
+                  d="M4.187 9.342a4.17 4.17 0 010-2.68V4.859H1.849a6.97 6.97 0 000 6.286l2.338-1.803z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M8.14 3.77a3.837 3.837 0 012.7 1.05l2.01-1.999a6.786 6.786 0 00-4.71-1.82 7.042 7.042 0 00-6.29 3.858L4.186 6.66c.556-1.658 2.116-2.89 3.952-2.89z"
+                />
+              </svg>
+              Continue with Google
             </div>
-          </div>
-        </div>
+          </button>
 
-        <footer className="bg-[#222] text-white text-center fixed bottom-0 left-0 right-0 text-sm p-3">
-          <p>
-            Created with <span className="text-red-500">♥</span> by{" "}
-            <a
-              target="_blank"
-              href="https://florin-pop.com"
-              className="text-[#3c97bf]"
-            >
-              Florin Pop
-            </a>{" "}
-            -{" "}
-            <a
-              target="_blank"
-              href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/"
-              className="text-[#3c97bf]"
-            >
-              Read here
+          <div className="text-right mt-2">
+            <a href="#" className="text-sm text-gray-400 underline">
+              Forgot password?
             </a>
-          </p>
-        </footer>
+          </div>
+        </form>
       </div>
-    </>
+
+      <div className="mt-5">
+          <Link href={"/account/signup"} className="text-xl text-amber-100 relative z-10">
+             Create Account
+          </Link>
+      </div>
+    </div>
   );
 };
 

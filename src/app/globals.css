@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family:"customfont";
+  font-family: "customfont";
   src: url("/fonts/customfont.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
@@ -71,7 +71,7 @@
 } */
 
 :root {
-   --input-background: #f3f3f5;
+  --input-background: #f3f3f5;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -160,7 +160,21 @@
   height: 800px;
   width: 100%;
 }
-
+.bg-theme {
+  background: url("../../public/images/bgtheme.jpg");
+  background-size: cover;
+  height: 100%;
+}
+.custom-card-bg,
+.custom-table-bg {
+  background-image:url('../../public/images/noise.webp'),
+    radial-gradient(62.9% 100% at 0 0, #e894021a 0, #fff0 100%),
+    radial-gradient(62.9% 100% at 100% 100%, #e894021a 0, #fff0 100%),
+    linear-gradient(0deg, #1e1b15, #1e1b150d);
+}
+.to-foreground\/40 {
+    --tw-gradient-to: hsl(38 5% 90%/0.4) var(--tw-gradient-to-position);
+}
 .giftribbon {
   top: -140px;
   left: 0px;
@@ -173,10 +187,10 @@
 .foglithen-font {
   font-family: "customfont";
 }
-.font-dancing{
+.font-dancing {
   font-family: "dancingscript";
 }
-.font-quando{
+.font-quando {
   font-family: "quando";
 }
 .svggift {
@@ -198,7 +212,7 @@
   opacity: 1;
 }
 
-.animate-spin{
+.animate-spin {
   animation: spin 1s linear infinite;
 }
 
