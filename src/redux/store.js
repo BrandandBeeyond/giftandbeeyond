@@ -4,6 +4,7 @@ import ProductReducer from "./reducers/ProductReducer";
 import { ColorReducer } from "./reducers/ColorReducer";
 import { KitReducer } from "./reducers/KitReducer";
 import { CategoryReducer, subCategoryReducer } from "./reducers/CategoryReducer";
+import { UserReducer } from "./reducers/UserReducer";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     colors: ColorReducer,
     kits: KitReducer,
     categories:CategoryReducer,
-    subcategories:subCategoryReducer
+    subcategories:subCategoryReducer,
+    users: UserReducer,
   },
 });

@@ -157,7 +157,7 @@
 .bn_theme {
   background: url("../../public/images/bgtheme.jpg");
   background-size: cover;
-  height: 800px;
+  height:600px;
   width: 100%;
 }
 .bg-theme {
@@ -215,7 +215,16 @@
 .animate-spin {
   animation: spin 1s linear infinite;
 }
-
+.env_back{
+  top:-170px;
+  left:0;
+  z-index: -20;
+}
+.env_paper{
+    top:-100px;
+  left:0;
+  z-index: -10;
+}
 @keyframes spin {
   to {
     transform: rotate(360deg);

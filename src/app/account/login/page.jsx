@@ -1,10 +1,13 @@
 "use client";
 import Giftcanvas from "@/app/admin/components/Giftcanvas";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import {  useState } from "react";
+import { useState } from "react";
 
 const LoginPage = () => {
-  
+
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -12,13 +15,12 @@ const LoginPage = () => {
     password: "",
   });
 
-
   return (
     <div className="bg-[#2b261e] overflow-hidden relative h-screen flex flex-col items-center justify-center">
-       <Giftcanvas/>
+      <Giftcanvas />
 
-      <div className="relative z-10 max-w-lg w-full p-8 rounded-xl border border-neutral-800 bg-gradient-to-b from-[#433b2d]/80 to-[#272218]/80 backdrop-blur-md shadow-xl">
-        <h1 className="text-2xl font-bold text-white mb-2">
+      <div className="relative z-10 max-w-sm sm:max-w-lg w-full p-8 rounded-xl border border-neutral-800 bg-gradient-to-b from-[#433b2d]/80 to-[#272218]/80 backdrop-blur-md shadow-xl">
+        <h1 className="text-lg sm:text-2xl font-bold text-white mb-2 font-quando">
           Welcome to Gift & Beeyond
         </h1>
         <p className="text-gray-400 mb-6">Login to Gift and beeyond</p>
@@ -36,11 +38,27 @@ const LoginPage = () => {
           </div>
           <div>
             <label className="block text-sm text-gray-300 mb-1">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full px-3 py-2 rounded-md bg-[#2a251c] text-white border border-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' :'password'}
+                placeholder="••••••••"
+                className="w-full px-3 py-2 rounded-md bg-[#2a251c] text-white border border-gray-400 focus:ring-2 focus:ring-yellow-400 outline-none"
+              />
+                <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4 text-amber-100" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-amber-100" />
+                      )}
+                    </Button>
+            </div>
           </div>
 
           <button
@@ -91,9 +109,12 @@ const LoginPage = () => {
       </div>
 
       <div className="mt-5">
-          <Link href={"/account/signup"} className="text-xl text-amber-100 relative z-10">
-             Create Account
-          </Link>
+        <Link
+          href={"/account/signup"}
+          className="text-xl text-amber-100 relative z-10 font-quando"
+        >
+          Create Account
+        </Link>
       </div>
     </div>
   );
