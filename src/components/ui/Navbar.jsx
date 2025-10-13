@@ -20,19 +20,19 @@ const Navbar = () => {
         </div>
       </div>
       <div className="max-w-7xl py-4 mx-auto flex items-center justify-between hidden md:flex space-x-6">
-       <Link href="/" className="text-xl  font-dancing hover:text-slate-600">
+       <Link href="/" className="text-md  font-quando hover:text-slate-600">
             Home
           </Link>
-          <Link href="/about" className="text-xl  font-dancing hover:text-slate-600">
+          <Link href="/about" className="text-md  font-quando hover:text-slate-600">
             About Us
           </Link>
-          <Link href="/contact" className="text-xl  font-dancing hover:text-slate-600">
+          <Link href="/contact" className="text-md  font-quando hover:text-slate-600">
             Categories
           </Link>
-          <Link href="/cart" className="text-xl  font-dancing hover:text-slate-600">
+          <Link href="/cart" className="text-md  font-quando hover:text-slate-600">
             Blogs
           </Link>
-          <Link href="/cart" className="text-xl  font-dancing hover:text-slate-600">
+          <Link href="/cart" className="text-md  font-quando hover:text-slate-600">
              Contact Us
           </Link>
       </div>

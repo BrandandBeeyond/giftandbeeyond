@@ -1,3 +1,4 @@
+import Envelop from "@/components/ui/Envelop";
 import Navbar from "@/components/ui/Navbar";
 
 import Link from "next/link";
@@ -45,11 +46,7 @@ const Home = () => {
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 mt-72">
-            <div className="enev relative">
-              <img src="images/envelop_front.svg" className="" alt="" />
-              <img src="images/envelop_back.svg" className="env_back absolute" alt="" />
-              <img src="images/piece_of_paper.svg" className="env_paper absolute" alt="" />
-            </div>
+             <Envelop/>
             <div className="enev relative">
               <img src="images/envelop_front.svg" className="" alt="" />
               <img src="images/envelop_back.svg" className="env_back absolute" alt="" />
