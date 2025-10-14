@@ -3,17 +3,24 @@
 import Giftcanvas from "@/app/admin/components/Giftcanvas";
 import { Button } from "@/components/ui/button";
 import { registerUser, verifyOtp } from "@/redux/actions/UserAction";
-import { USER_REGISTER_SUCCESS } from "@/redux/constants/UserConstant";
+import {
+  USER_REGISTER_SUCCESS,
+  USER_VERIFY_OTP_SUCCESS,
+} from "@/redux/constants/UserConstant";
 import { Eye, EyeOff, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
-  const { users, loading } = useSelector((state) => state.users);
+  const router = useRouter();
+  const { loading, otpLoading } = useSelector((state) => state.users);
   const [showPassword, setShowPassword] = useState(false);
   const [showotpModal, setShowotpModal] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
   const [formData, setFormData] = useState({
@@ -23,15 +30,37 @@ const RegisterPage = () => {
     password: "",
   });
 
+  const resetRegisterForm = () => {
+    setFormData({
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+    });
+  };
+
+  const handleOtpBackspace = (e, index) => {
+  if (e.key === "Backspace" && otp[index] === "") {
+    if (index > 0) {
+      const prevInput = document.getElementById(`otp-${index - 1}`);
+      prevInput?.focus();
+      const newOtp = [...otp];
+      newOtp[index - 1] = "";
+      setOtp(newOtp);
+    }
+  }
+};
+
+
   const handleOtpChange = (value, index) => {
     if (/^[0-9]?$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
 
-      // Auto focus next field
-      if (value && index < 5) {
-        document.getElementById(`otp-${index + 1}`).focus();
+      if (value && index < otp.length - 1) {
+        const nextInput = document.getElementById(`otp-${index + 1}`);
+        nextInput?.focus();
       }
     }
   };
@@ -39,11 +68,21 @@ const RegisterPage = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const otpCode = otp.join("");
-    console.log("Entered OTP:", otpCode);
 
-    await dispatch(verifyOtp(formData.email, otpCode));
+    const result = await dispatch(verifyOtp(formData.email, otpCode));
 
-    setShowotpModal(false);
+    if (result?.type === USER_VERIFY_OTP_SUCCESS) {
+      toast("OTP verified! Your email has been verified successfully!");
+
+      setShowotpModal(false);
+      setShowLoader(true);
+      resetRegisterForm();
+
+      setTimeout(() => {
+        setShowLoader(false);
+        router.push("/");
+      }, 1500);
+    }
   };
 
   const handleSubmitRegister = async (e) => {
@@ -57,10 +96,6 @@ const RegisterPage = () => {
       registerData.append("password", formData.password);
 
       const result = await dispatch(registerUser(registerData));
-
-      console.log("the result is",result);
-      console.log("the result type is",result.type);
-      
 
       if (result?.type === USER_REGISTER_SUCCESS) {
         setShowotpModal(true);
@@ -223,7 +258,7 @@ const RegisterPage = () => {
         </div>
         {showotpModal && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-            <div className="bg-[#2b261e] rounded-2xl p-6 w-[90%] max-w-md border border-yellow-600 relative">
+            <div className="bg-[#2b261e] rounded-2xl p-6 w-[90%] max-w-md border border-yellow-600 relative transform-scale-0 animate-zoomIn">
               <button
                 onClick={() => setShowotpModal(false)}
                 className="absolute right-3 top-3 text-yellow-400 hover:text-yellow-200"
@@ -249,6 +284,7 @@ const RegisterPage = () => {
                       maxLength="1"
                       value={digit}
                       onChange={(e) => handleOtpChange(e.target.value, index)}
+                      onKeyDown={(e) => handleOtpBackspace(e, index)}
                       className="w-10 h-12 text-center text-lg font-semibold rounded-md bg-[#3a3225] text-white border border-yellow-600 focus:ring-2 focus:ring-yellow-500 outline-none"
                     />
                   ))}
@@ -256,15 +292,34 @@ const RegisterPage = () => {
 
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-semibold py-2 rounded-md hover:from-yellow-400 hover:to-yellow-500 transition"
+                  className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-semibold cursor-pointer py-2 rounded-md hover:from-yellow-400 hover:to-yellow-500 transition"
                 >
-                  Verify OTP
+                  {otpLoading ? (
+                    <>
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2" />
+                        Please wait...
+                      </div>
+                    </>
+                  ) : (
+                    "Verify OTP"
+                  )}
                 </button>
               </form>
             </div>
           </div>
         )}
       </div>
+      {showLoader && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+          <svg class="loader" viewBox="0 0 100 100">
+            <circle class="circle" cx="50" cy="50" r="10"></circle>
+            <circle class="circle" cx="50" cy="50" r="20"></circle>
+            <circle class="circle" cx="50" cy="50" r="30"></circle>
+            <circle class="circle" cx="50" cy="50" r="40"></circle>
+          </svg>
+        </div>
+      )}
     </>
   );
 };

@@ -23,6 +23,12 @@
   font-weight: bold;
   font-style: normal;
 }
+@font-face {
+  font-family: "bruno";
+  src: url("/fonts/brunoace.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -157,7 +163,7 @@
 .bn_theme {
   background: url("../../public/images/bgtheme.jpg");
   background-size: cover;
-  height:600px;
+  height: 600px;
   width: 100%;
 }
 .bg-theme {
@@ -167,13 +173,13 @@
 }
 .custom-card-bg,
 .custom-table-bg {
-  background-image:url('../../public/images/noise.webp'),
+  background-image: url("../../public/images/noise.webp"),
     radial-gradient(62.9% 100% at 0 0, #e894021a 0, #fff0 100%),
     radial-gradient(62.9% 100% at 100% 100%, #e894021a 0, #fff0 100%),
     linear-gradient(0deg, #1e1b15, #1e1b150d);
 }
 .to-foreground\/40 {
-    --tw-gradient-to: hsl(38 5% 90%/0.4) var(--tw-gradient-to-position);
+  --tw-gradient-to: hsl(38 5% 90%/0.4) var(--tw-gradient-to-position);
 }
 .giftribbon {
   top: -140px;
@@ -192,6 +198,9 @@
 }
 .font-quando {
   font-family: "quando";
+}
+.font-bruno{
+  font-family: "bruno";
 }
 .svggift {
   width: 100%;
@@ -215,14 +224,14 @@
 .animate-spin {
   animation: spin 1s linear infinite;
 }
-.env_back{
-  top:-170px;
-  left:0;
+.env_back {
+  top: -170px;
+  left: 0;
   z-index: -20;
 }
-.env_paper{
-    top:-100px;
-  left:0;
+.env_paper {
+  top: -100px;
+  left: 0;
   z-index: -10;
 }
 
@@ -250,7 +259,7 @@
   top: -80px;
   transform-origin: bottom;
   z-index: 3;
-  transition: all .8s ease;
+  transition: all 0.8s ease;
   transform: rotateX(0deg);
 }
 
@@ -316,7 +325,7 @@
 }
 
 .envelope.fold .top {
-  transition-delay: .6s;
+  transition-delay: 0.6s;
   transform: rotateX(180deg);
   z-index: 6;
 }
@@ -338,6 +347,64 @@
 
 .paper .line.three {
   width: 80%;
+}
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-zoomIn {
+  animation: zoomIn 0.3s ease-out forwards;
+}
+.loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+.circle {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 0, 314;
+  animation: draw 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px currentColor);
+  transform-origin: center;
+}
+.circle:nth-child(1) {
+  stroke: cyan;
+  animation-delay: 0s;
+}
+.circle:nth-child(2) {
+  stroke: magenta;
+  animation-delay: 0.4s;
+}
+.circle:nth-child(3) {
+  stroke: lime;
+  animation-delay: 0.8s;
+}
+.circle:nth-child(4) {
+  stroke: orange;
+  animation-delay: 1.2s;
+}
+@keyframes draw {
+  0% {
+    stroke-dasharray: 0, 314;
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 314, 314;
+    opacity: 0.2;
+    transform: scale(1.2);
+  }
 }
 @keyframes spin {
   to {

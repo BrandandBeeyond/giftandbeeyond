@@ -1,6 +1,6 @@
 import { connectToDB } from "@/lib/db";
 import { getGenerateToken } from "@/lib/jwt";
-import { otpStore } from "@/lib/otpstore";
+import OTP from "@/models/otp.model";
 import User from "@/models/user.model";
 import { NextResponse } from "next/server";
 
@@ -17,16 +17,15 @@ export async function POST(req) {
       );
     }
 
-    const storedOtp = otpStore.get(email);
+    const normalizedEmail = email.toLowerCase().trim();
 
-    if (!storedOtp || storedOtp !== otp) {
-      return NextResponse.json(
-        { message: "Invalid or expired OTP" },
-        { status: 400 }
-      );
+    const storedOtp = await OTP.findOne({ email: normalizedEmail, otp });
+
+    if (!storedOtp) {
+      return NextResponse.json({ message: "Invalid OTP" }, { status: 400 });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -34,11 +33,12 @@ export async function POST(req) {
 
     user.isVerified = true;
     await user.save();
-    otpStore.delete(email);
+
+    await storedOtp.deleteOne();
 
     const token = getGenerateToken(user);
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         message: "OTP verified successfully",
         user: {
@@ -46,11 +46,24 @@ export async function POST(req) {
           firstname: user.firstname,
           lastname: user.lastname,
           email: user.email,
+          isVerified: user.isVerified,
         },
         token,
       },
       { status: 200 }
     );
+
+    response.cookies.set({
+      name: "token",
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("❌ OTP Verification Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

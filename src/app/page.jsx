@@ -46,21 +46,49 @@ const Home = () => {
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 mt-72">
-             <Envelop/>
             <div className="enev relative">
               <img src="images/envelop_front.svg" className="" alt="" />
-              <img src="images/envelop_back.svg" className="env_back absolute" alt="" />
-              <img src="images/piece_of_paper.svg" className="env_paper absolute" alt="" />
+              <img
+                src="images/envelop_back.svg"
+                className="env_back absolute"
+                alt=""
+              />
+              <img
+                src="images/piece_of_paper.svg"
+                className="env_paper absolute"
+                alt=""
+              />
             </div>
             <div className="enev relative">
               <img src="images/envelop_front.svg" className="" alt="" />
-              <img src="images/envelop_back.svg" className="env_back absolute" alt="" />
-              <img src="images/piece_of_paper.svg" className="env_paper absolute" alt="" />
+              <img
+                src="images/envelop_back.svg"
+                className="env_back absolute"
+                alt=""
+              />
+              <img
+                src="images/piece_of_paper.svg"
+                className="env_paper absolute"
+                alt=""
+              />
+            </div>
+            <div className="enev relative">
+              <img src="images/envelop_front.svg" className="" alt="" />
+              <img
+                src="images/envelop_back.svg"
+                className="env_back absolute"
+                alt=""
+              />
+              <img
+                src="images/piece_of_paper.svg"
+                className="env_paper absolute"
+                alt=""
+              />
             </div>
           </div>
         </div>
       </section>
-      <section className="my-32">
+      <section className="py-32">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-6xl foglithen-font text-shadow-black">
             Our Products
@@ -78,6 +106,10 @@ const Home = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="py-32">
+        <div className="max-w-7.5xl mx-auto text-center py-5 border border-amber-800"></div>
       </section>
     </>
   );
