@@ -3,13 +3,17 @@ import Giftcanvas from "@/app/admin/components/Giftcanvas";
 import { Button } from "@/components/ui/button";
 import { loginUser } from "@/redux/actions/UserAction";
 import { USER_LOGIN_SUCCESS } from "@/redux/constants/UserConstant";
+import Lottie from "lottie-react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Teddyani from '../../../animations/cute_teddy.json';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { loading } = useSelector((state) => state.users);
   const [showLoader, setShowLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -29,8 +33,8 @@ const LoginPage = () => {
         setShowLoader(true);
         setTimeout(() => {
           setShowLoader(false);
-          window.location.href = "/";
-        }, 1500);
+          router.push("/");
+        }, 3500);
       }
     } catch (error) {
       console.error("Login Error:", error);
@@ -159,13 +163,8 @@ const LoginPage = () => {
         </div>
       </div>
       {showLoader && (
-        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
-          <svg class="loader" viewBox="0 0 100 100">
-            <circle class="circle" cx="50" cy="50" r="10"></circle>
-            <circle class="circle" cx="50" cy="50" r="20"></circle>
-            <circle class="circle" cx="50" cy="50" r="30"></circle>
-            <circle class="circle" cx="50" cy="50" r="40"></circle>
-          </svg>
+        <div className="fixed inset-0 bg-[rgba(0,0,0,0.9)]/70 z-50 flex items-center justify-center">
+            <Lottie animationData={Teddyani} loop={true} className="h-64"/>
         </div>
       )}
     </>

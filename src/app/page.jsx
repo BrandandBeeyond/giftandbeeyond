@@ -39,7 +39,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="py-32  seaosonal relative">
+      <section className="py-20  seaosonal relative">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-6xl foglithen-font text-shadow-black">
             Festive Special
@@ -88,7 +88,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="py-32">
+      <section className="py-20">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-6xl foglithen-font text-shadow-black">
             Our Products
@@ -108,8 +108,10 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-32">
-        <div className="max-w-7.5xl mx-auto text-center py-5 border border-amber-800"></div>
+      <section className="py-20 midgifting relative">
+        <div className="max-w-8xl mx-auto text-center py-5 border border-red-300 px-4">
+           
+        </div>
       </section>
     </>
   );

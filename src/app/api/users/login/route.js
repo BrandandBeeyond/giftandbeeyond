@@ -27,10 +27,22 @@ export async function POST(req) {
 
     const token = getGenerateToken(user);
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { message: "Login successful", token, user },
       { status: 200 }
     );
+
+    response.cookies.set({
+      name: "token",
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("❌ Login Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

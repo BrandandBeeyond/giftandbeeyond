@@ -12,8 +12,6 @@ import {
   USER_VERIFY_OTP_SUCCESS,
 } from "../constants/UserConstant";
 
-
-
 export const registerUser = (userData) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
@@ -41,9 +39,6 @@ export const registerUser = (userData) => async (dispatch) => {
   }
 };
 
-
-
-
 export const verifyOtp = (email, otp) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_OTP_REQUEST });
@@ -65,7 +60,6 @@ export const verifyOtp = (email, otp) => async (dispatch) => {
   }
 };
 
-
 export const loginUser = (userData) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
@@ -77,8 +71,13 @@ export const loginUser = (userData) => async (dispatch) => {
       withCredentials: true,
     });
 
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    return { type: USER_LOGIN_SUCCESS, payload: data };
+    console.log("Login response data:", data);
+
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data.user });
+
+    localStorage.setItem("user", JSON.stringify(data.user));
+    return { type: USER_LOGIN_SUCCESS, payload: data.user };
+    // return data.user;
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAILURE,
@@ -92,9 +91,7 @@ export const loginUser = (userData) => async (dispatch) => {
   }
 };
 
-
-
-
 export const logoutUser = () => (dispatch) => {
+  localStorage.removeItem("user");
   dispatch({ type: USER_LOGOUT });
 };
