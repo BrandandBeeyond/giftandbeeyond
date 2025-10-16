@@ -25,7 +25,7 @@
 }
 @font-face {
   font-family: "bruno";
-  src: url("/fonts/brunoace.ttf") format("truetype");
+  src: url("/fonts/BrunoAceSC.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
@@ -237,7 +237,7 @@ body {
   left: 0;
   z-index: -10;
 }
-.btnauth{
+.btnauth {
   border: 1px solid #d9d0c9;
   padding: 6px 10px;
   border-radius: 5px;
@@ -247,121 +247,9 @@ body {
   transition: all 0.3s ease;
 }
 .btnauth:hover {
-  border:1px solid #1e1b15;
-}
-.envelope {
-  width: 220px;
-  margin: 150px auto;
-  height: 120px;
-  position: relative;
-  background: #ad6605;
-  cursor: pointer;
-  box-shadow: 0px 4px 6px -3px #989898;
+  border: 1px solid #1e1b15;
 }
 
-.top,
-.bottom {
-  border-left: 110px solid transparent;
-  border-right: 110px solid transparent;
-  width: 0;
-  height: 0;
-  position: relative;
-}
-
-.top {
-  border-bottom: 80px solid #c27914;
-  top: -80px;
-  transform-origin: bottom;
-  z-index: 3;
-  transition: all 0.8s ease;
-  transform: rotateX(0deg);
-}
-
-.bottom {
-  border-bottom: 80px solid #fec04f;
-  top: -40px;
-  z-index: 4;
-}
-
-.left,
-.right {
-  width: 0;
-  height: 0;
-  border-top: 60px solid transparent;
-  border-bottom: 60px solid transparent;
-  top: 0;
-  z-index: 4;
-}
-
-.left {
-  border-left: 110px solid #fe9019;
-  position: absolute;
-  left: 0;
-}
-
-.right {
-  border-right: 110px solid #fe9019;
-  position: absolute;
-  right: 0;
-}
-
-.back {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  transition: all 1s ease;
-  z-index: 3;
-  transition-delay: 0.4s;
-  top: -35%;
-}
-
-.paper {
-  width: 90%;
-  height: 90%;
-  background: #f6f8e7;
-  margin: 6px auto 0;
-  box-shadow: 0px 0px 2px 0px #909090;
-  transition: all 0.5s ease-out;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.envelope.fold .back {
-  z-index: 3;
-  transition-delay: 0.3s;
-  top: 0;
-}
-
-.envelope.fold .top {
-  transition-delay: 0.6s;
-  transform: rotateX(180deg);
-  z-index: 6;
-}
-
-.paper .line {
-  height: 2px;
-  background: #999;
-  width: 10%;
-  margin: 4px 0;
-}
-
-.paper .line.one {
-  width: 50%;
-}
-
-.paper .line.two {
-  width: 30%;
-}
-
-.paper .line.three {
-  width: 80%;
-}
 @keyframes zoomIn {
   0% {
     transform: scale(0);
@@ -375,16 +263,70 @@ body {
 .animate-zoomIn {
   animation: zoomIn 0.3s ease-out forwards;
 }
-.midgifting{
-  background: url('../../public/images/bgtheme.webp');
+.midgifting {
+  background: url("../../public/images/bgtheme.webp");
   background-size: cover;
-  height: 600px;
+  height: 700px;
   width: 100%;
 }
 
-
+.greet_card{
+  background: url('../../public/images/giftcard.webp');
+  height: 360px;
+  background-size: cover;
+}
+.greet_card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(232, 169, 169, 0.3);
+  transition: all 0.3s ease;
+}
+.playfullduck{
+  height: 160px;
+  width: auto;
+  top: 110px;
+  right: 50px;
+  transform: rotate(-30deg);
+  animation: playfullduck 3s ease-in-out infinite;
+}
+.ribbon {
+    top: -30px;
+    left: -36px;
+    height: 220px;
+}
+.cardproduct{
+  background: url('../../public/images/giftcard.webp');
+  height: 300px;
+  background-size: cover;
+}
+.bg-net{
+  position: relative;
+  z-index: 20;
+}
+.bg-net::before{
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 2%;
+  left: 0;
+  top: 250px;
+  background: url('../../public/images/bgnet.jpg');
+  background-size: cover;
+  z-index: -1;
+}
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes playfullduck{
+  0%, 100% {
+    transform: rotate(-30deg);
+  }
+  50% {
+    transform: rotate(20deg);
   }
 }

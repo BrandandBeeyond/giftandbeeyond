@@ -1,5 +1,7 @@
-import Envelop from "@/components/ui/Envelop";
+import Midgiftingsection from "@/components/ui/Midgiftingsection";
 import Navbar from "@/components/ui/Navbar";
+import Products from "@/components/ui/Products";
+import Image from "next/image";
 
 import Link from "next/link";
 
@@ -39,78 +41,86 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="py-20  seaosonal relative">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-6xl foglithen-font text-shadow-black">
-            Festive Special
-          </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 mt-72">
-            <div className="enev relative">
-              <img src="images/envelop_front.svg" className="" alt="" />
-              <img
-                src="images/envelop_back.svg"
-                className="env_back absolute"
-                alt=""
-              />
-              <img
-                src="images/piece_of_paper.svg"
-                className="env_paper absolute"
-                alt=""
-              />
-            </div>
-            <div className="enev relative">
-              <img src="images/envelop_front.svg" className="" alt="" />
-              <img
-                src="images/envelop_back.svg"
-                className="env_back absolute"
-                alt=""
-              />
-              <img
-                src="images/piece_of_paper.svg"
-                className="env_paper absolute"
-                alt=""
-              />
-            </div>
-            <div className="enev relative">
-              <img src="images/envelop_front.svg" className="" alt="" />
-              <img
-                src="images/envelop_back.svg"
-                className="env_back absolute"
-                alt=""
-              />
-              <img
-                src="images/piece_of_paper.svg"
-                className="env_paper absolute"
-                alt=""
-              />
+      <div className="bg-net">
+        <section className="py-20  seaosonal relative">
+          <img
+            src="/images/playfullduck.svg"
+            className="absolute playfullduck"
+            alt=""
+          />
+          <div className="max-w-6xl mx-auto text-center">
+            <h2 className="text-6xl foglithen-font text-[#612c06] text-shadow-black">
+              Festive Special
+            </h2>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 mt-72">
+              <div className="enev relative">
+                <img src="images/envelop_front.svg" className="" alt="" />
+                <img
+                  src="images/envelop_back.svg"
+                  className="env_back absolute"
+                  alt=""
+                />
+                <img
+                  src="images/piece_of_paper.svg"
+                  className="env_paper absolute"
+                  alt=""
+                />
+              </div>
+              <div className="enev relative">
+                <img src="images/envelop_front.svg" className="" alt="" />
+                <img
+                  src="images/envelop_back.svg"
+                  className="env_back absolute"
+                  alt=""
+                />
+                <img
+                  src="images/piece_of_paper.svg"
+                  className="env_paper absolute"
+                  alt=""
+                />
+              </div>
+              <div className="enev relative">
+                <img src="images/envelop_front.svg" className="" alt="" />
+                <img
+                  src="images/envelop_back.svg"
+                  className="env_back absolute"
+                  alt=""
+                />
+                <img
+                  src="images/piece_of_paper.svg"
+                  className="env_paper absolute"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section className="py-20">
+          <Products />
+        </section>
+      </div>
+
+      <section>
+        <Midgiftingsection />
       </section>
+
       <section className="py-20">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-6xl foglithen-font text-shadow-black">
-            Our Products
+          <h2 className="text-6xl foglithen-font text-[#612c06] text-shadow-black">
+            Testimonials
           </h2>
 
-          <div className="grid grid-cols-3 gap-x-15 mt-30">
-            <div>
-              <img src="images/productcard.png" className="" alt="" />
+          <div className="grid grid-cols-2 gap-x-15 mt-30">
+            <div className="greet_card rounded-tl-4xl  shadow-md p-6 text-left flex flex-col justify-end overflow-hidden relative">
+              <img src="/images/giftribbon.png" className="absolute ribbon" />
             </div>
-            <div>
-              <img src="images/productcard.png" className="" alt="" />
-            </div>
-            <div>
-              <img src="images/productcard.png" className="" alt="" />
+            <div className="greet_card rounded-tl-4xl  shadow-md p-6 text-left flex flex-col justify-end overflow-hidden relative">
+              <img src="/images/giftribbon.png" className="absolute ribbon" />
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="py-20 midgifting relative">
-        <div className="max-w-8xl mx-auto text-center py-5 border border-red-300 px-4">
-           
         </div>
       </section>
     </>
