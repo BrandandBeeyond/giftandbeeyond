@@ -295,27 +295,88 @@ body {
     left: -36px;
     height: 220px;
 }
-.cardproduct{
+.procard{
   background: url('../../public/images/giftcard.webp');
   height: 300px;
   background-size: cover;
-}
-.bg-net{
   position: relative;
-  z-index: 20;
+  overflow: hidden;
+  transform: scale(1);
 }
-.bg-net::before{
-  content: "";
-  position: absolute;
-  height: 100%;
+.productinner{
+  height: 300px !important;
   width: 100%;
-  opacity: 2%;
-  left: 0;
-  top: 250px;
-  background: url('../../public/images/bgnet.jpg');
-  background-size: cover;
-  z-index: -1;
+   transition: all 0.4s ease;
 }
+.procard:hover .productinner{
+   transform: scale(1.1);
+}
+
+.btntmp {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 35px;
+  background: #d0ac80;
+  box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+}
+.btnadded{
+  padding: 13px 20px;
+  border-radius: 35px;
+}
+.btntmp:after {
+  content: " ";
+  width: 0%;
+  height: 100%;
+  background: #9c6b2e;
+  position: absolute;
+  transition: all 0.4s ease-in-out;
+  right: 0;
+}
+
+.btntmp:hover::after {
+  right: auto;
+  left: 0;
+  width: 100%;
+}
+
+.btntmp span {
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  padding: 13px 20px;
+  color: #fff;
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  z-index: 20;
+  transition: all 0.3s ease-in-out;
+}
+
+.btntmp:hover span {
+  color: #e9e8dc;
+  animation: scaleUp 0.3s ease-in-out;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

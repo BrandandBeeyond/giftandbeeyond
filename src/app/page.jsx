@@ -42,7 +42,7 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="bg-net">
+   
         <section className="py-20  seaosonal relative">
           <img
             src="/images/playfullduck.svg"
@@ -101,7 +101,7 @@ const Home = () => {
         <section className="py-20">
           <Products />
         </section>
-      </div>
+     
 
       <section>
         <Midgiftingsection />
