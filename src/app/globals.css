@@ -270,19 +270,19 @@ body {
   width: 100%;
 }
 
-.greet_card{
-  background: url('../../public/images/giftcard.webp');
+.greet_card {
+  background: url("../../public/images/giftcard.webp");
   height: 360px;
   background-size: cover;
 }
-.greet_card::before{
+.greet_card::before {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(232, 169, 169, 0.3);
   transition: all 0.3s ease;
 }
-.playfullduck{
+.playfullduck {
   height: 160px;
   width: auto;
   top: 110px;
@@ -291,25 +291,25 @@ body {
   animation: playfullduck 3s ease-in-out infinite;
 }
 .ribbon {
-    top: -30px;
-    left: -36px;
-    height: 220px;
+  top: -30px;
+  left: -36px;
+  height: 220px;
 }
-.procard{
-  background: url('../../public/images/giftcard.webp');
+.procard {
+  background: url("../../public/images/giftcard.webp");
   height: 300px;
   background-size: cover;
   position: relative;
   overflow: hidden;
   transform: scale(1);
 }
-.productinner{
+.productinner {
   height: 300px !important;
   width: 100%;
-   transition: all 0.4s ease;
+  transition: all 0.4s ease;
 }
-.procard:hover .productinner{
-   transform: scale(1.1);
+.procard:hover .productinner {
+  transform: scale(1.1);
 }
 
 .btntmp {
@@ -324,9 +324,12 @@ body {
   cursor: pointer;
   border: none;
 }
-.btnadded{
+.btnadded {
   padding: 13px 20px;
-  border-radius: 35px;
+  border: 1px solid #9c6b2e;
+  border-radius: 35px !important;
+   height: 50px;
+  width: 205px;
 }
 .btntmp:after {
   content: " ";
@@ -351,6 +354,8 @@ body {
   padding: 13px 20px;
   color: #fff;
   font-size: 1em;
+  height: 50px;
+  width: 205px;
   font-weight: 700;
   letter-spacing: 0.2em;
   z-index: 20;
@@ -376,15 +381,15 @@ body {
   }
 }
 
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes playfullduck{
-  0%, 100% {
+@keyframes playfullduck {
+  0%,
+  100% {
     transform: rotate(-30deg);
   }
   50% {
