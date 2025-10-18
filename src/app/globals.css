@@ -325,11 +325,12 @@ body {
   border: none;
 }
 .btnadded {
-  padding: 13px 20px;
+  padding: 10px 12px;
   border: 1px solid #9c6b2e;
-  border-radius: 35px !important;
-   height: 50px;
-  width: 205px;
+  border-radius: 9px !important;
+  height: 28px;
+  width: 100%;
+  max-width: 130px;
 }
 .btntmp:after {
   content: " ";

@@ -7,13 +7,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Buttontmp from "../Buttontmp";
 import { Addtocart } from "@/redux/actions/CartAction";
+import { useRouter } from "next/navigation";
+import CartSidebar from "./CartSidebar";
 
 const Products = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { loading, products } = useSelector((state) => state.products);
   const { cart } = useSelector((state) => state.cart);
-
   const [adding, setAdding] = useState(null);
+ 
 
   useEffect(() => {
     dispatch(fetchColors());
@@ -26,8 +29,11 @@ const Products = () => {
     setTimeout(() => {
       dispatch(Addtocart(product));
       setAdding(null);
+      setAddedId(product._id);
     }, 2000);
   };
+
+ 
 
   return (
     <div className="max-w-7xl mx-auto text-center">
@@ -56,39 +62,25 @@ const Products = () => {
                 <h4 className="text-xl font-bruno text-amber-800">
                   {product.name}
                 </h4>
+
                 {adding === product._id ? (
-                  <Buttontmp text="Adding ..." disabled />
+                  <Buttontmp text="Adding" disabled />
                 ) : isInCart ? (
-                  <div className="flex items-center space-x-4 btnadded">
-                    <button
-                      className="text-[#612c06] text-2xl px-3 py-1  transition"
-                      onClick={() => handleDecrement(product._id)}
-                    >
-                      -
-                    </button>
-                    <span className="text-lg font-semibold">
-                      {isInCart.quantity}
-                    </span>
-                    <button
-                      className="bg-[#612c06] text-white px-3 py-1 rounded-md hover:bg-[#7a3a10] transition"
-                      onClick={() => handleIncrement(product._id)}
-                    >
-                      +
-                    </button>
-                  </div>
+                  <Buttontmp text="Added !"  />
                 ) : (
                   <Buttontmp
-                    text="Add to Cart"
+                    text="Add to cart"
                     onClick={() => handleAddtoCart(product)}
                   />
                 )}
+                
               </div>
             </div>
           );
         })}
       </div>
 
-      
+
     </div>
   );
 };

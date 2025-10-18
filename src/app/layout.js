@@ -5,6 +5,7 @@ import "./globals.css";
 import ClientProvider from "./ClientProvider";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import CartSidebar from "@/components/ui/CartSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,19 +19,40 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout({ children }) {
   const [mounted, setMounted] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+
+    const openHandler = () => setSidebarOpen(true);
+    const closeHandler = () => setSidebarOpen(false);
+
+    window.addEventListener("open-cart", openHandler);
+    window.addEventListener("close-cart", closeHandler);
+
+    return () => {
+      window.removeEventListener("open-cart", openHandler);
+      window.removeEventListener("close-cart", closeHandler);
+    };
   }, []);
 
   return (
     <html lang="en">
       <body className="antialiased">
         <ClientProvider>
-          <main className={mounted ? `${geistSans.variable} ${geistMono.variable}` : ""}>
+          <main
+            className={
+              mounted ? `${geistSans.variable} ${geistMono.variable}` : ""
+            }
+          >
             {children}
-            <Toaster/>
+            <Toaster />
           </main>
+
+          <CartSidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
         </ClientProvider>
       </body>
     </html>

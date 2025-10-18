@@ -52,7 +52,10 @@ const Navbar = () => {
               <Heart className="text-sm h-5 w-5" />
             </div>
           </Link>
-          <Link href={"/"}>
+          <Link href="#" onClick={(e)=>{
+             e.preventDefault();
+            window.dispatchEvent(new CustomEvent("open-cart"))
+          }}>
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
               <ShoppingBagIcon className="text-sm h-5 w-5" />
             </div>
