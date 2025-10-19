@@ -2,15 +2,23 @@
 import {
   DECREMENT_QUANTITY,
   INCREMENT_QUANTITY,
+  REMOVE_FROM_CART,
 } from "@/redux/constants/CartConstant";
 import { motion, AnimatePresence } from "framer-motion";
-import { IndianRupee, Minus, Plus, X } from "lucide-react";
+import { IndianRupee, Minus, Plus, Trash, X } from "lucide-react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
+import { Button } from "./button";
 
 export default function CartSidebar({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+
+  const cartTotal = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  const totalAmountCart = cartTotal();
 
   const handleIncrement = (id) => {
     dispatch({ type: INCREMENT_QUANTITY, payload: id });
@@ -20,6 +28,9 @@ export default function CartSidebar({ isOpen, onClose }) {
     dispatch({ type: DECREMENT_QUANTITY, payload: id });
   };
 
+  const handleRemoveFromCart = (id) => {
+    dispatch({ type: REMOVE_FROM_CART, payload: id });
+  };
 
   return (
     <AnimatePresence>
@@ -88,7 +99,7 @@ export default function CartSidebar({ isOpen, onClose }) {
                           </button>{" "}
                           <span className="text-lg text-[#612c06]">
                             {" "}
-                             {item.quantity}
+                            {item.quantity}
                           </span>{" "}
                           <button
                             className="text-[#612c06] text-2xl px-2 rounded-md transition cursor-pointer"
@@ -100,9 +111,17 @@ export default function CartSidebar({ isOpen, onClose }) {
                         </div>
                       </div>
                     </div>
-                    <p className="font-medium text-[#612c06]">
-                      ₹{item.price * item.quantity}
-                    </p>
+                    <div className="flex-col space-y-2 items-end">
+                      <Button
+                        className="rounded-4xl bg-[#fff5e8] hover:bg-[#e7dfd5] p-3"
+                        onClick={() => handleRemoveFromCart(item._id)}
+                      >
+                        <Trash className="h-3 text-[#612c06]" />
+                      </Button>
+                      <p className="font-medium text-[#612c06]">
+                        ₹{item.price * item.quantity}
+                      </p>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -114,9 +133,19 @@ export default function CartSidebar({ isOpen, onClose }) {
 
             {cart.length > 0 && (
               <div className="border-t p-5">
-                <button className="w-full bg-[#612c06] text-white py-2 rounded-lg hover:bg-[#4e2405] transition">
-                  Checkout
-                </button>
+                <div className="mt-3">
+                  <div className="flex flex-row justify-between items-center mb-5">
+                    <span className="font-bruno text-lg text-[#612c06]">
+                      Total:
+                    </span>
+                    <span className="font-bruno text-lg text-[#612c06]">
+                      ₹{totalAmountCart}
+                    </span>
+                  </div>
+                  <button className="w-full bg-[#612c06] text-white py-2 rounded-lg hover:bg-[#4e2405] transition">
+                    Checkout
+                  </button>
+                </div>
               </div>
             )}
           </motion.div>

@@ -16,7 +16,7 @@ const Products = () => {
   const { loading, products } = useSelector((state) => state.products);
   const { cart } = useSelector((state) => state.cart);
   const [adding, setAdding] = useState(null);
- 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchColors());
@@ -29,11 +29,11 @@ const Products = () => {
     setTimeout(() => {
       dispatch(Addtocart(product));
       setAdding(null);
-      setAddedId(product._id);
+      if (cart.length === 1) {
+        setIsSidebarOpen(true);
+      }
     }, 2000);
   };
-
- 
 
   return (
     <div className="max-w-7xl mx-auto text-center">
@@ -66,21 +66,19 @@ const Products = () => {
                 {adding === product._id ? (
                   <Buttontmp text="Adding" disabled />
                 ) : isInCart ? (
-                  <Buttontmp text="Added !"  />
+                  <Buttontmp text="Go to cart" onClick={()=>setIsSidebarOpen(true)}/>
                 ) : (
                   <Buttontmp
                     text="Add to cart"
                     onClick={() => handleAddtoCart(product)}
                   />
                 )}
-                
               </div>
             </div>
           );
         })}
       </div>
-
-
+        <CartSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </div>
   );
 };
