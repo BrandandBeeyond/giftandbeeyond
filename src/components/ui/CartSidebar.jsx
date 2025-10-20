@@ -9,10 +9,14 @@ import { IndianRupee, Minus, Plus, Trash, X } from "lucide-react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "./button";
+import Lottie from "lottie-react";
+import CartEmpty from "../../animations/giftboxempty.json";
+import { useRouter } from "next/navigation";
 
 export default function CartSidebar({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+  const router = useRouter();
 
   const cartTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -60,7 +64,7 @@ export default function CartSidebar({ isOpen, onClose }) {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1  overflow-y-auto p-4 space-y-4">
               {cart.length > 0 ? (
                 cart.map((item) => (
                   <div
@@ -125,9 +129,18 @@ export default function CartSidebar({ isOpen, onClose }) {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-gray-500 mt-10">
-                  Your cart is empty.
-                </p>
+                <div className="flex flex-col justify-center items-center ms-10">
+                  <Lottie
+                    animationData={CartEmpty}
+                    loop={true}
+                    className="h-64"
+                  />
+                  <h3 className="text-2xl font-dancing text-slate-600">
+                    Your cart is Empty
+                  </h3>
+
+                  <button className="mt-5 rounded-0 text-sm px-8 py-3 cursor-pointer border border-slate-300 hover:border-amber-800 font-bruno transition-all" onClick={()=>router.push('/products')}>Continue Shopping</button>
+                </div>
               )}
             </div>
 

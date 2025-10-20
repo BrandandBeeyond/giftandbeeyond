@@ -1,14 +1,19 @@
 import {
   ADD_TO_CART,
+  ADD_TO_WISHLIST,
   CART_LOADING,
   CLEAR_CART,
   DECREMENT_QUANTITY,
   INCREMENT_QUANTITY,
   REMOVE_FROM_CART,
+  REMOVE_FROM_WISHLIST,
+  WISHLIST_ERROR,
+  WISHLIST_LOADING,
 } from "../constants/CartConstant";
 
 const initialState = {
   cart: [],
+  wishlist: [],
   loading: false,
   error: null,
 };
@@ -82,5 +87,42 @@ export const CartReducer = (state = initialState, action) => {
 
     default:
       return state;
+  }
+};
+
+export const WishlistReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case WISHLIST_LOADING:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case ADD_TO_WISHLIST:
+      const exists = state.wishlist.some(
+        (item) => item._id === action.payload._id
+      );
+
+      if (exists) return state;
+
+      return {
+        ...state,
+        loading: false,
+        wishlist: [...state.wishlist, action.payload],
+      };
+
+    case REMOVE_FROM_WISHLIST:
+      return {
+        ...state,
+        wishlist: state.wishlist.filter((item) => item._id !== action.payload),
+      };
+
+    case WISHLIST_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
   }
 };

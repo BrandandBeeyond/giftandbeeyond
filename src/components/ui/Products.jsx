@@ -29,7 +29,7 @@ const Products = () => {
     setTimeout(() => {
       dispatch(Addtocart(product));
       setAdding(null);
-      if (cart.length === 1) {
+      if (cart.length === 0) {
         setIsSidebarOpen(true);
       }
     }, 2000);

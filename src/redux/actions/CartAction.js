@@ -26,3 +26,5 @@ export const Addtocart = (product) => async (dispatch, getState) => {
     dispatch({ type: CART_ERROR });
   }
 };
+
+
