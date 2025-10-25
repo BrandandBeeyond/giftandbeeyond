@@ -6,6 +6,7 @@ import ClientProvider from "./ClientProvider";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import CartSidebar from "@/components/ui/CartSidebar";
+import { LoaderProvider } from "@/context/LoaderContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,19 +41,21 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="antialiased">
         <ClientProvider>
-          <main
-            className={
-              mounted ? `${geistSans.variable} ${geistMono.variable}` : ""
-            }
-          >
-            {children}
-            <Toaster />
-          </main>
+          <LoaderProvider>
+            <main
+              className={
+                mounted ? `${geistSans.variable} ${geistMono.variable}` : ""
+              }
+            >
+              {children}
+              <Toaster />
+            </main>
 
-          <CartSidebar
-            isOpen={sidebarOpen}
-            onClose={() => setSidebarOpen(false)}
-          />
+            <CartSidebar
+              isOpen={sidebarOpen}
+              onClose={() => setSidebarOpen(false)}
+            />
+          </LoaderProvider>
         </ClientProvider>
       </body>
     </html>

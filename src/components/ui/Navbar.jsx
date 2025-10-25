@@ -23,16 +23,29 @@ import {
 } from "./dropdown-menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/actions/UserAction";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.users);
-
-  console.log("the user is", user);
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
   };
+
+  const isCheckoutflow =
+    pathname.includes("/checkout") ||
+    pathname.includes("/cart") ||
+    pathname.includes("/payment") ||
+    pathname.includes("/success");
+
+  const steps = [
+    { label: "Cart", path: "/cart" },
+    { label: "Shipping Info", path: "/checkout" },
+    { label: "Payment", path: "/payment" },
+    { label: "Success", path: "/success" },
+  ];
 
   return (
     <nav className="text-gray-950 px-2 py-3  navbar relative">
@@ -52,10 +65,13 @@ const Navbar = () => {
               <Heart className="text-sm h-5 w-5" />
             </div>
           </Link>
-          <Link href="#" onClick={(e)=>{
-             e.preventDefault();
-            window.dispatchEvent(new CustomEvent("open-cart"))
-          }}>
+          <Link
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.dispatchEvent(new CustomEvent("open-cart"));
+            }}
+          >
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
               <ShoppingBagIcon className="text-sm h-5 w-5" />
             </div>
