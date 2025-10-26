@@ -24,6 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/actions/UserAction";
 import { usePathname } from "next/navigation";
+import Stepprogess from "../Stepprogess";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -36,16 +37,8 @@ const Navbar = () => {
 
   const isCheckoutflow =
     pathname.includes("/checkout") ||
-    pathname.includes("/cart") ||
-    pathname.includes("/payment") ||
-    pathname.includes("/success");
-
-  const steps = [
-    { label: "Cart", path: "/cart" },
-    { label: "Shipping Info", path: "/checkout" },
-    { label: "Payment", path: "/payment" },
-    { label: "Success", path: "/success" },
-  ];
+    pathname.includes("/checkout/addresses") ||
+    pathname.includes("/checkout/payment");
 
   return (
     <nav className="text-gray-950 px-2 py-3  navbar relative">
@@ -139,37 +132,46 @@ const Navbar = () => {
           </DropdownMenu>
         </div>
       </div>
-      <div className="max-w-7xl py-4 mx-auto flex items-center justify-between hidden md:flex space-x-6">
-        <Link
-          href="/"
-          className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
-        >
-          Home
-        </Link>
-        <Link
-          href="/about"
-          className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
-        >
-          About Us
-        </Link>
-        <Link
-          href="/contact"
-          className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
-        >
-          Categories
-        </Link>
-        <Link
-          href="/cart"
-          className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
-        >
-          Blogs
-        </Link>
-        <Link
-          href="/cart"
-          className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
-        >
-          Contact Us
-        </Link>
+      <div className={`max-w-7xl py-4 mx-auto flex items-center justify-between hidden md:flex space-x-6 `}>
+        {isCheckoutflow ? (
+          <>
+            <Stepprogess/>
+          </>
+        ) : (
+          <>
+            {" "}
+            <Link
+              href="/"
+              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+            >
+              About Us
+            </Link>
+            <Link
+              href="/contact"
+              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+            >
+              Categories
+            </Link>
+            <Link
+              href="/cart"
+              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+            >
+              Blogs
+            </Link>
+            <Link
+              href="/cart"
+              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+            >
+              Contact Us
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );
