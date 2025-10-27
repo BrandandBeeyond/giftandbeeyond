@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import CartSidebar from "@/components/ui/CartSidebar";
 import { LoaderProvider } from "@/context/LoaderContext";
+import GlobalLoader from "./loader/GlobalLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
               }
             >
               {children}
+              <GlobalLoader />
               <Toaster />
             </main>
 

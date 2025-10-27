@@ -1,8 +1,6 @@
 import Midgiftingsection from "@/components/ui/Midgiftingsection";
 import Navbar from "@/components/ui/Navbar";
 import Products from "@/components/ui/Products";
-import Image from "next/image";
-
 import Link from "next/link";
 
 const Home = () => {
@@ -13,7 +11,7 @@ const Home = () => {
         <div className="max-w-6xl mx-auto text-center">
           <div className="grid grid-cols-2 gap-x-15 pt-32">
             <div className="text-left flex flex-col justify-center">
-              <h1 className="text-6xl foglithen-font text-[#612c06] text-shadow-black">
+              <h1 className="text-6xl foglithen-font text-[#B34700] text-shadow-black">
                 Gift & Beeyond
               </h1>
               <p className="mt-6 text-lg text-shadow-black">
@@ -43,57 +41,27 @@ const Home = () => {
       </section>
 
    
-        <section className="py-20  seaosonal relative">
+        <section className="py-10  seaosonal relative">
           <img
             src="/images/playfullduck.svg"
             className="absolute playfullduck"
             alt=""
           />
           <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-6xl foglithen-font text-[#612c06] text-shadow-black">
+            <h2 className="text-6xl foglithen-font text-[#B34700] text-shadow-black">
               Festive Special
             </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 mt-72">
-              <div className="enev relative">
-                <img src="images/envelop_front.svg" className="" alt="" />
-                <img
-                  src="images/envelop_back.svg"
-                  className="env_back absolute"
-                  alt=""
-                />
-                <img
-                  src="images/piece_of_paper.svg"
-                  className="env_paper absolute"
-                  alt=""
-                />
-              </div>
-              <div className="enev relative">
-                <img src="images/envelop_front.svg" className="" alt="" />
-                <img
-                  src="images/envelop_back.svg"
-                  className="env_back absolute"
-                  alt=""
-                />
-                <img
-                  src="images/piece_of_paper.svg"
-                  className="env_paper absolute"
-                  alt=""
-                />
-              </div>
-              <div className="enev relative">
-                <img src="images/envelop_front.svg" className="" alt="" />
-                <img
-                  src="images/envelop_back.svg"
-                  className="env_back absolute"
-                  alt=""
-                />
-                <img
-                  src="images/piece_of_paper.svg"
-                  className="env_paper absolute"
-                  alt=""
-                />
-              </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-20 mt-30">
+                <div className="relative">
+                    <img src="/images/festivespeacial.png"  className="max-h-96" fill alt=""/>
+                </div>
+                <div className="relative">
+                    <img src="/images/festivespeacial.png"  className="max-h-96" fill alt=""/>
+                </div>
+                <div className="relative">
+                    <img src="/images/festivespeacial.png"  className="max-h-96" fill alt=""/>
+                </div>
             </div>
           </div>
         </section>
@@ -109,7 +77,7 @@ const Home = () => {
 
       <section className="py-20">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-6xl foglithen-font text-[#612c06] text-shadow-black">
+          <h2 className="text-6xl foglithen-font text-[#B34700] text-shadow-black">
             Testimonials
           </h2>
 

@@ -50,12 +50,12 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-8 user-links items-center">
           <Link href={"/account/login"}>
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-              <Search className="text-sm h-5 w-5" />
+              <Search className="text-sm text-[#B34700] h-5 w-5" />
             </div>
           </Link>
           <Link href={"/account/login"}>
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-              <Heart className="text-sm h-5 w-5" />
+              <Heart className="text-sm text-[#B34700]  h-5 w-5" />
             </div>
           </Link>
           <Link
@@ -66,13 +66,13 @@ const Navbar = () => {
             }}
           >
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-              <ShoppingBagIcon className="text-sm h-5 w-5" />
+              <ShoppingBagIcon className="text-sm text-[#B34700]  h-5 w-5" />
             </div>
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-                <UserRound className="text-sm h-5 w-5" />
+                <UserRound className="text-sm text-[#B34700]  h-5 w-5" />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -142,31 +142,31 @@ const Navbar = () => {
             {" "}
             <Link
               href="/"
-              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
             >
               About Us
             </Link>
             <Link
               href="/contact"
-              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
             >
               Categories
             </Link>
             <Link
               href="/cart"
-              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
             >
               Blogs
             </Link>
             <Link
               href="/cart"
-              className="text-sm text-[#612c06] tracking-wider  font-bruno hover:text-slate-600"
+              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
             >
               Contact Us
             </Link>

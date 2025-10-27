@@ -162,7 +162,7 @@ const LoginPage = () => {
           </Link>
         </div>
       </div>
-      {showLoader && <Splashscreen />}
+     
     </>
   );
 };

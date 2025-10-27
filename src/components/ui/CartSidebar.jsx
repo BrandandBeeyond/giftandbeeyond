@@ -13,14 +13,14 @@ import Lottie from "lottie-react";
 import CartEmpty from "../../animations/giftboxempty.json";
 import { useRouter } from "next/navigation";
 import Buttondice from "./Buttondice";
-import { useLoader } from "@/context/LoaderContext";
+import { useButtonLoader, useLoader } from "@/context/LoaderContext";
 import Splashscreen from "../Splashscreen";
 import { useState } from "react";
 
 export default function CartSidebar({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const {buttonLoading, setButtonLoading} = useButtonLoader();
   const router = useRouter();
   const { showLoader, setShowLoader } = useLoader();
 
@@ -106,12 +106,12 @@ export default function CartSidebar({ isOpen, onClose }) {
                           />
                         </div>
                         <div className="flex-col space-y-3">
-                          <p className="text-md font-bruno text-[#612c06]">
+                          <p className="text-lg font-della text-[#612c06]">
                             {item.name}
                           </p>
                           <div className="flex flex-row items-center gap-2">
-                            <IndianRupee className="font-bruno h-3" />
-                            <span className="text-xs font-bruno text-gray-800">
+                            <IndianRupee className="font-della h-3" />
+                            <span className="text-sm font-della text-gray-800">
                               {item.price}
                             </span>
                           </div>
@@ -163,7 +163,7 @@ export default function CartSidebar({ isOpen, onClose }) {
                     </h3>
 
                     <button
-                      className="mt-5 rounded-0 text-sm px-8 py-3 cursor-pointer border border-slate-300 hover:border-amber-800 font-bruno transition-all"
+                      className="mt-5 rounded-0 text-sm px-8 py-3 cursor-pointer border border-slate-300 hover:border-amber-800 font-della transition-all"
                       onClick={() => router.push("/products")}
                     >
                       Continue Shopping
@@ -176,10 +176,10 @@ export default function CartSidebar({ isOpen, onClose }) {
                 <div className="border-t p-5 bg-[#fbfbfb]">
                   <div className="mt-3">
                     <div className="flex flex-row justify-between items-center mb-5">
-                      <span className="font-bruno text-lg text-[#612c06]">
-                        Total:
+                      <span className="font-della text-lg text-[#612c06]">
+                       Subtotal:
                       </span>
-                      <span className="font-bruno text-lg text-[#612c06]">
+                      <span className="font-della text-lg text-[#612c06]">
                         ₹{totalAmountCart}
                       </span>
                     </div>
@@ -195,7 +195,7 @@ export default function CartSidebar({ isOpen, onClose }) {
           </>
         )}
       </AnimatePresence>
-      {showLoader && <Splashscreen />}
+    
     </>
   );
 }

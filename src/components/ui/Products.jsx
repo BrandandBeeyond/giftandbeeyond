@@ -37,7 +37,7 @@ const Products = () => {
 
   return (
     <div className="max-w-7xl mx-auto text-center">
-      <h2 className="text-6xl foglithen-font text-[#612c06] text-shadow-black">
+      <h2 className="text-6xl foglithen-font text-[#B34700] text-shadow-black">
         Our Products
       </h2>
 
@@ -59,7 +59,7 @@ const Products = () => {
               </div>
 
               <div className="mt-2 flex flex-col items-center space-y-4">
-                <h4 className="text-xl font-bruno text-amber-800">
+                <h4 className="text-xl font-della text-amber-800">
                   {product.name}
                 </h4>
 
