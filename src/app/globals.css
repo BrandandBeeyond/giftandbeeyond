@@ -211,7 +211,7 @@ body {
 .font-bruno {
   font-family: "bruno";
 }
-.font-della{
+.font-della {
   font-family: "dellarespira";
 }
 .svggift {
@@ -257,6 +257,34 @@ body {
 }
 .btnauth:hover {
   border: 1px solid #1e1b15;
+}
+.border-gradient-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-size: 30% 100%;
+  background: linear-gradient(
+      90deg,
+      #9b7b3103,
+      #bb7f470d 30%,
+      #b47e2759 45%,
+      #784f2059 55%,
+      rgba(54, 30, 5, 0.071) 70%,
+      #4e270b03
+    )
+    no-repeat;
+  animation: slide-animation 3s ease-in infinite;
+}
+
+@keyframes slide-animation {
+  0% {
+    transform: translate(-100%) skew(-30deg);
+  }
+  100% {
+    transform: translate(100%) skew(-30deg);
+  }
 }
 
 @keyframes zoomIn {
@@ -305,16 +333,16 @@ body {
   height: 220px;
 }
 .procard {
-  background: url("../../public/images/giftcard.webp");
-  height: 300px;
-  background-size: cover;
+  background: url("../../public/images/productcard.png")no-repeat;
+  height: 462px;
+  width: 100%;
+  background-size: contain;
   position: relative;
-  overflow: hidden;
-  transform: scale(1);
 }
 .productinner {
-  height: 300px !important;
+  height: 280px !important;
   width: 100%;
+  top:129px !important;
   transition: all 0.4s ease;
 }
 .procard:hover .productinner {
@@ -377,55 +405,54 @@ body {
   animation: scaleUp 0.3s ease-in-out;
 }
 
-
 .scene {
- width: 100%;
- justify-content: center;
- align-items: center;
- display: flex;
- position: relative;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
 }
 
 .cube {
- color: #ccc;
- cursor: pointer;
- transition: all 0.85s cubic-bezier(.17,.67,.14,.93);
- transform-style: preserve-3d;
- transform-origin: 100% 50%;
- width: 100%;
- height: 3.5em;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.85s cubic-bezier(0.17, 0.67, 0.14, 0.93);
+  transform-style: preserve-3d;
+  transform-origin: 100% 50%;
+  width: 100%;
+  height: 3.5em;
 }
 
 .cube:hover {
- transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
 }
 
 .side {
- box-sizing: border-box;
- position: absolute;
- display: inline-block;
- height: 3.5em;
- width: 100%;
- text-align: center;
- text-transform: uppercase;
- font-weight: bold;
- display: flex;
- justify-content: center;
- align-items: center;
+  box-sizing: border-box;
+  position: absolute;
+  display: inline-block;
+  height: 3.5em;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .top {
- background: wheat;
- color: #9b582d;
- transform: rotateX(90deg) translate3d(0, 0, 2em);
- box-shadow: inset 0 0 0 5px #fff;
+  background: wheat;
+  color: #9b582d;
+  transform: rotateX(90deg) translate3d(0, 0, 2em);
+  box-shadow: inset 0 0 0 5px #fff;
 }
 
 .front {
- background: #65381b;
- color: #fff;
- box-shadow: inset 0 0 0 5px #fff;
- transform: translate3d(0, 0, 2em);
+  background: #65381b;
+  color: #fff;
+  box-shadow: inset 0 0 0 5px #fff;
+  transform: translate3d(0, 0, 2em);
 }
 
 @keyframes scaleUp {

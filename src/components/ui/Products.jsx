@@ -36,18 +36,18 @@ const Products = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto text-center">
+    <div className="max-w-7.2xl mx-auto text-center">
       <h2 className="text-6xl foglithen-font text-[#B34700] text-shadow-black">
         Our Products
       </h2>
 
-      <div className="grid grid-cols-3 gap-x-15 mt-30">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-15 mt-20">
         {products?.map((product) => {
           const isInCart = cart.find((item) => item._id === product._id);
           return (
             <div className="flex flex-col justify-center  space-y-3">
               <div
-                className="border border-slate-200 p-5 rounded-lg shadow-md procard w-full bg-no-repeat bg-cover flex items-center justify-center cursor-pointer transition-all"
+                className="procard  flex items-center justify-center cursor-pointer transition-all"
                 key={product._id}
               >
                 <Image

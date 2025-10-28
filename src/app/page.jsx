@@ -22,9 +22,9 @@ const Home = () => {
               <div className="mt-10">
                 <Link
                   href="/products"
-                  className="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition duration-300"
+                  className="transition duration-300"
                 >
-                  Shop Now
+                   <img src="/images/buttonbanner.svg" className="h-25" alt="" />
                 </Link>
               </div>
             </div>
