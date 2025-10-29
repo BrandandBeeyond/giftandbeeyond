@@ -9,8 +9,18 @@ import {
   subCategoryReducer,
 } from "./reducers/CategoryReducer";
 import { UserReducer } from "./reducers/UserReducer";
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import { CartReducer } from "./reducers/CartReducer";
+import { ShippingReducer } from "./reducers/ShippingReducer";
 
 const rootReducer = combineReducers({
   products: ProductReducer,
@@ -19,13 +29,14 @@ const rootReducer = combineReducers({
   categories: CategoryReducer,
   subcategories: subCategoryReducer,
   users: UserReducer,
-  cart:CartReducer,
+  cart: CartReducer,
+  shippingInfo: ShippingReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["users","cart"],
+  whitelist: ["users", "cart"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -35,7 +46,6 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),

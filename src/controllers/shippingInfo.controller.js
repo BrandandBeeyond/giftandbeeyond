@@ -1,14 +1,29 @@
-import { createShippingInfo } from "@/app/api/shippingInfo/route";
-import { NextResponse } from "next/server";
+import { connectToDB } from "@/lib/db";
+import ShippingInfo from "@/models/shippingInfo.model";
 
-export async function POST(req) {
-  try {
-    const data = await req.json();
+export const createShippingInfo = async (data) => {
+  await connectToDB();
 
-    const newShippingInfo = await createShippingInfo(data);
-    return NextResponse.json(newShippingInfo, { status: 201 });
-  } catch (error) {
-    console.error("Error creating shipping info:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
+  const newShippingInfo = new ShippingInfo(data);
+  return await newShippingInfo.save();
+};
+
+export const getShippingInfoByUser = async (userId) => {
+  await connectToDB();
+  return await ShippingInfo.find({ user: userId });
+};
+
+export const updateShippingInfo = async (userId, updatedData) => {
+  await connectToDB();
+
+  return await ShippingInfo.findByIdAndUpdate(
+    { user: userId },
+    { $set: updatedData },
+    { new: true }
+  );
+};
+
+export const deleteShippingInfo = async (userId) => {
+  await connectToDB();
+  return await ShippingInfo.findOneAndDelete({ user: userId });
+};

@@ -6,6 +6,7 @@ const LoaderContext = createContext();
 const ButtonLoaderContext = createContext();
 
 export const LoaderProvider = ({ children }) => {
+  
   const [showLoader, setShowLoader] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
 

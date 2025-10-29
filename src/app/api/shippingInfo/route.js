@@ -1,14 +1,34 @@
-import { connectToDB } from "@/lib/db";
-import ShippingInfo from "@/models/shippingInfo.model";
+import {
+  createShippingInfo,
+  getShippingInfoByUser,
+} from "@/controllers/shippingInfo.controller";
+import { NextResponse } from "next/server";
 
-export const createShippingInfo = async (data) => {
-  await connectToDB();
-  const newShippingInfo = new ShippingInfo(data);
+export async function POST(req) {
+  try {
+    const data = await req.json();
 
-  return await newShippingInfo.save();
-};
+    
 
-export const getShippingInfoByUser = async (userId) => {
-  await connectToDB();
-  return await ShippingInfo.find({ user: userId });
-};
+    const newShippingInfo = await createShippingInfo(data);
+    return NextResponse.json(newShippingInfo, { status: 201 });
+
+    
+  } catch (error) {
+    console.error("Error creating shipping info:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    const shipping = await getShippingInfoByUser(userId);
+    return NextResponse.json(shipping, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching shipping info:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
