@@ -26,13 +26,25 @@ export const ShippingReducer = (state = initialState, action) => {
       };
 
     case CREATE_SHIPPING_INFO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        shippingInfo: {
+          ...state.shippingInfo,
+          ...action.payload,
+          addresses: action.payload.addresses || state.shippingInfo.addresses,
+        },
+      };
     case GET_SHIPPING_INFO_SUCCESS:
       return {
         ...state,
         loading: false,
-        shippingInfo: action.payload,
+        shippingInfo: {
+          ...state.shippingInfo,
+          ...action.payload,
+          addresses: action.payload.addresses || [],
+        },
       };
-
     case CREATE_SHIPPING_INFO_FAILURE:
     case GET_SHIPPING_INFO_FAILURE:
       return {

@@ -5,22 +5,29 @@ import { Button } from "./button";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 import { Label } from "./label";
 
-const AddressList = ({ addresses = [], setShowForm }) => {
-  const [selectedAddress, setSelectedAddress] = useState(
-    addresses[0]?._id || ""
-  );
+const AddressList = ({ addresses = [], setShowForm, onSelectAddress }) => {
+  const [selectedAddress, setSelectedAddress] = useState("");
 
+  useEffect(() => {
+    if (addresses.length > 0 && !selectedAddress) {
+      setSelectedAddress(addresses[0]._id);
+    }
+  }, [addresses]);
 
+  const handleUseAddress = () => {
+    const addr = addresses.find((a) => a._id === selectedAddress);
+    onSelectAddress(addr);
+  };
 
   return (
     <div className="">
-      <h3 className="text-lg font-della font-semibold mb-4">
+      <h3 className="text-md font-della font-semibold mb-4">
         Select Delivery Address
       </h3>
       <RadioGroup
         value={selectedAddress}
         onValueChange={(value) => setSelectedAddress(value)}
-        className="space-y-3"
+        className="space-y-3 cursor-pointer"
       >
         {addresses.map((addr) => (
           <div
@@ -44,7 +51,18 @@ const AddressList = ({ addresses = [], setShowForm }) => {
         ))}
       </RadioGroup>
 
-      <div className="mt-6">
+      <div className="mt-6 flex items-center gap-x-4">
+        <Button
+          disabled={!selectedAddress}
+          onClick={handleUseAddress}
+          className={`rounded-4xl py-3 px-6 font-della ${
+            selectedAddress
+              ? "bg-[#612c06] text-white hover:bg-[#4f2204]"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
+        >
+          Deliver This Address
+        </Button>
         <Button
           onClick={() => setShowForm(true)}
           className="rounded-4xl py-3 px-6 font-della border border-[#612c06]"

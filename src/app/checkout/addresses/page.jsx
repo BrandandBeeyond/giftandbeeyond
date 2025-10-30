@@ -4,19 +4,30 @@ import AddressList from "@/components/ui/AddressList";
 import Buttondice from "@/components/ui/Buttondice";
 import Navbar from "@/components/ui/Navbar";
 import ShippingForm from "@/components/ui/ShippingForm";
-import { useButtonLoader } from "@/context/LoaderContext";
+import { useButtonLoader, useLoader } from "@/context/LoaderContext";
+import { getShippingInfo } from "@/redux/actions/ShippingAction";
 import { IndianRupee } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ShippingInfo = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { user } = useSelector((state) => state.users);
   const { cart } = useSelector((state) => state.cart);
   const { shippingInfo } = useSelector((state) => state.shippingInfo);
-  const { buttonLoading } = useButtonLoader();
-  const [showForm, setShowForm] = useState(shippingInfo?.addresses?.length);
+  const { setShowLoader } = useLoader();
+  const { buttonLoading, setButtonLoading } = useButtonLoader();
+  const [confirmedAddress, setConfirmedAddress] = useState(null);
 
+  const [showForm, setShowForm] = useState(
+    !shippingInfo?.addresses || shippingInfo.addresses.length === 0
+  );
+
+  console.log("shippingInfo from Redux:", shippingInfo);
+  console.log("addresses:", shippingInfo?.addresses);
   useEffect(() => {
     if (shippingInfo?.addresses?.length) {
       setShowForm(false);
@@ -24,6 +35,26 @@ const ShippingInfo = () => {
       setShowForm(true);
     }
   }, [shippingInfo]);
+
+  useEffect(() => {
+    if (user._id) {
+      dispatch(getShippingInfo(user._id));
+    }
+  }, [user]);
+
+  const handleNavigateNextToPayment = () => {
+    setTimeout(() => {
+      setButtonLoading(true);
+    }, 2000);
+
+    setShowLoader(true);
+    setTimeout(() => {
+      setButtonLoading(false);
+      setShowLoader(false);
+
+      router.push("/checkout/payment");
+    }, 3000);
+  };
 
   return (
     <>
@@ -34,14 +65,15 @@ const ShippingInfo = () => {
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-8">
-          <div className="bg-white p-10 rounded-xl">
+          <div className="bg-white p-10 rounded-xl min-h-80">
             {showForm ? (
-              <ShippingForm user={user} />
+              <ShippingForm user={user} setShowForm={setShowForm} />
             ) : (
               <AddressList
                 user={user}
                 addresses={shippingInfo?.addresses || []}
                 setShowForm={setShowForm}
+                onSelectAddress={(addr) => setConfirmedAddress(addr)}
               />
             )}
           </div>
@@ -124,10 +156,39 @@ const ShippingInfo = () => {
               </div>
 
               <div className="mt-6">
+                {confirmedAddress && (
+                  <div className="bg-[#f9f6f4] border border-[#612c06] rounded-xl p-4 mb-4">
+                    <h4 className="font-della font-bold text-[#612c06] mb-2 text-[17px]">
+                      Delivering To:
+                    </h4>
+
+                    <p className="font-della text-sm text-gray-800">
+                      {confirmedAddress.name}
+                    </p>
+
+                    <p className="font-della text-sm text-gray-800">
+                      {confirmedAddress.address}, {confirmedAddress.landmark}
+                    </p>
+
+                    <p className="font-della text-sm text-gray-800">
+                      {confirmedAddress.city}, {confirmedAddress.state} -{" "}
+                      {confirmedAddress.pincode}
+                    </p>
+
+                    <p className="font-della text-sm text-gray-800">
+                      Phone: {confirmedAddress.phone}
+                    </p>
+                  </div>
+                )}
                 <Buttondice
                   text="Continue"
                   loading={buttonLoading}
-                ></Buttondice>
+                  disabled={!confirmedAddress}
+                  onClick={handleNavigateNextToPayment}
+                  className={`${
+                    !confirmedAddress ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                />
               </div>
             </div>
           </div>

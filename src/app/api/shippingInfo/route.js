@@ -8,8 +8,7 @@ export async function POST(req) {
   try {
     const data = await req.json();
 
-    
-
+  
     const newShippingInfo = await createShippingInfo(data);
     return NextResponse.json(newShippingInfo, { status: 201 });
 

@@ -8,7 +8,7 @@ import axios from "axios";
 import { addShippingInfo } from "@/redux/actions/ShippingAction";
 import { toast } from "sonner";
 
-const ShippingForm = ({ user }) => {
+const ShippingForm = ({ user, setShowForm }) => {
   const { loading, shippingInfo } = useSelector((state) => state.shippingInfo);
   const disptach = useDispatch();
 
@@ -25,7 +25,6 @@ const ShippingForm = ({ user }) => {
     state: "",
   });
 
-  
   const handleOnPincodeChange = (e) => {
     const { name, value } = e.target;
 
@@ -79,11 +78,11 @@ const ShippingForm = ({ user }) => {
     try {
       const data = {
         user: user?._id,
-        fullname: formData.fullname,
-        email: formData.email,
-        phone: formData.phone,
         addresses: [
           {
+            fullname: formData.fullname,
+            email: formData.email,
+            phone: formData.phone,
             address: formData.address,
             landmark: formData.landmark,
             city: formData.city,
@@ -94,6 +93,7 @@ const ShippingForm = ({ user }) => {
       };
 
       await disptach(addShippingInfo(data));
+      setShowForm(false);
       setShowLoader(true);
       setFormData({
         fullname: "",
@@ -106,7 +106,7 @@ const ShippingForm = ({ user }) => {
         state: "",
       });
 
-      toast.success("Shipping address added successfully")
+      toast.success("Shipping address added successfully");
     } catch (error) {
       console.error(" Error submitting shipping info:", error);
     } finally {
