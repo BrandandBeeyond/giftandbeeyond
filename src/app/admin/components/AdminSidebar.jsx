@@ -9,6 +9,7 @@ import {
   WorkflowIcon,
   Sidebar,
   GiftIcon,
+  BadgePercent,
 } from "lucide-react";
 import {
   SidebarContent,
@@ -28,10 +29,12 @@ const AdminSidebar = () => {
     { icon: Box, label: "Products", href: "/admin/products" },
     { icon: Gift, label: "Kits", href: "/admin/kits" },
     { icon: ShoppingCart, label: "Orders", href: "/admin/orders" },
+    { icon: BadgePercent, label: "Coupons", href: "/admin/coupons" },
     { icon: Users, label: "Users", href: "/admin/users" },
   ];
   return (
     <Sidebar>
+     
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
           <GiftIcon className="h-8 w-8 text-primary" />

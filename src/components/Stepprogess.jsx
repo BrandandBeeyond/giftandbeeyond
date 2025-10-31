@@ -13,10 +13,8 @@ const Stepprogess = () => {
     { label: "Payment", path: "/checkout/payment" },
   ];
 
-  // ✅ Normalize pathname (remove trailing slash)
   const cleanPath = pathname?.replace(/\/$/, "");
 
-  // ✅ Determine the current step index
   const currentIndex = steps.findIndex((s) => cleanPath === s.path);
   const safeIndex =
     currentIndex !== -1

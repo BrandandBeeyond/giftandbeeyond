@@ -11,6 +11,7 @@ import {
   Gift,
   WorkflowIcon,
   Sidebar,
+  BadgePercent,
   GiftIcon,
   LogOut,
   Settings,
@@ -32,10 +33,11 @@ import { useEffect, useState } from "react";
 export default function AdminLayout({ children }) {
   const navigationItems = [
     { icon: Home, label: "Dashboard", href: "/admin" },
-    { icon: WorkflowIcon, label: "Categories", href: "/admin/category" },
+    { icon: WorkflowIcon, label: "Categories", href: "/admin/categories" },
     { icon: Box, label: "Products", href: "/admin/products" },
     { icon: Gift, label: "Kits", href: "/admin/kits" },
     { icon: ShoppingCart, label: "Orders", href: "/admin/orders" },
+    { icon: BadgePercent, label: "Coupons", href: "/admin/coupons" },
     { icon: Users, label: "Users", href: "/admin/users" },
   ];
 
@@ -67,15 +69,13 @@ export default function AdminLayout({ children }) {
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <aside className="w-64 h-full bg-white shadow-md">
-             <div className="flex items-center gap-2 px-4 py-2 border-b-secondary">
-              <GiftIcon className="h-6 w-6 text-primary" />
-              <div>
-                <h1 className="text-lg font-semibold">Gift & Beeyond</h1>
-                <p className="text-sm text-muted-foreground">
-                  Admin Management
-                </p>
-              </div>
+          <div className="flex items-center gap-2 px-4 py-2 border-b-secondary">
+            <GiftIcon className="h-6 w-6 text-primary" />
+            <div>
+              <h1 className="text-lg font-semibold">Gift & Beeyond</h1>
+              <p className="text-sm text-muted-foreground">Admin Management</p>
             </div>
+          </div>
           <nav className="space-y-4 p-5">
             {navigationItems.map((item, index) => {
               return (
@@ -99,7 +99,9 @@ export default function AdminLayout({ children }) {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold capitalize"></h2>
-                  <p className="text-sm text-muted-foreground">Welcome back, {currentUser? currentUser?.name:""}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Welcome back, {currentUser ? currentUser?.name : ""}
+                  </p>
                 </div>
 
                 <DropdownMenu>

@@ -2,11 +2,11 @@ import { connectToDB } from "@/lib/db";
 import ShippingInfo from "@/models/shippingInfo.model";
 import { NextResponse } from "next/server";
 
-export async function GET(req, { params }) {
+export async function GET(req, context) {
   try {
     await connectToDB();
 
-    const { userId } = params;
+    const { userId } = await context.params;
 
     const shippingInfo = await ShippingInfo.findOne({ user: userId });
 
