@@ -17,7 +17,7 @@ const ShippingInfo = () => {
   const router = useRouter();
   const { user } = useSelector((state) => state.users);
   const { cart } = useSelector((state) => state.cart);
-  const { shippingInfo } = useSelector((state) => state.shippingInfo);
+  const { shippingInfo, loading } = useSelector((state) => state.shippingInfo);
   const { setShowLoader } = useLoader();
   const { buttonLoading, setButtonLoading } = useButtonLoader();
   const [confirmedAddress, setConfirmedAddress] = useState(null);
@@ -26,15 +26,13 @@ const ShippingInfo = () => {
     !shippingInfo?.addresses || shippingInfo.addresses.length === 0
   );
 
-  console.log("shippingInfo from Redux:", shippingInfo);
-  console.log("addresses:", shippingInfo?.addresses);
   useEffect(() => {
-    if (shippingInfo?.addresses?.length) {
+    if (shippingInfo?.addresses?.length > 0) {
       setShowForm(false);
     } else {
       setShowForm(true);
     }
-  }, [shippingInfo]);
+  }, [shippingInfo.addresses]);
 
   useEffect(() => {
     if (user._id) {
@@ -68,11 +66,16 @@ const ShippingInfo = () => {
           <div className="bg-white p-10 rounded-xl min-h-80">
             {showForm ? (
               <ShippingForm user={user} setShowForm={setShowForm} />
+            ) : loading ? (
+              <div className="flex justify-center items-center py-6">
+                <span>Loading...</span>
+              </div>
             ) : (
               <AddressList
                 user={user}
                 addresses={shippingInfo?.addresses || []}
                 setShowForm={setShowForm}
+                confirmedAddress={confirmedAddress}
                 onSelectAddress={(addr) => setConfirmedAddress(addr)}
               />
             )}
@@ -156,30 +159,6 @@ const ShippingInfo = () => {
               </div>
 
               <div className="mt-6">
-                {confirmedAddress && (
-                  <div className="bg-[#f9f6f4] border border-[#612c06] rounded-xl p-4 mb-4">
-                    <h4 className="font-della font-bold text-[#612c06] mb-2 text-[17px]">
-                      Delivering To:
-                    </h4>
-
-                    <p className="font-della text-sm text-gray-800">
-                      {confirmedAddress.name}
-                    </p>
-
-                    <p className="font-della text-sm text-gray-800">
-                      {confirmedAddress.address}, {confirmedAddress.landmark}
-                    </p>
-
-                    <p className="font-della text-sm text-gray-800">
-                      {confirmedAddress.city}, {confirmedAddress.state} -{" "}
-                      {confirmedAddress.pincode}
-                    </p>
-
-                    <p className="font-della text-sm text-gray-800">
-                      Phone: {confirmedAddress.phone}
-                    </p>
-                  </div>
-                )}
                 <Buttondice
                   text="Continue"
                   loading={buttonLoading}

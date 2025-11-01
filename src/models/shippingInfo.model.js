@@ -42,6 +42,12 @@ const ShippingInfo = new mongoose.Schema(
           type: String,
           required: true,
         },
+        type: {
+          type: String,
+          enum: ["Home", "Office", "Other"],
+          default: "Home",
+        },
+        customType: { type: String },
       },
     ],
   },

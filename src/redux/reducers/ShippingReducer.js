@@ -32,7 +32,10 @@ export const ShippingReducer = (state = initialState, action) => {
         shippingInfo: {
           ...state.shippingInfo,
           ...action.payload,
-          addresses: action.payload.addresses || state.shippingInfo.addresses,
+          addresses: [
+            ...state.shippingInfo.addresses,
+            ...(action.payload.addresses || []),
+          ],
         },
       };
     case GET_SHIPPING_INFO_SUCCESS:

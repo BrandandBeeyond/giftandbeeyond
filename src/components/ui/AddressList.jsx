@@ -5,7 +5,12 @@ import { Button } from "./button";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 import { Label } from "./label";
 
-const AddressList = ({ addresses = [], setShowForm, onSelectAddress }) => {
+const AddressList = ({
+  addresses = [],
+  setShowForm,
+  onSelectAddress,
+  confirmedAddress,
+}) => {
   const [selectedAddress, setSelectedAddress] = useState("");
 
   useEffect(() => {
@@ -70,6 +75,34 @@ const AddressList = ({ addresses = [], setShowForm, onSelectAddress }) => {
         >
           + Add New Address
         </Button>
+      </div>
+
+      <div className="mt-6">
+        {confirmedAddress && (
+          <div className="bg-[#f9f6f4] border border-[#612c06] rounded-xl p-4 mb-4">
+            <h4 className="font-della font-bold text-[#612c06] mb-2 text-[17px]">
+              Delivering To:
+            </h4>
+
+            <p className="font-della text-sm text-gray-800">
+              {confirmedAddress.name}
+            </p>
+
+            <p className="font-della text-sm text-gray-800">
+              {confirmedAddress.address}, {confirmedAddress.landmark}
+            </p>
+
+            <p className="font-della text-sm text-gray-800">
+              {confirmedAddress.city}, {confirmedAddress.state} -{" "}
+              {confirmedAddress.pincode}
+            </p>
+
+            <p className="font-della text-sm text-gray-800">
+              Phone: {confirmedAddress.phone}
+            </p>
+          </div>
+        )}
+      
       </div>
     </div>
   );

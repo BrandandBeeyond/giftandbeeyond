@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "@/context/LoaderContext";
 import { Button } from "./button";
 import axios from "axios";
-import { addShippingInfo } from "@/redux/actions/ShippingAction";
+import {
+  addShippingInfo,
+  getShippingInfo,
+} from "@/redux/actions/ShippingAction";
 import { toast } from "sonner";
 
 const ShippingForm = ({ user, setShowForm }) => {
@@ -24,6 +27,8 @@ const ShippingForm = ({ user, setShowForm }) => {
     city: "",
     state: "",
   });
+  const [addressType, setAddressType] = useState("Home");
+  const [customType, setCustomType] = useState("");
 
   const handleOnPincodeChange = (e) => {
     const { name, value } = e.target;
@@ -88,6 +93,8 @@ const ShippingForm = ({ user, setShowForm }) => {
             city: formData.city,
             state: formData.state,
             pincode: formData.pincode,
+            type: addressType,
+            customType: addressType === "Other" ? customType : null,
           },
         ],
       };
@@ -105,6 +112,8 @@ const ShippingForm = ({ user, setShowForm }) => {
         city: "",
         state: "",
       });
+
+      await disptach(getShippingInfo(user?._id));
 
       toast.success("Shipping address added successfully");
     } catch (error) {
@@ -255,7 +264,43 @@ const ShippingForm = ({ user, setShowForm }) => {
         </div>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-5">
+        <Label htmlFor="addresstype" className="font-della">
+          Address Type
+        </Label>
+
+        <div className="flex gap-4 mt-2">
+          {["Home", "Office", "Other"].map((type) => (
+            <label
+              key={type}
+              className="flex items-center gap-2 font-della text-sm border border-[#612c06] p-4 h-11 rounded-4xl"
+            >
+              <input
+                type="radio"
+                value={type}
+                className="font-della"
+                checked={addressType === type}
+                onChange={(e) => setAddressType(e.target.value)}
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+
+        {addressType === "Other" && (
+          <div className="mt-6">
+            <Input
+              required
+              placeholder="Enter address label"
+              className="p-4 h-12 rounded-4xl border border-[#612c06] bg-[#eeeae8]"
+              value={customType}
+              onChange={(e) => setCustomType(e.target.value)}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-center gap-x-5 mt-10">
         <Button className="rounded-4xl py-3 px-5 h-12 w-30 font-della text-lg">
           {loading ? (
             <>
@@ -267,6 +312,12 @@ const ShippingForm = ({ user, setShowForm }) => {
           ) : (
             "Save"
           )}
+        </Button>
+        <Button
+          className="rounded-4xl bg-transparent py-3 px-5 h-12 w-50 font-della text-gray-900 border border-gray-900 text-lg hover:text-white"
+          onClick={() => setShowForm(false)}
+        >
+          Saved Addresses
         </Button>
       </div>
     </form>
