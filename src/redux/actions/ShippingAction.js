@@ -12,13 +12,16 @@ export const addShippingInfo = (formData) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_SHIPPING_INFO_REQUEST });
 
-    const { data } = await axios.post("/api/shippinginfo", formData, {
+    const { data } = await axios.post("/api/shippingInfo", formData, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    dispatch({ type: CREATE_SHIPPING_INFO_SUCCESS, payload: data });
+    dispatch({
+      type: CREATE_SHIPPING_INFO_SUCCESS,
+      payload: data.shippingInfo,
+    });
   } catch (error) {
     console.error("Error creating shipping info:", error);
     dispatch({ type: CREATE_SHIPPING_INFO_FAILURE, payload: error.message });
@@ -29,7 +32,7 @@ export const getShippingInfo = (userId) => async (dispatch) => {
   try {
     dispatch({ type: GET_SHIPPING_INFO_REQUEST });
 
-    const { data } = await axios.get(`/api/shippinginfo/${userId}`);
+    const { data } = await axios.get(`/api/shippingInfo/${userId}`);
 
     dispatch({ type: GET_SHIPPING_INFO_SUCCESS, payload: data });
 

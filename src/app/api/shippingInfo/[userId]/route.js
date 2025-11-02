@@ -2,11 +2,11 @@ import { connectToDB } from "@/lib/db";
 import ShippingInfo from "@/models/shippingInfo.model";
 import { NextResponse } from "next/server";
 
-export async function GET(req, context) {
+export async function GET(req, { params }) {
   try {
     await connectToDB();
 
-    const { userId } = await context.params;
+    const { userId } = params;  
 
     const shippingInfo = await ShippingInfo.findOne({ user: userId });
 
@@ -14,6 +14,7 @@ export async function GET(req, context) {
       status: 200,
     });
   } catch (error) {
+    console.error("GET Shipping error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

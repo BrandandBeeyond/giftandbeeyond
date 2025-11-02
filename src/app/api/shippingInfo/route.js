@@ -1,33 +1,39 @@
-import {
-  createShippingInfo,
-  getShippingInfoByUser,
-} from "@/controllers/shippingInfo.controller";
+import { connectToDB } from "@/lib/db";
+import ShippingInfo from "@/models/shippingInfo.model";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
+    await connectToDB();
     const data = await req.json();
 
-  
-    const newShippingInfo = await createShippingInfo(data);
-    return NextResponse.json(newShippingInfo, { status: 201 });
+    const { user, addresses } = data;
 
-    
+    if (!user) {
+      return NextResponse.json(
+        { error: "User ID is required" },
+        { status: 400 }
+      );
+    }
+
+    let existingShipping = await ShippingInfo.findOne({ user });
+
+    if (existingShipping) {
+      existingShipping.addresses.push(addresses[0]);
+      await existingShipping.save();
+      return NextResponse.json(
+        { shippingInfo: existingShipping },
+        { status: 200 }
+      );
+    }
+
+    const newShippingInfo = await ShippingInfo.create(data);
+    return NextResponse.json(
+      { shippingInfo: newShippingInfo },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating shipping info:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function GET(req) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
-
-    const shipping = await getShippingInfoByUser(userId);
-    return NextResponse.json(shipping, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching shipping info:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
