@@ -24,6 +24,18 @@
   font-style: normal;
 }
 @font-face {
+  font-family: "raleway";
+  src: url("/fonts/raleway/raleway.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ralewaysemibold";
+  src: url("/fonts/raleway/ralewaysemibold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
   font-family: "bruno";
   src: url("/fonts/BrunoAceSC.ttf") format("truetype");
   font-weight: bold;
@@ -164,22 +176,32 @@
 /* custom style */
 
 body {
-  background-color: #fff5e8;
+  background-color: #d0e4d8;
+  overflow-x: hidden;
 }
 .bg-input-background {
   background-color: var(--input-background);
 }
-.bn_theme {
-  background: url("../../public/images/bgtheme.webp");
+.bn_hero {
+  background: url("../../public/images/herobanner.jpg");
   background-size: cover;
-  height: 600px;
+  height: 770px;
   width: 100%;
+  margin-top: -140px;
 }
-.bg-theme {
-  background: url("../../public/images/bgtheme.webp");
-  background-size: cover;
+.bn_hero::after {
+  content: "";
+  position: absolute;
+  background: linear-gradient(
+    270deg,
+    rgba(152, 198, 192, 0) 2.64%,
+    #cdb8a3 66.34%
+  );
   height: 100%;
+  width: 70%;
+  z-index: 1;
 }
+
 .custom-card-bg,
 .custom-table-bg {
   background-image: url("../../public/images/noise.webp"),
@@ -213,6 +235,32 @@ body {
 }
 .font-della {
   font-family: "dellarespira";
+}
+.font-ralway {
+  font-family: "raleway";
+}
+.font-ralwaysmbold {
+  font-family: "ralewaysemibold";
+}
+.navbar {
+  background: linear-gradient(90deg, #b47c57 0%, #c2ac97 100%);
+}
+.navbar::after {
+  content: "";
+  position: absolute;
+  background: linear-gradient(
+    270deg,
+    rgba(152, 198, 192, 0) 2.64%,
+    #cdb8a3 66.34%
+  );
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.headingmain {
+  text-shadow: 5px 6px 2px #00000040;
 }
 .svggift {
   width: 100%;
@@ -300,12 +348,6 @@ body {
 .animate-zoomIn {
   animation: zoomIn 0.3s ease-out forwards;
 }
-.midgifting {
-  background: url("../../public/images/bgtheme.webp");
-  background-size: cover;
-  height: 700px;
-  width: 100%;
-}
 
 .greet_card {
   background: url("../../public/images/giftcard.webp");
@@ -319,13 +361,52 @@ body {
   background: rgba(232, 169, 169, 0.3);
   transition: all 0.3s ease;
 }
-.playfullduck {
-  height: 160px;
+.playfullfly {
+  height: 324px;
   width: auto;
-  top: 110px;
-  right: 50px;
+  top: -71px;
+  left: 20%;
   transform: rotate(-30deg);
   animation: playfullduck 3s ease-in-out infinite;
+  z-index: -1;
+}
+.boat {
+  margin-top: -68px;
+  animation: drive 6s ease-out forwards;
+}
+.boatimg {
+  height: 260px;
+  width: auto;
+  animation: float 2.5s ease-in-out infinite;
+}
+.wave-char {
+  display: inline-block;
+  position: relative;  /* REQUIRED for top animation */
+  top: 8px;
+}
+
+.wave-animate {
+  animation: wavy 2s ease-out forwards;
+}
+
+
+@keyframes wavy {
+  0% {
+    top: 8px;
+  }
+  50% {
+    top: -30px;
+   
+  }
+  100% {
+    top: 0;
+  }
+}
+.cuttedpaper{
+  background: url('../../public/images/cuttedpaper.png')no-repeat;
+  min-height: 550px;
+  width: 100%;
+  background-size: cover;
 }
 .ribbon {
   top: -30px;
@@ -333,7 +414,7 @@ body {
   height: 220px;
 }
 .procard {
-  background: url("../../public/images/productcard.png")no-repeat;
+  background: url("../../public/images/productcard.png") no-repeat;
   height: 462px;
   width: 100%;
   background-size: contain;
@@ -342,7 +423,7 @@ body {
 .productinner {
   height: 280px !important;
   width: 100%;
-  top:129px !important;
+  top: 129px !important;
   transition: all 0.4s ease;
 }
 .procard:hover .productinner {
@@ -478,9 +559,30 @@ body {
 @keyframes playfullduck {
   0%,
   100% {
-    transform: rotate(-30deg);
+    transform: translateY(-30px);
   }
   50% {
-    transform: rotate(20deg);
+    transform: translateY(0px);
+  }
+}
+
+@keyframes drive {
+  0% {
+    transform: translateX(600px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-5deg);
   }
 }

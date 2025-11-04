@@ -41,23 +41,54 @@ const Navbar = () => {
     pathname.includes("/checkout/payment");
 
   return (
-    <nav className="text-gray-950 px-2 py-3  navbar relative">
-      <div className="max-w-7xl mx-auto flex items-center justify-between mb-4">
+    <nav className="px-2 py-6 navbar relative z-50 rounded-bl-3xl rounded-br-3xl">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold">
           Brand
         </Link>
 
-        <div className="hidden md:flex space-x-8 user-links items-center">
+        <div className="hidden md:flex space-x-11 user-links items-center">
+          <Link
+            href="/"
+            className="text-md text-white tracking-wider font-bold  font-ralwaysmbold hover:text-slate-600"
+          >
+            Home
+          </Link>
+          <Link
+            href="/about"
+            className="text-md text-white tracking-wider font-bold  font-ralwaysmbold hover:text-slate-600"
+          >
+            About Us
+          </Link>
+          <Link
+            href="/contact"
+            className="text-md text-white tracking-wider font-bold  font-ralwaysmbold hover:text-slate-600"
+          > 
+          Collections
+          </Link>
+          <Link
+            href="/cart"
+            className="text-md text-white tracking-wider font-bold  font-ralwaysmbold hover:text-slate-600"
+          >
+            Gallery
+          </Link>
+          <Link
+            href="/cart"
+            className="text-md text-white tracking-wider font-bold  font-ralwaysmbold hover:text-slate-600"
+          >
+            Blogs
+          </Link>
+
           <Link href={"/account/login"}>
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-              <Search className="text-sm text-[#B34700] h-5 w-5" />
+              <Search className="text-sm text-white h-5 w-5" />
             </div>
           </Link>
-          <Link href={"/account/login"}>
+          {/* <Link href={"/account/login"}>
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-              <Heart className="text-sm text-[#B34700]  h-5 w-5" />
+              <Heart className="text-sm text-white  h-5 w-5" />
             </div>
-          </Link>
+          </Link> */}
           <Link
             href="#"
             onClick={(e) => {
@@ -66,13 +97,13 @@ const Navbar = () => {
             }}
           >
             <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-              <ShoppingBagIcon className="text-sm text-[#B34700]  h-5 w-5" />
+              <ShoppingBagIcon className="text-sm text-white  h-5 w-5" />
             </div>
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
-                <UserRound className="text-sm text-[#B34700]  h-5 w-5" />
+                <UserRound className="text-sm text-white  h-5 w-5" />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -132,47 +163,14 @@ const Navbar = () => {
           </DropdownMenu>
         </div>
       </div>
-      <div className={`max-w-7xl py-4 mx-auto flex items-center justify-between hidden md:flex space-x-6 `}>
-        {isCheckoutflow ? (
-          <>
-            <Stepprogess/>
-          </>
-        ) : (
-          <>
-            {" "}
-            <Link
-              href="/"
-              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
-            >
-              Home
-            </Link>
-            <Link
-              href="/about"
-              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
-            >
-              About Us
-            </Link>
-            <Link
-              href="/contact"
-              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
-            >
-              Categories
-            </Link>
-            <Link
-              href="/cart"
-              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
-            >
-              Blogs
-            </Link>
-            <Link
-              href="/cart"
-              className="text-lg text-[#B34700] tracking-wider  font-della hover:text-slate-600"
-            >
-              Contact Us
-            </Link>
-          </>
-        )}
-      </div>
+
+      {isCheckoutflow && (
+        <div
+          className={`max-w-7xl py-4 mx-auto flex items-center  hidden md:flex space-x-10 `}
+        >
+          <Stepprogess />
+        </div>
+      )}
     </nav>
   );
 };
