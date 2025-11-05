@@ -372,16 +372,23 @@ body {
 }
 .boat {
   margin-top: -68px;
-  animation: drive 6s ease-out forwards;
+}
+.boat-drive-right {
+  animation: driveRight 6s ease-out forwards;
+}
+.boat-drive-left {
+  animation: driveLeft 6s ease-out forwards;
 }
 .boatimg {
   height: 260px;
   width: auto;
+}
+.boat-float {
   animation: float 2.5s ease-in-out infinite;
 }
 .wave-char {
   display: inline-block;
-  position: relative;  /* REQUIRED for top animation */
+  position: relative; /* REQUIRED for top animation */
   top: 8px;
 }
 
@@ -389,24 +396,40 @@ body {
   animation: wavy 2s ease-out forwards;
 }
 
-
 @keyframes wavy {
   0% {
     top: 8px;
   }
   50% {
     top: -30px;
-   
   }
   100% {
     top: 0;
   }
 }
-.cuttedpaper{
-  background: url('../../public/images/cuttedpaper.png')no-repeat;
+.cuttedpaper {
+  background: url("../../public/images/cuttedpaper.png") no-repeat;
   min-height: 550px;
   width: 100%;
   background-size: cover;
+}
+.airplane {
+  transform: rotate(-35deg);
+  position: absolute;
+  right: 48%;
+  top: 18%;
+}
+.airplane.fly {
+  animation: flyplane 1.5s ease-out forwards;
+}
+.testimonial-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.testimonial-show {
+  opacity: 1;
+  transform: translateY(0);
 }
 .ribbon {
   top: -30px;
@@ -566,9 +589,17 @@ body {
   }
 }
 
-@keyframes drive {
+@keyframes driveRight {
   0% {
     transform: translateX(600px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes driveLeft {
+  0% {
+    transform: translateX(-600px);
   }
   100% {
     transform: translateX(0);
@@ -584,5 +615,13 @@ body {
   }
   100% {
     transform: translateY(0) rotate(-5deg);
+  }
+}
+@keyframes flyplane {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-35deg);
+  }
+  100% {
+    transform: translateX(1100px) translateY(-160px) rotate(10deg);
   }
 }

@@ -35,6 +35,11 @@ const ShippingInfo = () => {
   }, [shippingInfo.addresses]);
 
   useEffect(() => {
+    if (!user) {
+      router.push("/account/login?redirect=/checkout/addresses");
+      return;
+    }
+
     if (user._id) {
       dispatch(getShippingInfo(user._id));
     }
@@ -62,116 +67,122 @@ const ShippingInfo = () => {
           Shipping Information
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-8">
-          <div className="bg-white p-10 rounded-xl min-h-80">
-            {showForm ? (
-              <ShippingForm user={user} setShowForm={setShowForm} />
-            ) : loading ? (
-              <div className="flex justify-center items-center py-6">
-                <span>Loading...</span>
-              </div>
-            ) : (
-              <AddressList
-                user={user}
-                addresses={shippingInfo?.addresses || []}
-                setShowForm={setShowForm}
-                confirmedAddress={confirmedAddress}
-                onSelectAddress={(addr) => setConfirmedAddress(addr)}
-              />
-            )}
+        {loading ? (
+          <div className="flex justify-center items-center py-6">
+            <span>Loading...</span>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-8">
+            <div className="bg-white p-10 rounded-xl min-h-80">
+              {showForm ? (
+                <ShippingForm user={user} setShowForm={setShowForm} />
+              ) : loading ? (
+                <div className="flex justify-center items-center py-6">
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                <AddressList
+                  user={user}
+                  addresses={shippingInfo?.addresses || []}
+                  setShowForm={setShowForm}
+                  confirmedAddress={confirmedAddress}
+                  onSelectAddress={(addr) => setConfirmedAddress(addr)}
+                />
+              )}
+            </div>
 
-          <div className="flex flex-col gap-y-5">
-            <div className="">
-              {cart.map((item) => (
-                <div
-                  key={item._id}
-                  className={`flex justify-between items-center pb-3 `}
-                >
-                  <div className="flex items-center gap-x-5">
-                    <div className="h-32 w-28 border bg-white border-slate-200 relative">
-                      <Image
-                        src={item.images[0]?.url}
-                        alt={item.name}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-
-                    <div className="flex flex-col space-y-2">
-                      <p className="text-md font-della font-bold text-[#000]">
-                        {item.name}
-                      </p>
-
-                      <div className="flex items-center gap-1">
-                        <IndianRupee className="h-3 text-[#612c06]" />
-                        <span className="text-md font-della text-[#00]">
-                          {item.price}
-                        </span>
+            <div className="flex flex-col gap-y-5">
+              <div className="">
+                {cart.map((item) => (
+                  <div
+                    key={item._id}
+                    className={`flex justify-between items-center pb-3 `}
+                  >
+                    <div className="flex items-center gap-x-5">
+                      <div className="h-32 w-28 border bg-white border-slate-200 relative">
+                        <Image
+                          src={item.images[0]?.url}
+                          alt={item.name}
+                          fill
+                          className="object-contain"
+                        />
                       </div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-[13px] font-della text-[#612c06]">
-                          Quantity :
-                        </span>
-                        <span className="text-[13px] font-della text-[#612c06]">
-                          {item.quantity}
-                        </span>
+
+                      <div className="flex flex-col space-y-2">
+                        <p className="text-md font-della font-bold text-[#000]">
+                          {item.name}
+                        </p>
+
+                        <div className="flex items-center gap-1">
+                          <IndianRupee className="h-3 text-[#612c06]" />
+                          <span className="text-md font-della text-[#00]">
+                            {item.price}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[13px] font-della text-[#612c06]">
+                            Quantity :
+                          </span>
+                          <span className="text-[13px] font-della text-[#612c06]">
+                            {item.quantity}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
+                ))}
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm h-fit ">
+                <h3 className="text-xl font-bold font-della text-[#612c06] mb-4">
+                  Order Summary
+                </h3>
+
+                <div className="flex justify-between font-della space-y-2 text-sm mb-2">
+                  <span className="text-[16px] font-semibold">Subtotal</span>
+                  <span>
+                    ₹
+                    {cart.reduce(
+                      (acc, item) => acc + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
                 </div>
-              ))}
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm h-fit ">
-              <h3 className="text-xl font-bold font-della text-[#612c06] mb-4">
-                Order Summary
-              </h3>
+                <div className="flex justify-between text-sm space-y-2 mb-2">
+                  <span className="text-[16px] font-della">
+                    Shipping Included
+                  </span>
+                  <span>₹0</span>
+                </div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-[16px] font-della">Taxes</span>
+                  <span>₹0</span>
+                </div>
+                <div className="border-t border-gray-300 mt-3 pt-3 flex justify-between font-semibold">
+                  <span className="font-della text-xl font-bold">Total</span>
+                  <span className="font-della text-xl">
+                    ₹
+                    {cart.reduce(
+                      (acc, item) => acc + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
+                </div>
 
-              <div className="flex justify-between font-della space-y-2 text-sm mb-2">
-                <span className="text-[16px] font-semibold">Subtotal</span>
-                <span>
-                  ₹
-                  {cart.reduce(
-                    (acc, item) => acc + item.price * item.quantity,
-                    0
-                  )}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm space-y-2 mb-2">
-                <span className="text-[16px] font-della">
-                  Shipping Included
-                </span>
-                <span>₹0</span>
-              </div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-[16px] font-della">Taxes</span>
-                <span>₹0</span>
-              </div>
-              <div className="border-t border-gray-300 mt-3 pt-3 flex justify-between font-semibold">
-                <span className="font-della text-xl font-bold">Total</span>
-                <span className="font-della text-xl">
-                  ₹
-                  {cart.reduce(
-                    (acc, item) => acc + item.price * item.quantity,
-                    0
-                  )}
-                </span>
-              </div>
-
-              <div className="mt-6">
-                <Buttondice
-                  text="Continue"
-                  loading={buttonLoading}
-                  disabled={!confirmedAddress}
-                  onClick={handleNavigateNextToPayment}
-                  className={`${
-                    !confirmedAddress ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                />
+                <div className="mt-6">
+                  <Buttondice
+                    text="Continue"
+                    loading={buttonLoading}
+                    disabled={!confirmedAddress}
+                    onClick={handleNavigateNextToPayment}
+                    className={`${
+                      !confirmedAddress ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

@@ -11,13 +11,15 @@ const AnimatedHeading = ({ text }) => {
 
     let delay = 200;
 
-    // Create spans
     el.innerHTML = text
       .split("")
-      .map((letter) => `<span class="wave-char">${letter}</span>`)
+      .map((letter) =>
+        letter === " "
+          ? `<span class="wave-char">&nbsp;</span>`
+          : `<span class="wave-char">${letter}</span>`
+      )
       .join("");
 
-   
     Array.from(el.children).forEach((span, index) => {
       setTimeout(() => {
         span.classList.add("wave-animate");
@@ -26,7 +28,12 @@ const AnimatedHeading = ({ text }) => {
   }, [text]);
 
   return (
-    <Link href={'/collections'} ref={textRef} className="text-4xl text-gray-800 foglithen-font"></Link>
+    <Link href={"/collections"}>
+      <span
+        ref={textRef}
+        className="text-4xl text-gray-800 foglithen-font"
+      ></span>
+    </Link>
   );
 };
 
