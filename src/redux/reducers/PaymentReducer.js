@@ -5,7 +5,7 @@ import {
 } from "../constants/PaymentConstants";
 
 const initialState = {
-  loading: false,
+  paymentLoading: false,
   order: null,
   paymentSuccess: false,
   error: null,
@@ -16,14 +16,15 @@ export const PaymentReducer = (state = initialState, action) => {
     case PAYMENT_REQUEST:
       return {
         ...state,
-        loading: true,
+        paymentLoading: true,
         paymentSuccess: false,
+        error: null,
       };
 
     case PAYMENT_SUCCESS:
       return {
         ...state,
-        loading: false,
+        paymentLoading: false,
         order: action.payload,
         paymentSuccess: true,
       };
@@ -31,7 +32,7 @@ export const PaymentReducer = (state = initialState, action) => {
     case PAYMENT_FAILURE:
       return {
         ...state,
-        loading: false,
+        paymentLoading: false,
         error: action.payload,
         paymentSuccess: false,
       };

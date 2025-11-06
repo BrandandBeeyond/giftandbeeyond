@@ -31,9 +31,11 @@ const LoginPage = () => {
 
       if (result.type === USER_LOGIN_SUCCESS) {
         setShowLoader(true);
+
+        const redirectPath = new URLSearchParams(window.location.search).get("redirect") || "/";
         setTimeout(() => {
           setShowLoader(false);
-          router.push("/");
+          router.push(redirectPath);
         }, 3500);
       }
     } catch (error) {
@@ -162,7 +164,6 @@ const LoginPage = () => {
           </Link>
         </div>
       </div>
-     
     </>
   );
 };

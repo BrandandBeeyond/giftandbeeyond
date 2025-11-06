@@ -46,6 +46,13 @@ export const createPaymentRequest = (amount, user) => async (dispatch) => {
       theme: {
         color: "#5a2e0c",
       },
+      method:{
+        netbanking:true,
+        upi:true,
+        card:true,
+        wallet:true,
+        emi:true
+      }
     };
 
     const rzor = new window.Razorpay(options);

@@ -36,7 +36,7 @@ const ShippingInfo = () => {
 
   useEffect(() => {
     if (!user) {
-      router.push("/account/login?redirect=/checkout/addresses");
+      router.replace("/account/login?redirect=/checkout/addresses");
       return;
     }
 
@@ -168,16 +168,31 @@ const ShippingInfo = () => {
                   </span>
                 </div>
 
-                <div className="mt-6">
-                  <Buttondice
-                    text="Continue"
-                    loading={buttonLoading}
+                <div className="mt-6 flex flex-col gap-3">
+                  <button
+                    onClick={()=>{
+                       if(!confirmedAddress) return
+                       router.push('/checkout/payment');
+                    }}
                     disabled={!confirmedAddress}
-                    onClick={handleNavigateNextToPayment}
-                    className={`${
-                      !confirmedAddress ? "opacity-50 cursor-not-allowed" : ""
+                    className={`w-full py-3 capitalize rounded-md font-della text-white text-md transition-all  ${
+                      !confirmedAddress
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#5a2e0c] cursor-pointer"
                     }`}
-                  />
+                  >
+                    Pay Online
+                  </button>
+                  <button
+                    disabled={!confirmedAddress}
+                    className={`w-full py-3 capitalize rounded-md font-della text-[#5a2e0c] text-md transition-all border  ${
+                      !confirmedAddress
+                        ? "cursor-not-allowed border-[#92908f] text-[#92908f]"
+                        : " border-[#5a2e0c] hover:bg-[#744019] hover:text-white cursor-pointer"
+                    } `}
+                  >
+                    Pay On delivery
+                  </button>
                 </div>
               </div>
             </div>

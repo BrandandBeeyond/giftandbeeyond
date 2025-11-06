@@ -21,6 +21,7 @@ import Splashscreen from "@/components/Splashscreen";
 const Checkout = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { user } = useSelector((state) => state.users);
   const { cart } = useSelector((state) => state.cart);
   const { buttonLoading, setButtonLoading } = useButtonLoader();
   const { showLoader, setShowLoader } = useLoader();
@@ -38,6 +39,11 @@ const Checkout = () => {
   };
 
   const handleNavigateNext = () => {
+    if (!user) {
+      router.push("/account/login?redirect=/checkout/addresses");
+      return;
+    }
+
     setTimeout(() => {
       setButtonLoading(true);
     }, 2000);
@@ -155,7 +161,9 @@ const Checkout = () => {
                               />
                             </svg>
                           </div>
-                          <span className="text-md font-della font-semibold">Coupons</span>
+                          <span className="text-md font-della font-semibold">
+                            Coupons
+                          </span>
                         </div>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

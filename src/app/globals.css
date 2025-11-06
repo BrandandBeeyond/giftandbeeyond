@@ -183,8 +183,6 @@ body {
   background-color: var(--input-background);
 }
 .bn_hero {
-  background: url("../../public/images/herobanner.jpg");
-  background-size: cover;
   height: 770px;
   width: 100%;
   margin-top: -140px;
@@ -200,6 +198,8 @@ body {
   height: 100%;
   width: 70%;
   z-index: 1;
+  left: 0;
+  top: 0;
 }
 
 .custom-card-bg,
@@ -407,11 +407,13 @@ body {
     top: 0;
   }
 }
-.cuttedpaper {
+/* .cuttedpaper {
   background: url("../../public/images/cuttedpaper.png") no-repeat;
-  min-height: 550px;
   width: 100%;
   background-size: cover;
+} */
+.cuttedpaper{
+  min-height: 500px;
 }
 .airplane {
   transform: rotate(-35deg);
@@ -427,7 +429,7 @@ body {
   transform: translateY(40px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-.testimonial-show {
+.testimonial-show,.mission-show {
   opacity: 1;
   transform: translateY(0);
 }

@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import CartSidebar from "@/components/ui/CartSidebar";
 import { LoaderProvider } from "@/context/LoaderContext";
 import GlobalLoader from "./loader/GlobalLoader";
+import SmoothScrolling from "@/components/SmoothScrolling";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,24 +42,26 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <ClientProvider>
-          <LoaderProvider>
-            <main
-              className={
-                mounted ? `${geistSans.variable} ${geistMono.variable}` : ""
-              }
-            >
-              {children}
-              <GlobalLoader />
-              <Toaster />
-            </main>
+        <SmoothScrolling>
+          <ClientProvider>
+            <LoaderProvider>
+              <main
+                className={
+                  mounted ? `${geistSans.variable} ${geistMono.variable}` : ""
+                }
+              >
+                {children}
+                <GlobalLoader />
+                <Toaster />
+              </main>
 
-            <CartSidebar
-              isOpen={sidebarOpen}
-              onClose={() => setSidebarOpen(false)}
-            />
-          </LoaderProvider>
-        </ClientProvider>
+              <CartSidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+              />
+            </LoaderProvider>
+          </ClientProvider>
+        </SmoothScrolling>
       </body>
     </html>
   );

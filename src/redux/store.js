@@ -1,4 +1,3 @@
-// src/redux/store.js
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import ProductReducer from "./reducers/ProductReducer";
 import { ColorReducer } from "./reducers/ColorReducer";
@@ -21,6 +20,7 @@ import {
 } from "redux-persist";
 import { CartReducer } from "./reducers/CartReducer";
 import { ShippingReducer } from "./reducers/ShippingReducer";
+import { PaymentReducer } from "./reducers/PaymentReducer";
 
 const rootReducer = combineReducers({
   products: ProductReducer,
@@ -31,6 +31,7 @@ const rootReducer = combineReducers({
   users: UserReducer,
   cart: CartReducer,
   shippingInfo: ShippingReducer,
+  payment:PaymentReducer
 });
 
 const persistConfig = {

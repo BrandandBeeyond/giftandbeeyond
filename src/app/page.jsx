@@ -1,8 +1,6 @@
 import AnimatedBoat from "@/components/AnimatedBoat";
-import AnimatedHeading from "@/components/AnimatedHeading";
 import Testimonials from "@/components/Testimonials";
 import HeroCarousel from "@/components/ui/HeroCarousel";
-import Midgiftingsection from "@/components/ui/Midgiftingsection";
 import Navbar from "@/components/ui/Navbar";
 import Products from "@/components/ui/Products";
 import Link from "next/link";
@@ -11,9 +9,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <section className="bn_hero relative flex items-center">
-        <HeroCarousel />
-      </section>
+      <HeroCarousel />
 
       <AnimatedBoat text="View Collections" direction="right" />
 
@@ -79,33 +75,39 @@ const Home = () => {
         </div>
       </section>
 
-      {/* <section className="py-20">
+      <section className="py-20">
         <Products />
-      </section> */}
+      </section>
 
       <section className="py-20">
         <div className="grid grid-cols-2">
           <div className="flex items-end justify-center">
             <AnimatedBoat text="Know more" direction="left" />
           </div>
-          <div className="cuttedpaper flex justify-center items-center">
-            <div className="p-20">
-              <div className="para font-della text-2xl text-[#B34700] mt-10 text-center">
-                <p>
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu{" "}
-                </p>
+          <div className="cuttedpaper min-h-96 flex justify-center items-center">
+            <div className="relative">
+              <img
+                src="/images/cuttedpaper.png"
+                className="cuttedpaper w-full"
+                alt=""
+              />
+              <div className="p-20 absolute top-0 start-0">
+                <div className="para font-della text-2xl text-[#B34700] mt-10 text-center">
+                  <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Amet libero ut aspernatur perferendis sit aliquid rem
+                    maiores pariatur quos, delectus eius labore sed, commodi
+                    quaerat! Nobis maiores voluptatum eius molestias ipsa
+                    suscipit qui
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Testimonials/>
+      <Testimonials />
     </>
   );
 };
