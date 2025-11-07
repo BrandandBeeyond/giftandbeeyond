@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/ui/Navbar";
+import { CreateOrder } from "@/redux/actions/OrderAction";
 import { createPaymentRequest } from "@/redux/actions/PaymentAction";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +10,8 @@ const PaymentInfo = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
   const { cart } = useSelector((state) => state.cart);
-  const { paymentSuccess } = useSelector((state) => state.payment);
-  const [loading, setLoading] = useState(false);
-  const [method, setMethod] = useState("upi");
+  const { paymentSuccess,paymentLoading } = useSelector((state) => state.payment);
+
 
   const totalAmount = cart?.reduce((a, b) => a + b.price * b.quantity, 0);
 
@@ -43,6 +43,12 @@ const PaymentInfo = () => {
 
     initPayment();
   }, []);
+
+  const handleConfirmationOnlinepaidOrder=()=>{
+      if(paymentSuccess === true){
+          CreateOrder()
+      }
+  }
 
   return (
     <>

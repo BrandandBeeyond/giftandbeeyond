@@ -21,6 +21,7 @@ import {
 import { CartReducer } from "./reducers/CartReducer";
 import { ShippingReducer } from "./reducers/ShippingReducer";
 import { PaymentReducer } from "./reducers/PaymentReducer";
+import { OrderReducer } from "./reducers/OrderReducer";
 
 const rootReducer = combineReducers({
   products: ProductReducer,
@@ -31,13 +32,14 @@ const rootReducer = combineReducers({
   users: UserReducer,
   cart: CartReducer,
   shippingInfo: ShippingReducer,
-  payment:PaymentReducer
+  payment: PaymentReducer,
+  orders: OrderReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["users", "cart"],
+  whitelist: ["users", "cart", "orders"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

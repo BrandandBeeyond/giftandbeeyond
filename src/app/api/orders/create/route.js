@@ -6,11 +6,37 @@ export async function POST(req) {
   try {
     await connectToDB();
 
-    const data = await req.json();
+    const body = await req.json();
 
-    const order = await Order.create(data);
+    
+    const {
+      user,
+      shippingInfo,
+      orderItems,
+      paymentInfo,
+      totalPrice,
+      orderStatus = "processing",
+    } = body;
 
-    return NextResponse.json({ success: true, order });
+    if (!user || !shippingInfo || !paymentInfo || !orderItems) {
+      
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const newOrder = await Order.create({
+      user,
+      shippingInfo,
+      orderItems,
+      paymentInfo,
+      totalPrice,
+      orderStatus,
+    });
+
+   
+    return NextResponse.json({ success: true, order: newOrder });
   } catch (error) {
     return NextResponse.json(
       { success: false, message: error.message },

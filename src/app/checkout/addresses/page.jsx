@@ -5,6 +5,7 @@ import Buttondice from "@/components/ui/Buttondice";
 import Navbar from "@/components/ui/Navbar";
 import ShippingForm from "@/components/ui/ShippingForm";
 import { useButtonLoader, useLoader } from "@/context/LoaderContext";
+import { CreateOrder } from "@/redux/actions/OrderAction";
 import { getShippingInfo } from "@/redux/actions/ShippingAction";
 import { IndianRupee } from "lucide-react";
 import Image from "next/image";
@@ -56,7 +57,47 @@ const ShippingInfo = () => {
       setShowLoader(false);
 
       router.push("/checkout/payment");
+      JSON.stringify(
+        "confirmedAddress",
+        localStorage.setItem(confirmedAddress)
+      );
     }, 3000);
+  };
+
+  const paymentData = {
+    id: "COD" + Date.now(),
+    status: "Pending",
+    method: "COD",
+  };
+
+  const handleOrderCreationCOD = async () => {
+    try {
+      if (!confirmedAddress) return;
+
+      const orderData = {
+        user: user._id,
+        shippingInfo: confirmedAddress,
+        orderItems: cart.map((item) => ({
+          product: item._id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          image: item.images[0]?.url,
+        })),
+        paymentInfo: paymentData,
+        totalPrice: cart.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
+        orderStatus: "Processing",
+      };
+
+      await dispatch(CreateOrder(orderData));
+
+      router.push("/checkout/success?method=cod");
+    } catch (error) {
+      console.error("Failed to create order", error);
+    }
   };
 
   return (
@@ -170,10 +211,7 @@ const ShippingInfo = () => {
 
                 <div className="mt-6 flex flex-col gap-3">
                   <button
-                    onClick={()=>{
-                       if(!confirmedAddress) return
-                       router.push('/checkout/payment');
-                    }}
+                    onClick={handleNavigateNextToPayment}
                     disabled={!confirmedAddress}
                     className={`w-full py-3 capitalize rounded-md font-della text-white text-md transition-all  ${
                       !confirmedAddress
@@ -185,6 +223,7 @@ const ShippingInfo = () => {
                   </button>
                   <button
                     disabled={!confirmedAddress}
+                    onClick={handleOrderCreationCOD}
                     className={`w-full py-3 capitalize rounded-md font-della text-[#5a2e0c] text-md transition-all border  ${
                       !confirmedAddress
                         ? "cursor-not-allowed border-[#92908f] text-[#92908f]"
