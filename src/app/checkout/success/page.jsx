@@ -1,9 +1,11 @@
 "use client";
 
 import { CLEAR_CART } from "@/redux/constants/CartConstant";
+import Lottie from "lottie-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import GiftOpen from "../../../animations/gift_miracle.json";
 
 const OrderConfirmation = () => {
   const searchParams = useSearchParams();
@@ -20,11 +22,13 @@ const OrderConfirmation = () => {
   }, [status, dispatch]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-center">
-      <h1 className="text-4xl font-della text-[#5a2e0c] mb-4">
-        Order Confirmed!
-      </h1>
-    </div>
+    <>
+      <section className="min-h-screen  flex flex-col justify-center items-center">
+        <h1 className="text-8xl text-[#000] mt-20 font-greatvibes">Thanks!</h1>
+        <h4 className="text-4xl font-della">Your order has been placed !</h4>
+      </section>
+     
+    </>
   );
 };
 export default OrderConfirmation;

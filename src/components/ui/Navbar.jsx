@@ -41,10 +41,10 @@ const Navbar = () => {
     pathname.includes("/checkout/payment");
 
   return (
-    <nav className="px-2 py-6 navbar relative z-50 rounded-bl-3xl rounded-br-3xl">
+    <nav className="px-2 py-1 navbar relative z-50 rounded-bl-3xl rounded-br-3xl">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold">
-          Brand
+            <img src="logo.png" className="h-24 w-auto" alt="" />
         </Link>
 
         <div className="hidden md:flex space-x-11 user-links items-center">

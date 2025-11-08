@@ -47,6 +47,12 @@
   font-weight: bold;
   font-style: normal;
 }
+@font-face {
+  font-family: "greatvibes";
+  src: url("/fonts/greatvibes.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -230,6 +236,9 @@ body {
 .font-quando {
   font-family: "quando";
 }
+.font-greatvibes{
+   font-family: "greatvibes";
+}
 .font-bruno {
   font-family: "bruno";
 }
@@ -306,6 +315,11 @@ body {
 .btnauth:hover {
   border: 1px solid #1e1b15;
 }
+.bg-theme-order {
+  height: 500px;
+  overflow: hidden;
+}
+
 .border-gradient-animation {
   position: absolute;
   top: 0;
@@ -412,7 +426,7 @@ body {
   width: 100%;
   background-size: cover;
 } */
-.cuttedpaper{
+.cuttedpaper {
   min-height: 500px;
 }
 .airplane {
@@ -429,7 +443,8 @@ body {
   transform: translateY(40px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-.testimonial-show,.mission-show {
+.testimonial-show,
+.mission-show {
   opacity: 1;
   transform: translateY(0);
 }

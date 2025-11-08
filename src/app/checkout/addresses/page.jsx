@@ -52,15 +52,13 @@ const ShippingInfo = () => {
     }, 2000);
 
     setShowLoader(true);
+    localStorage.setItem("confirmedAddress",JSON.stringify(confirmedAddress));
     setTimeout(() => {
       setButtonLoading(false);
       setShowLoader(false);
 
       router.push("/checkout/payment");
-      JSON.stringify(
-        "confirmedAddress",
-        localStorage.setItem(confirmedAddress)
-      );
+      
     }, 3000);
   };
 

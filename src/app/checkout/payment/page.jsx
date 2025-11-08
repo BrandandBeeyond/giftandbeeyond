@@ -1,19 +1,26 @@
 "use client";
 
 import Navbar from "@/components/ui/Navbar";
+import { useLoader } from "@/context/LoaderContext";
 import { CreateOrder } from "@/redux/actions/OrderAction";
 import { createPaymentRequest } from "@/redux/actions/PaymentAction";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const PaymentInfo = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { user } = useSelector((state) => state.users);
   const { cart } = useSelector((state) => state.cart);
-  const { paymentSuccess,paymentLoading } = useSelector((state) => state.payment);
+  const { order, paymentSuccess, paymentLoading, error } = useSelector(
+    (state) => state.payment
+  );
 
-
-  const totalAmount = cart?.reduce((a, b) => a + b.price * b.quantity, 0);
+  const totalAmount = cart?.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -32,24 +39,33 @@ const PaymentInfo = () => {
       const loaded = await loadRazorpayScript();
 
       if (!loaded) {
-        alert("Failed to load Razorpay");
+        alert("Failed to load  SDK");
         return;
       }
 
-      if (user?._id && cart.length > 0) {
-        dispatch(createPaymentRequest(totalAmount, user));
+      if (!user || cart.length === 0) {
+        alert("Missing user or cart detail");
+        router.push("/cart");
+        return;
       }
+
+      dispatch(createPaymentRequest(totalAmount, user, cart));
     }
 
     initPayment();
   }, []);
 
-  const handleConfirmationOnlinepaidOrder=()=>{
-      if(paymentSuccess === true){
-          CreateOrder()
-      }
-  }
+  useEffect(() => {
+    if (paymentSuccess) {
 
+      setTimeout(() => {
+        useLoader()
+        router.push("/checkout/success?method=online");
+      }, 1500);
+    } else if (error) {
+      router.push("/checkout/payment-failed");
+    }
+  }, [paymentSuccess, error]);
   return (
     <>
       <Navbar />
