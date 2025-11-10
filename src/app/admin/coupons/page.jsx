@@ -9,28 +9,43 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import DataTable from "react-data-table-component";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Textarea } from "@/components/ui/textarea";
+import { CreateCouponCode, fetchCoupons } from "@/redux/actions/CouponAction";
+import { Spinner } from "@/components/ui/spinner";
+import DatePicker from "@/components/ui/DatePicker";
 
 const CouponCode = () => {
+  const dispatch = useDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { coupons, loading } = useSelector((state) => state.coupons);
 
-  const banks=[
-    {bankname:"SBI",banklogo:""},
-    {bankname:"HDFC",banklogo:""},
-    {bankname:"AXIS",banklogo:""},
-    {bankname:"ICICI",banklogo:""},
-    {bankname:"KOTAK MAHINDRA BANK",banklogo:""},
-    {bankname:"BOI",banklogo:""},
-    {bankname:"YES BANK",banklogo:""},
-  ]
+  const banks = [
+    { bankname: "SBI", banklogo: "/images/sbi.svg" },
+    { bankname: "HDFC", banklogo: "/images/hdfc.svg" },
+    { bankname: "AXIS", banklogo: "/images/axis.png" },
+    { bankname: "ICICI", banklogo: "/images/icici.png" },
+    { bankname: "KOTAK MAHINDRA BANK", banklogo: "/images/kotak.png" },
+    { bankname: "BOI", banklogo: "/images/boi.png" },
+    { bankname: "YES BANK", banklogo: "/images/yesbank.svg" },
+  ];
 
   const [formData, setFormData] = useState({
     code: "",
     discountPercent: "",
     minOrderAmount: "",
+    description: "",
     eligibleBank: "",
     expiryDate: "",
   });
@@ -39,6 +54,7 @@ const CouponCode = () => {
     code: "",
     discountPercent: "",
     minOrderAmount: "",
+    description: "",
     eligibleBank: "",
     expiryDate: "",
   });
@@ -48,10 +64,78 @@ const CouponCode = () => {
       code: "",
       discountPercent: "",
       minOrderAmount: "",
+      description: "",
       eligibleBank: "",
       expiryDate: "",
     });
   };
+
+  const handleAddCoupon = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(CreateCouponCode(formData)).then(() => {
+        dispatch(fetchCoupons());
+        setIsDialogOpen(false);
+        resetForm();
+      });
+    } catch (error) {
+      console.error("error adding coupon code");
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchCoupons());
+  }, [dispatch]);
+  const columns = [
+    {
+      name: "code",
+      selector: (row) => row.code,
+      sortable: true,
+    },
+    {
+      name: "discountPercent",
+      selector: (row) => row.discountPercent,
+      sortable: true,
+    },
+    {
+      name: "minOrderAmount",
+      selector: (row) => row.minOrderAmount,
+      sortable: true,
+    },
+    {
+      name: "eligibleBank",
+      selector: (row) => row.eligibleBank,
+      sortable: true,
+    },
+    {
+      name: "expiryDate",
+      selector: (row) => row.expiryDate,
+      sortable: true,
+    },
+
+    {
+      name: "Actions",
+      cell: (row) => (
+        <div className="flex gap-2 justify-end">
+          <button
+            onClick={() => handleEdit(row.id)}
+            className="text-gray-600 hover:text-blue-800"
+            title="Edit"
+          >
+            <Pencil size={18} />
+          </button>
+          <button
+            onClick={() => handleDelete(row.id)}
+            className="text-red-600 hover:text-red-800"
+            title="Delete"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+      ),
+      ignoreRowClick: true,
+    },
+  ];
   return (
     <>
       <div className="flex justify-between items-center mb-6">
@@ -76,32 +160,32 @@ const CouponCode = () => {
             <DialogHeader>
               <DialogTitle>Add Coupons</DialogTitle>
             </DialogHeader>
-            <form onSubmit="" className="space-y-6 pt-4">
+            <form onSubmit={handleAddCoupon} className="space-y-6 pt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="name">Coupon code</Label>
                   <Input
                     id="coupon"
-                    placeholder="Enter coupon code"
+                    className="uppercase"
+                    placeholder="coupon code"
                     value={formData.code}
                     onChange={(e) =>
                       setFormData({ ...formData, code: e.target.value })
                     }
                   />
-                  {couponError.code && (
-                    <p className="text-sm text-red-600 mt-1">
-                      {couponError.code}
-                    </p>
-                  )}
                 </div>
                 <div>
                   <Label htmlFor="discountPercent">Discount Percentage</Label>
                   <Input
                     id="discountPercent"
+                    type="number"
                     placeholder="Enter Discount Percentage"
                     value={formData.discountPercent}
                     onChange={(e) =>
-                      setFormData({ ...formData, discountPercent: e.target.value })
+                      setFormData({
+                        ...formData,
+                        discountPercent: e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -113,32 +197,14 @@ const CouponCode = () => {
                     type="number"
                     value={formData.minOrderAmount}
                     onChange={(e) =>
-                      setFormData({ ...formData, minOrderAmount: e.target.value })
+                      setFormData({
+                        ...formData,
+                        minOrderAmount: e.target.value,
+                      })
                     }
                   />
-                  {couponError.stock && (
-                    <p className="text-sm text-red-600 mt-1">
-                      {couponError.stock}
-                    </p>
-                  )}
                 </div>
-                <div>
-                  <Label htmlFor="price">Price (₹)</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    placeholder="Enter price"
-                    value={formData.price}
-                    onChange={(e) =>
-                      setFormData({ ...formData, price: e.target.value })
-                    }
-                  />
-                  {couponError.price && (
-                    <p className="text-sm text-red-600 mt-1">
-                      {couponError.price}
-                    </p>
-                  )}
-                </div>
+
                 <div>
                   <Label htmlFor="category">Banks</Label>
                   <Select
@@ -152,8 +218,15 @@ const CouponCode = () => {
                     </SelectTrigger>
                     <SelectContent>
                       {banks.map((bank) => (
-                        <SelectItem key={bank._id} value={bank._id}>
-                          {bank.bankname}
+                        <SelectItem key={bank.bankname} value={bank.bankname}>
+                          <div className="flex flex-row items-center justify-between gap-x-4">
+                            <img
+                              src={bank.banklogo}
+                              className="h-5 w-auto"
+                              alt=""
+                            />
+                            {bank.bankname}
+                          </div>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -165,11 +238,33 @@ const CouponCode = () => {
                   )}
                 </div>
               </div>
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <Label htmlFor="Expirydate">Expiry date</Label>
+                <DatePicker
+                  date={
+                    formData.expiryDate ? new Date(formData.expiryDate) : null
+                  }
+                  setDate={(selectedDate) =>
+                    setFormData({
+                      ...formData,
+                      expiryDate: selectedDate
+                        ? selectedDate.toISOString()
+                        : "",
+                    })
+                  }
+                />
+              </div>
 
-            
-             
-
-            
               <div className="flex justify-end pt-4">
                 <Button type="submit">
                   {loading ? (
@@ -195,7 +290,7 @@ const CouponCode = () => {
           <>
             <DataTable
               columns={columns}
-              data={products}
+              data={coupons}
               pagination
               highlightOnHover
               responsive

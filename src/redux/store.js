@@ -22,6 +22,7 @@ import { CartReducer } from "./reducers/CartReducer";
 import { ShippingReducer } from "./reducers/ShippingReducer";
 import { PaymentReducer } from "./reducers/PaymentReducer";
 import { OrderReducer } from "./reducers/OrderReducer";
+import { CouponReducer } from "./reducers/CouponReducer";
 
 const rootReducer = combineReducers({
   products: ProductReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   subcategories: subCategoryReducer,
   users: UserReducer,
   cart: CartReducer,
+  coupons:CouponReducer,
   shippingInfo: ShippingReducer,
   payment: PaymentReducer,
   orders: OrderReducer,

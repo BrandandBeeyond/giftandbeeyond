@@ -12,6 +12,10 @@ const CouponSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    description: {
+      type: String,
+      default: null,
+    },
     minOrderAmount: {
       type: Number,
       default: 0,
@@ -28,5 +32,4 @@ const CouponSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
-export default mongoose.models.Coupon || mongoose.model("Coupon",CouponSchema);
+export default mongoose.models.Coupon || mongoose.model("Coupon", CouponSchema);
