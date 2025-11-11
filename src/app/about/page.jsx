@@ -123,11 +123,11 @@ const AboutPage = () => {
       </section>
 
       <section className="py-20 relative">
-          <img
-              src="/images/elementfly.png"
-              className="absolute playfullfly"
-              alt=""
-            />
+        <img
+          src="/images/elementfly.png"
+          className="absolute playfullfly"
+          alt=""
+        />
 
         <div
           className="max-w-6xl mx-auto text-center  mission-section"
@@ -167,6 +167,59 @@ const AboutPage = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="headingmain text-8xl font-ralwaysmbold uppercase text-[#ffffff] text-center">
+            Founders
+          </h2>
+          <div className="para font-della text-2xl text-[#B34700] mt-10" style={{textAlign:'justify'}}>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet
+              libero ut aspernatur perferendis sit aliquid rem maiores pariatur
+              quos, delectus eius labore sed, commodi quaerat! Nobis maiores
+              voluptatum eius molestias ipsa suscipit qui tenetur fugit error
+              itaque aut enim asperiores iusto dignissimos, dolorum commodi iste
+              debitis porro distinctio. Debitis, sit dolores! Reprehenderit
+              autem, cum provident velit magnam amet a error ducimus quod
+              recusandae fuga asperiores voluptatibus voluptates debitis quae
+              suscipit at molestias delectus libero ipsum. Quasi deleniti nulla
+              at ratione ab, quis molestiae asperiores a quaerat ducimus, ipsum
+              repellat eum perspiciatis. Qui suscipit, deserunt aut odio
+              corrupti molestiae cum autem voluptatibus eligendi possimus
+              temporibus, atque iusto incidunt perferendis totam, iste
+              laboriosam libero tempora? Animi officiis laboriosam ipsum. Et
+              excepturi necessitatibus nihil sapiente illum neque. Delectus
+            </p>
+          </div>
+        </div>
+      </section>
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="headingmain text-8xl font-ralwaysmbold capitalize text-[#ffffff] text-center">
+            Why <br /> choose Us
+          </h2>
+          <div className="para font-della text-2xl text-[#B34700] mt-10" style={{textAlign:'justify'}}>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet
+              libero ut aspernatur perferendis sit aliquid rem maiores pariatur
+              quos, delectus eius labore sed, commodi quaerat! Nobis maiores
+              voluptatum eius molestias ipsa suscipit qui tenetur fugit error
+              itaque aut enim asperiores iusto dignissimos, dolorum commodi iste
+              debitis porro distinctio. Debitis, sit dolores! Reprehenderit
+              autem, cum provident velit magnam amet a error ducimus quod
+              recusandae fuga asperiores voluptatibus voluptates debitis quae
+              suscipit at molestias delectus libero ipsum. Quasi deleniti nulla
+              at ratione ab, quis molestiae asperiores a quaerat ducimus, ipsum
+              repellat eum perspiciatis. Qui suscipit, deserunt aut odio
+              corrupti molestiae cum autem voluptatibus eligendi possimus
+              temporibus, atque iusto incidunt perferendis totam, iste
+              laboriosam libero tempora? Animi officiis laboriosam ipsum. Et
+              excepturi necessitatibus nihil sapiente illum neque. Delectus
+            </p>
           </div>
         </div>
       </section>

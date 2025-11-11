@@ -10,11 +10,13 @@ export async function POST(req) {
 
     const {
       code,
-      discountPercent,
+      discountType,
+      discountValue,
       description,
       minOrderAmount,
       eligibleBank,
       expiryDate,
+      isNewUser,
     } = body;
 
     const exists = await Coupon.findOne({ code: code.toUpperCase() });
@@ -28,11 +30,14 @@ export async function POST(req) {
 
     const newCoupon = await Coupon.create({
       code: code.toUpperCase(),
-      discountPercent,
+      discountType,
+      discountPercent: discountType === "percent" ? discountValue : null,
+      discountAmount: discountType === "amount" ? discountValue : null,
       description,
       minOrderAmount,
       eligibleBank,
       expiryDate,
+      isNewUser: isNewUser || false,
     });
 
     return NextResponse.json(

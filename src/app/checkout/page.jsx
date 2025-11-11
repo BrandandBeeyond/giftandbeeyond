@@ -26,6 +26,7 @@ import {
 import { useEffect, useState } from "react";
 import { fetchCoupons } from "@/redux/actions/CouponAction";
 import { Spinner } from "@/components/ui/spinner";
+import CouponApplied from "../../animations/appliedcoupon.json";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ const Checkout = () => {
   const { coupons, loading } = useSelector((state) => state.coupons);
   const [selectCoupon, setSelectCoupon] = useState(null);
   const [disabledButton, setDisabledButton] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [isapplying, setIsapplying] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCoupons());
@@ -63,6 +67,33 @@ const Checkout = () => {
     setDisabledButton(false);
   };
 
+  const handleApplyCoupon = async () => {
+    if (!selectCoupon) return;
+
+    setIsapplying(true);
+    setSuccessMsg("");
+
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+
+    const coupon = coupons.find((c) => c._id === selectCoupon);
+
+    if (coupon) {
+      setAppliedCoupon(coupon);
+      setIsDialogOpen(false);
+      setSelectCoupon(null);
+      setSuccessMsg(`Coupon "${coupon.code}" applied successfully! 🎉`);
+    }
+
+    setIsapplying(false);
+  };
+
+  useEffect(() => {
+    if (successMsg) {
+      const timer = setTimeout(() => setSuccessMsg(""), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [successMsg]);
+
   const handleNavigateNext = () => {
     if (!user) {
       router.push("/account/login?redirect=/checkout/addresses");
@@ -81,6 +112,27 @@ const Checkout = () => {
       router.push("/checkout/addresses");
     }, 3000);
   };
+
+  let shippingCharges = 40;
+
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  const totalAmountCart = subtotal + shippingCharges;
+
+  let discount = 0;
+
+  if (appliedCoupon) {
+    if (appliedCoupon.discountType === "percent") {
+      discount = (subtotal * appliedCoupon.discountPercent) / 100;
+    } else if (appliedCoupon.discountType === "amount") {
+      discount = appliedCoupon.discountAmount;
+    }
+  }
+
+  const finalTotal = Math.max(subtotal + shippingCharges - discount, 0);
 
   return (
     <>
@@ -167,7 +219,7 @@ const Checkout = () => {
                     setIsDialogOpen(isOpen);
 
                     if (!isOpen) {
-                      resetForm();
+                      setSelectCoupon(null);
                     }
                   }}
                 >
@@ -224,7 +276,9 @@ const Checkout = () => {
                     </DialogHeader>
                     {loading ? (
                       <>
-                        <Spinner className="text-[#000] h-6 w-6" />
+                        <div className="flex items-center justify-center">
+                          <Spinner className="text-[#000] h-6 w-6" />
+                        </div>
                       </>
                     ) : (
                       <>
@@ -239,12 +293,20 @@ const Checkout = () => {
                             onClick={() => handleSelectCoupon(coupon._id)}
                             key={coupon._id}
                           >
-                            <h3 className="font-della text-[#000] text-sm">
-                              {coupon.code}
-                            </h3>
-                            <span className="py-1 text-xs text-slate-600 font-raleway">
-                              {coupon.discountPercent} % OFF
-                            </span>
+                            <div className="mb-2 space-x-4">
+                              <span className="font-della text-[#000] text-sm border border-dashed border-[#885b4c] px-2 py-1">
+                                {coupon.code}
+                              </span>
+                              <span className="py-1 text-[16px] text-green-600 font-della">
+                                {coupon.discountType === "percent"
+                                  ? `${coupon.discountPercent}% OFF`
+                                  : `${coupon.discountAmount}₹ OFF`}
+                              </span>
+                            </div>
+
+                            <p className="para text-sm text-[#885b4c] font-raleway">
+                              {coupon.description}
+                            </p>
                           </div>
                         ))}
                       </>
@@ -254,14 +316,15 @@ const Checkout = () => {
                       <div className="text-end">
                         <Button
                           type="submit"
-                          disabled={!selectCoupon}
+                          onClick={handleApplyCoupon}
+                          disabled={!selectCoupon || isapplying}
                           className={`transition-all ${
                             !selectCoupon
                               ? "opacity-50 cursor-not-allowed"
                               : "opacity-100 cursor-pointer"
                           }`}
                         >
-                          Apply Coupon
+                          {isapplying ? "Applying" : "Apply Coupon"}
                         </Button>
                       </div>
                     </DialogFooter>
@@ -275,19 +338,23 @@ const Checkout = () => {
 
                 <div className="flex justify-between font-della space-y-2 text-sm mb-2">
                   <span className="text-[16px] font-semibold">Subtotal</span>
-                  <span>
-                    ₹
-                    {cart.reduce(
-                      (acc, item) => acc + item.price * item.quantity,
-                      0
-                    )}
-                  </span>
+                  <span>₹{totalAmountCart.toFixed(2)}</span>
                 </div>
+
+                {appliedCoupon && (
+                  <div className="flex justify-between text-sm mb-2 text-green-700 font-della">
+                    <span className="text-[13px]">
+                      Discount ({appliedCoupon.code})
+                    </span>
+                    <span>- ₹{discount.toFixed(2)}</span>
+                  </div>
+                )}
+
                 <div className="flex justify-between text-sm space-y-2 mb-2">
                   <span className="text-[16px] font-della">
                     Shipping Included
                   </span>
-                  <span>₹0</span>
+                  <span>₹{shippingCharges}</span>
                 </div>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-[16px] font-della">Taxes</span>
@@ -295,13 +362,7 @@ const Checkout = () => {
                 </div>
                 <div className="border-t border-gray-300 mt-3 pt-3 flex justify-between font-semibold">
                   <span className="font-della text-xl font-bold">Total</span>
-                  <span className="font-della text-xl">
-                    ₹
-                    {cart.reduce(
-                      (acc, item) => acc + item.price * item.quantity,
-                      0
-                    )}
-                  </span>
+                  <span className="font-della text-xl">₹ {finalTotal.toFixed(2)}</span>
                 </div>
 
                 <div className="mt-6">
@@ -329,6 +390,13 @@ const Checkout = () => {
           </div>
         )}
       </div>
+
+      {successMsg && (
+        <div className="fixed inset-0 flex flex-col items-center justify-center text-[#fff] text-2xl bg-black/90 z-50">
+          <Lottie animationData={CouponApplied} loop={false} className="h-64" />
+          {successMsg}
+        </div>
+      )}
     </>
   );
 };

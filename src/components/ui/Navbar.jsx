@@ -29,6 +29,7 @@ import Stepprogess from "../Stepprogess";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.users);
+  const { cart } = useSelector((state) => state.cart);
   const pathname = usePathname();
 
   const handleLogout = async () => {
@@ -44,7 +45,7 @@ const Navbar = () => {
     <nav className="px-2 py-1 navbar relative z-50 rounded-bl-3xl rounded-br-3xl">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold">
-            <img src="logo.png" className="h-24 w-auto" alt="" />
+          <img src="logo.png" className="h-24 w-auto" alt="" />
         </Link>
 
         <div className="hidden md:flex space-x-11 user-links items-center">
@@ -61,10 +62,10 @@ const Navbar = () => {
             About Us
           </Link>
           <Link
-            href="/contact"
+            href="/collections"
             className="text-md text-white tracking-wider font-bold  font-ralwaysmbold hover:text-slate-600"
-          > 
-          Collections
+          >
+            Collections
           </Link>
           <Link
             href="/cart"
@@ -96,7 +97,13 @@ const Navbar = () => {
               window.dispatchEvent(new CustomEvent("open-cart"));
             }}
           >
-            <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0">
+            <div className="cursor-pointer p-2 rounded-full transition-all hover:bg-[#edceb8] me-0 relative">
+              {cart.length > 0 && (
+                <div className="h-4 w-4 flex items-center justify-center rounded-4xl bg-red-900 text-[#fff] text-xs absolute top-0 right-0">
+                  {cart.length}
+                </div>
+              )}
+
               <ShoppingBagIcon className="text-sm text-white  h-5 w-5" />
             </div>
           </Link>

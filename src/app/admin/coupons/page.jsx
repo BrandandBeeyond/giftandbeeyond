@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CreateCouponCode, fetchCoupons } from "@/redux/actions/CouponAction";
 import { Spinner } from "@/components/ui/spinner";
 import DatePicker from "@/components/ui/DatePicker";
+import { Switch } from "@/components/ui/switch";
 
 const CouponCode = () => {
   const dispatch = useDispatch();
@@ -43,11 +44,13 @@ const CouponCode = () => {
 
   const [formData, setFormData] = useState({
     code: "",
-    discountPercent: "",
+    discountType: "percent",
+    discountValue: "",
     minOrderAmount: "",
     description: "",
     eligibleBank: "",
     expiryDate: "",
+    isNewUser: false,
   });
 
   const [couponError, setCouponError] = useState({
@@ -62,11 +65,13 @@ const CouponCode = () => {
   const resetForm = () => {
     setFormData({
       code: "",
-      discountPercent: "",
+      discountType: "percent",
+      discountValue: "",
       minOrderAmount: "",
       description: "",
       eligibleBank: "",
       expiryDate: "",
+      isNewUser: false,
     });
   };
 
@@ -93,18 +98,21 @@ const CouponCode = () => {
       sortable: true,
     },
     {
-      name: "discountPercent",
-      selector: (row) => row.discountPercent,
+      name: "Discount",
+      selector: (row) =>
+        row.discountPercent
+          ? `${row.discountPercent}%`
+          : `₹${row.discountAmount}`,
       sortable: true,
     },
     {
-      name: "minOrderAmount",
+      name: "Min Order",
       selector: (row) => row.minOrderAmount,
       sortable: true,
     },
     {
-      name: "eligibleBank",
-      selector: (row) => row.eligibleBank,
+      name: "Bank",
+      selector: (row) => row.eligibleBank || "-",
       sortable: true,
     },
     {
@@ -169,22 +177,50 @@ const CouponCode = () => {
                     className="uppercase"
                     placeholder="coupon code"
                     value={formData.code}
+                    required
                     onChange={(e) =>
                       setFormData({ ...formData, code: e.target.value })
                     }
                   />
                 </div>
                 <div>
-                  <Label htmlFor="discountPercent">Discount Percentage</Label>
+                  <Label htmlFor="discountType">Discount Type</Label>
+                  <Select
+                  required
+                    value={formData.discountType}
+                    onValueChange={(val) =>
+                      setFormData({ ...formData, discountType: val })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="percent">Percent %</SelectItem>
+                      <SelectItem value="amount">Fixed Amount ₹</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>
+                    {formData.discountType === "percent"
+                      ? "Discount(%)"
+                      : "Discount(₹)"}
+                  </Label>
+
                   <Input
-                    id="discountPercent"
                     type="number"
-                    placeholder="Enter Discount Percentage"
-                    value={formData.discountPercent}
+                    required
+                    placeholder={
+                      formData.discountType === "percent"
+                        ? "Enter percent"
+                        : "Enter Fixed Amount"
+                    }
+                    value={formData.discountValue}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        discountPercent: e.target.value,
+                        discountValue: e.target.value,
                       })
                     }
                   />
@@ -192,6 +228,7 @@ const CouponCode = () => {
                 <div>
                   <Label htmlFor="stock">Min Order Amount</Label>
                   <Input
+                  required
                     id="minOrderAmount"
                     placeholder="Enter Min Order Amount"
                     type="number"
@@ -206,7 +243,7 @@ const CouponCode = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="category">Banks</Label>
+                  <Label htmlFor="category">Banks (optional)</Label>
                   <Select
                     onValueChange={(value) =>
                       setFormData({ ...formData, eligibleBank: value })
@@ -238,6 +275,17 @@ const CouponCode = () => {
                   )}
                 </div>
               </div>
+
+              <div className="flex items-center gap-2 pt-4">
+                <Label>New User Only</Label>
+                <Switch
+                  checked={formData.isNewUser}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, isNewUser: checked })
+                  }
+                />
+              </div>
+
               <div>
                 <Label htmlFor="description">Description</Label>
                 <Textarea
@@ -248,6 +296,7 @@ const CouponCode = () => {
                   }
                 />
               </div>
+
               <div>
                 <Label htmlFor="Expirydate">Expiry date</Label>
                 <DatePicker
